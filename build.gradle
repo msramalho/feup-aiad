@@ -1,0 +1,16 @@
+group 'feup'
+version '0.1-SNAPSHOT'
+
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+mainClassName = "labyrinth.Hello"
