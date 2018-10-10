@@ -12,7 +12,6 @@ public class MazeFactory {
         this.mazeSize = mazeSize;
     }
 
-
     public Maze buildMaze() {
 
         Vector2D innerWallsSize = mazeSize.translate(-2, -2);

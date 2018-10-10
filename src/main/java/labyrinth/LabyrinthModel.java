@@ -29,6 +29,8 @@ public class LabyrinthModel extends Repast3Launcher {
 
     @Override
     public void begin() {
+        System.out.println("===================BEGIN");
+
         super.begin();
 
         DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
@@ -43,6 +45,7 @@ public class LabyrinthModel extends Repast3Launcher {
         mazeSpace.addDisplayables(displaySurf);
 
         displaySurf.display();
+//        getSchedule().scheduleActionAtInterval(1, )
     }
 
     public int getMazeHeight() {
@@ -68,6 +71,7 @@ public class LabyrinthModel extends Repast3Launcher {
 
     @Override
     protected void launchJADE() {
+        System.out.println("===================JADE");
         // don't know the purpose of this
         Runtime rt = Runtime.instance();
         Profile p1 = new ProfileImpl();
