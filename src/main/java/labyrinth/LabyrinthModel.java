@@ -45,9 +45,25 @@ public class LabyrinthModel extends Repast3Launcher {
         displaySurf.display();
     }
 
+    public int getMazeHeight() {
+        return mazeSize.y;
+    }
+
+    public void setMazeHeight(int height) {
+        this.mazeSize = new Vector2D(mazeSize.x, height);
+    }
+
+    public int getMazeLength() {
+        return mazeSize.x;
+    }
+
+    public void setMazeLength(int length) {
+        this.mazeSize = new Vector2D(length, mazeSize.y);
+    }
+
     @Override
     public String[] getInitParam() {
-        return new String[]{};
+        return new String[]{"MazeHeight", "MazeLength"};
     }
 
     @Override
