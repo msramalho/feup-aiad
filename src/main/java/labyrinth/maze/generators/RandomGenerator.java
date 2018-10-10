@@ -1,16 +1,18 @@
 package labyrinth.maze.generators;
 
-import labyrinth.math.Vector2D;
+import labyrinth.utils.Vector2D;
 
 import java.util.Random;
 
-public class RandomGenerator {
+public class RandomGenerator implements IGenerator {
 
     private final double generationRate;
+    private final Vector2D mazeSize;
 
-    public RandomGenerator(double generationRate) {
+    public RandomGenerator(double generationRate, Vector2D mazeSize) {
 
         this.generationRate = generationRate;
+        this.mazeSize = mazeSize;
     }
 
     /**
@@ -18,7 +20,7 @@ public class RandomGenerator {
      *
      * @return
      */
-    public boolean[][] generate(Vector2D mazeSize) {
+    public boolean[][] generate() {
         Random r = new Random();
 
         boolean mazeWalls[][] = new boolean[mazeSize.x][mazeSize.y];

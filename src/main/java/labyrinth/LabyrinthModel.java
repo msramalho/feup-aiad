@@ -3,7 +3,7 @@ package labyrinth;
 import labyrinth.display.MazeSpace;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
-import labyrinth.math.Vector2D;
+import labyrinth.utils.Vector2D;
 import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;

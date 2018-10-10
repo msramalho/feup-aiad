@@ -1,6 +1,6 @@
 package labyrinth.maze;
 
-import labyrinth.math.Vector2D;
+import labyrinth.utils.Vector2D;
 
 import java.util.function.BiConsumer;
 

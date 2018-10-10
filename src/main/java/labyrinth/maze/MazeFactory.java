@@ -1,7 +1,8 @@
 package labyrinth.maze;
 
 
-import labyrinth.math.Vector2D;
+import labyrinth.maze.generators.RecursiveBacktracking;
+import labyrinth.utils.Vector2D;
 import labyrinth.maze.generators.RandomGenerator;
 
 public class MazeFactory {
@@ -15,8 +16,8 @@ public class MazeFactory {
     public Maze buildMaze() {
 
         Vector2D innerWallsSize = mazeSize.translate(-2, -2);
-        boolean[][] innerWalls = new RandomGenerator(0.2)
-                .generate(innerWallsSize);
+        boolean[][] innerWalls = new RecursiveBacktracking(innerWallsSize)
+                .generate();
 
         boolean[][] walls = wrapInWalls(innerWalls, mazeSize);
         return addMazePositions(walls, mazeSize);
