@@ -2,8 +2,7 @@ package labyrinth.maze;
 
 
 import labyrinth.math.Vector2D;
-
-import java.util.Random;
+import labyrinth.maze.generators.RandomGenerator;
 
 public class MazeFactory {
 
@@ -16,19 +15,22 @@ public class MazeFactory {
 
     }
 
+
     public Maze buildMaze() {
 
+        Vector2D innerWallsSize = mazeSize.translate(-2, -2);
+        boolean[][] innerWalls = new RandomGenerator(0.2)
+                .generate(innerWallsSize);
 
-        boolean[][] walls = buildRandomWalls(0.2, mazeSize.translate(-2, -2));
-
-        boolean[][] newWalls = wrapInWalls(walls, mazeSize);
-        return addMazePositions(newWalls, mazeSize);
+        boolean[][] walls = wrapInWalls(innerWalls, mazeSize);
+        return addMazePositions(walls, mazeSize);
     }
 
     private static final Vector2D DEFAULT_POS = new Vector2D(-1, -1);
 
     /**
      * Builds the maze and adds a starting and ending position at opposite ends
+     *
      * @param newWalls
      * @param mazeSize
      * @return
@@ -86,20 +88,4 @@ public class MazeFactory {
 
         return newWalls;
     }
-
-    /**
-     * Purely random wall placement
-     *
-     * @return
-     */
-    private static boolean[][] buildRandomWalls(double generationRate, Vector2D mazeSize) {
-        Random r = new Random();
-
-        boolean mazeWalls[][] = new boolean[mazeSize.x][mazeSize.y];
-
-        mazeSize.foreachForwardRange((i, j) -> mazeWalls[i][j] = r.nextDouble() < generationRate);
-
-        return mazeWalls;
-    }
-
 }
