@@ -9,8 +9,8 @@ To build:
 $ ./gradlew build
 ```
 
-To run repast GUI:
+To run:
 ```bash
 # in project root
-$ ./gradlew startRepast
+$ ./gradlew run
 ```

@@ -1,6 +1,5 @@
 .gradle
 .idea
-gradle
 out
 build
 libs/*.log
