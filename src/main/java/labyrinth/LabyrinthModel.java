@@ -48,6 +48,11 @@ public class LabyrinthModel extends Repast3Launcher {
         Runtime rt = Runtime.instance();
         Profile p1 = new ProfileImpl();
         ContainerController mainContainer = rt.createMainContainer(p1);
+        launchAgents(mainContainer);
+    }
+
+    private void launchAgents(ContainerController mainContainer) {
+
     }
 
     public static void main(String[] args) {

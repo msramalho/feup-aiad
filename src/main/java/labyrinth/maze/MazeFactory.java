@@ -1,6 +1,5 @@
 package labyrinth.maze;
 
-import labyrinth.display.Wall;
 
 import java.util.Random;
 

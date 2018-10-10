@@ -24,17 +24,12 @@ public class MazeSpace {
     private void buildWalls(Maze maze) {
         Object2DGrid wallGrid = new Object2DGrid(maze.xSize, maze.ySize);
 
-        for (int i = 0; i < maze.xSize; i++) {
-            for (int j = 0; j < maze.ySize; j++) {
-                if (! maze.hasWallAt(i, j)) {
-                    continue;
-                }
+        maze.foreachWall((i, j) -> {
+            Wall wall = new Wall(i, j);
+            walls.add(wall);
+            wallGrid.putObjectAt(wall.getX(), wall.getY(), wall);
+        });
 
-                Wall wall = new Wall(i, j);
-                walls.add(wall);
-                wallGrid.putObjectAt(wall.getX(), wall.getY(), wall);
-            }
-        }
 
         displayWalls = new Object2DDisplay(wallGrid);
         displayWalls.setObjectList(walls);
