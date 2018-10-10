@@ -3,6 +3,7 @@ package labyrinth;
 import labyrinth.display.MazeSpace;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
+import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
@@ -10,10 +11,9 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final int DEFAULT_MAZE_X = 10;
-    private static final int DEFAULT_MAZE_Y = 10;
 
     private MazeSpace mazeSpace;
+    private MazeFactory mazeFactory = new MazeFactory();
 
     public LabyrinthModel() {
         super();
@@ -31,7 +31,7 @@ public class LabyrinthModel extends Repast3Launcher {
         DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
         registerDisplaySurface("Labyrinth Model", displaySurf);
 
-        mazeSpace = new MazeSpace(DEFAULT_MAZE_X, DEFAULT_MAZE_Y);
+        mazeSpace = new MazeSpace(mazeFactory.buildMaze());
         mazeSpace.addDisplayables(displaySurf);
 
         displaySurf.display();

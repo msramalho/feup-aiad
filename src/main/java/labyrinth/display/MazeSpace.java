@@ -1,47 +1,43 @@
 package labyrinth.display;
 
+import labyrinth.maze.Maze;
 import uchicago.src.sim.gui.DisplaySurface;
 import uchicago.src.sim.gui.Object2DDisplay;
 import uchicago.src.sim.space.Object2DGrid;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MazeSpace {
-	private Object2DGrid doorGrid;
+    Object2DDisplay displayWalls;
     private List<Wall> walls = new ArrayList<>();
 
-	
-	public MazeSpace(int xSize, int ySize){
-
-		doorGrid = new Object2DGrid(xSize, ySize);
-
-		buildWalls(xSize, ySize);
-	}
+    public MazeSpace(Maze maze) {
+        buildWalls(maze);
+    }
 
     public void addDisplayables(DisplaySurface displaySurf) {
 
-        Object2DDisplay displayDoors = new Object2DDisplay(doorGrid);
-        displayDoors.setObjectList(walls);
-
-        displaySurf.addDisplayable(displayDoors, "Doors");
+        displaySurf.addDisplayable(displayWalls, "Walls");
     }
 
-    private void buildWalls(int numLifts, int numFloors) {
-        Random r = new Random();
+    private void buildWalls(Maze maze) {
+        Object2DGrid wallGrid = new Object2DGrid(maze.xSize, maze.ySize);
 
-        for (int i = 0; i < numLifts; i++) {
-            for (int j = 0; j < numFloors; j++) {
-                if (r.nextBoolean()) {
+        for (int i = 0; i < maze.xSize; i++) {
+            for (int j = 0; j < maze.ySize; j++) {
+                if (! maze.hasWallAt(i, j)) {
                     continue;
                 }
 
                 Wall wall = new Wall(i, j);
                 walls.add(wall);
-                doorGrid.putObjectAt(wall.getX(), wall.getY(), wall);
+                wallGrid.putObjectAt(wall.getX(), wall.getY(), wall);
             }
         }
+
+        displayWalls = new Object2DDisplay(wallGrid);
+        displayWalls.setObjectList(walls);
     }
 
 }
