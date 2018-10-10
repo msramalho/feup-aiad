@@ -5,14 +5,10 @@ import labyrinth.math.Vector2D;
 import labyrinth.maze.generators.RandomGenerator;
 
 public class MazeFactory {
+    private Vector2D mazeSize;
 
-    private static final int DEFAULT_MAZE_X = 20;
-    private static final int DEFAULT_MAZE_Y = 20;
-
-    private Vector2D mazeSize = new Vector2D(DEFAULT_MAZE_X, DEFAULT_MAZE_Y);
-
-    public MazeFactory() {
-
+    public MazeFactory(Vector2D mazeSize) {
+        this.mazeSize = mazeSize;
     }
 
 

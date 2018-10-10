@@ -3,6 +3,7 @@ package labyrinth;
 import labyrinth.display.MazeSpace;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
+import labyrinth.math.Vector2D;
 import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
@@ -13,9 +14,9 @@ import uchicago.src.sim.gui.DisplaySurface;
 import java.io.IOException;
 
 public class LabyrinthModel extends Repast3Launcher {
+    private Vector2D mazeSize = new Vector2D(20, 20);
 
     private MazeSpace mazeSpace;
-    private MazeFactory mazeFactory = new MazeFactory();
 
     public LabyrinthModel() {
         super();
@@ -34,6 +35,7 @@ public class LabyrinthModel extends Repast3Launcher {
         registerDisplaySurface("Labyrinth Model", displaySurf);
 
         try {
+            MazeFactory mazeFactory = new MazeFactory(mazeSize);
             mazeSpace = new MazeSpace(mazeFactory.buildMaze());
         } catch (IOException e) {
             throw new IllegalStateException("Missing image files");
