@@ -10,6 +10,8 @@ import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
+import java.io.IOException;
+
 public class LabyrinthModel extends Repast3Launcher {
 
     private MazeSpace mazeSpace;
@@ -31,7 +33,11 @@ public class LabyrinthModel extends Repast3Launcher {
         DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
         registerDisplaySurface("Labyrinth Model", displaySurf);
 
-        mazeSpace = new MazeSpace(mazeFactory.buildMaze());
+        try {
+            mazeSpace = new MazeSpace(mazeFactory.buildMaze());
+        } catch (IOException e) {
+            throw new IllegalStateException("Missing image files");
+        }
         mazeSpace.addDisplayables(displaySurf);
 
         displaySurf.display();

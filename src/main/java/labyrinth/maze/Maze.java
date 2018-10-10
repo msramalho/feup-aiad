@@ -1,35 +1,35 @@
 package labyrinth.maze;
 
+import labyrinth.math.Vector2D;
+
 import java.util.function.BiConsumer;
 
 public class Maze {
 
+    public final Vector2D size;
+    public final Vector2D startPos;
+    public final Vector2D endPos;
+
     private final boolean[][] mazeWalls;
-    public final int xSize;
-    public final int ySize;
 
-    public Maze(boolean[][] mazeWalls, int xSize, int ySize) {
 
+    public Maze(boolean[][] mazeWalls, Vector2D size, Vector2D startPos, Vector2D endPos) {
         this.mazeWalls = mazeWalls;
-        this.xSize = xSize;
-        this.ySize = ySize;
+        this.size = size;
+        this.startPos = startPos;
+        this.endPos = endPos;
     }
 
     public boolean hasWallAt(int x, int y) {
         return mazeWalls[x][y];
-
     }
 
-    public void foreachWall(BiConsumer<Integer, Integer> operator) {
-        for (int i = 0; i < xSize; i++) {
-            for (int j = 0; j < ySize; j++) {
-                if (! hasWallAt(i, j)) {
-                    continue;
-                }
-
-                operator.accept(i, j);
+    public void foreachWall(BiConsumer<Integer, Integer> consumer) {
+        size.foreachForwardRange((i, j) -> {
+            if (hasWallAt(i, j)) {
+                consumer.accept(i, j);
             }
-        }
+        });
     }
 
 }
