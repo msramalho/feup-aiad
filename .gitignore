@@ -4,3 +4,5 @@ out
 build
 libs/*.log
 src/main/java/META-INF/
+
+gradle/wrapper/
