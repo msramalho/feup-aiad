@@ -23,6 +23,7 @@ import java.util.function.Supplier;
 
 public class LabyrinthModel extends Repast3Launcher {
     private Vector2D mazeSize = new Vector2D(20, 20);
+    private int actionRefreshRate = 1; // lower is faster
 
     public LabyrinthModel() {
         super();
@@ -49,9 +50,17 @@ public class LabyrinthModel extends Repast3Launcher {
         this.mazeSize = new Vector2D(length, mazeSize.y);
     }
 
+    public int getRefreshRate() {
+        return actionRefreshRate;
+    }
+
+    public void setRefreshRate(int clocks) {
+        this.actionRefreshRate = clocks;
+    }
+
     @Override
     public String[] getInitParam() {
-        return new String[]{"MazeHeight", "MazeLength"};
+        return new String[]{"MazeHeight", "MazeLength", "RefreshRate"};
     }
 
     /**
@@ -95,7 +104,7 @@ public class LabyrinthModel extends Repast3Launcher {
         ClockPublisher clockPublisher = new ClockPublisher();
         clockPublisher.subscribe(() -> agent.tick());
         clockPublisher.subscribe(() -> displaySurf.updateDisplay());
-        getSchedule().scheduleActionAtInterval(1, clockPublisher);
+        getSchedule().scheduleActionAtInterval(actionRefreshRate, clockPublisher);
     }
 
     public static void main(String[] args) {
