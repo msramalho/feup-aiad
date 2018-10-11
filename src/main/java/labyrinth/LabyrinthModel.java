@@ -93,11 +93,10 @@ public class LabyrinthModel extends Repast3Launcher {
         DumbAgent agent = new DumbAgent(mazePosition);
         mainContainer.acceptNewAgent("dumb agent", agent).start();
 
-        List<Supplier<Vector2D>> agentPositions = Arrays.asList(()-> mazePosition.getPosition());
+        List<Supplier<Vector2D>> agentPositions = Arrays.asList(() -> mazePosition.getPosition());
 
         // graphics
-        new MazeSpace()
-                .addDisplayables(maze, agentPositions, displaySurf);
+        new MazeSpace().addDisplayables(maze, agentPositions, displaySurf);
         displaySurf.display();
 
         // clock ticks

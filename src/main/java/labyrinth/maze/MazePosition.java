@@ -1,7 +1,5 @@
 package labyrinth.maze;
 
-import labyrinth.maze.Maze;
-import labyrinth.maze.Directions;
 import labyrinth.utils.Vector2D;
 
 public class MazePosition {

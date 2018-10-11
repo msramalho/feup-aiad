@@ -17,6 +17,7 @@ public enum Directions {
     }
 
     private static final List<Directions> directions = Arrays.asList(Directions.class.getEnumConstants());
+
     public static final List<Directions> getRandomDirections() {
         List<Directions> directionsCopy = new ArrayList<>(directions);
         Collections.shuffle(directionsCopy);
