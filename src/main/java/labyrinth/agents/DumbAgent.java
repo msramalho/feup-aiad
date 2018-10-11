@@ -1,24 +1,23 @@
 package labyrinth.agents;
 
 import labyrinth.maze.Directions;
+import labyrinth.maze.Maze;
 import labyrinth.maze.MazePosition;
 import sajas.core.Agent;
 
-public class DumbAgent extends Agent {
+public class DumbAgent extends AwareAgent {
 
-    private final MazePosition mazePosition;
-
-    public DumbAgent(MazePosition mazePosition) {
-        this.mazePosition = mazePosition;
+    public DumbAgent(MazePosition position, Maze maze) {
+        super(position, maze);
     }
 
     public void tick() {
-        if (mazePosition.atExit()) {
+        if (position.atExit()) {
             return;
         }
 
         for (Directions direction : Directions.getRandomDirections()) {
-            if (mazePosition.move(direction)) {
+            if (position.move(direction)) {
                 return;
             }
         }

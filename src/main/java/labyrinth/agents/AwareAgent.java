@@ -17,7 +17,6 @@ public abstract class AwareAgent extends Agent {
     protected MazePosition position;
     protected MazeKnowledge knowledge;
 
-
     public AwareAgent(MazePosition position, Maze maze) {
         this.position = position;
         knowledge = new MazeKnowledge(maze);
@@ -44,5 +43,5 @@ public abstract class AwareAgent extends Agent {
      *
      * @param msg not null ACLMessage
      */
-    protected abstract void receiveMessage(ACLMessage msg);
+    protected void receiveMessage(ACLMessage msg) {}
 }
