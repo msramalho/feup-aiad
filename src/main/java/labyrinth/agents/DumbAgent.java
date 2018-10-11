@@ -1,6 +1,7 @@
 package labyrinth.agents;
 
-import labyrinth.utils.Directions;
+import labyrinth.maze.Directions;
+import labyrinth.maze.MazePosition;
 import sajas.core.Agent;
 
 public class DumbAgent extends Agent {

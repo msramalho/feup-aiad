@@ -1,6 +1,6 @@
 package labyrinth.maze.generators;
 
-import labyrinth.utils.Directions;
+import labyrinth.maze.Directions;
 import labyrinth.utils.Segment;
 import labyrinth.utils.Vector2D;
 

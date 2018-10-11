@@ -1,4 +1,6 @@
-package labyrinth.utils;
+package labyrinth.maze;
+
+import labyrinth.utils.Vector2D;
 
 import java.util.*;
 

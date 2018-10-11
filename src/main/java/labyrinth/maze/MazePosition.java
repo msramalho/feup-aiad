@@ -1,7 +1,7 @@
-package labyrinth.agents;
+package labyrinth.maze;
 
 import labyrinth.maze.Maze;
-import labyrinth.utils.Directions;
+import labyrinth.maze.Directions;
 import labyrinth.utils.Vector2D;
 
 public class MazePosition {

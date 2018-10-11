@@ -7,7 +7,7 @@ import labyrinth.display.MazeSpace;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import labyrinth.maze.Maze;
-import labyrinth.agents.MazePosition;
+import labyrinth.maze.MazePosition;
 import labyrinth.utils.Vector2D;
 import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
