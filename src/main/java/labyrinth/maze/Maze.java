@@ -3,6 +3,7 @@ package labyrinth.maze;
 import labyrinth.utils.Vector2D;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class Maze {
 
@@ -21,13 +22,28 @@ public class Maze {
     }
 
     public boolean hasWallAt(int x, int y) {
+        if (x < 0 || y < 0) {
+            return true; // maybe throw exception
+        }
         return mazeWalls[x][y];
+    }
+
+    public boolean hasWallAt(Vector2D newPos) {
+        return hasWallAt(newPos.x, newPos.y);
     }
 
     public void foreachWall(BiConsumer<Integer, Integer> consumer) {
         size.foreachForwardRange((i, j) -> {
             if (hasWallAt(i, j)) {
                 consumer.accept(i, j);
+            }
+        });
+    }
+
+    public void foreachWall(Consumer<Vector2D> consumer) {
+        size.foreachForwardRange((i, j) -> {
+            if (hasWallAt(i, j)) {
+                consumer.accept(new Vector2D(i, j));
             }
         });
     }

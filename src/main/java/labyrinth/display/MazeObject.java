@@ -1,20 +1,19 @@
 package labyrinth.display;
 
+import labyrinth.utils.Vector2D;
 import uchicago.src.sim.gui.Drawable;
 import uchicago.src.sim.gui.SimGraphics;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public class Cell implements Drawable {
+public class MazeObject implements Drawable {
 
-    private int x;
-    private int y;
     private final Consumer<SimGraphics> drawer;
+    private final Supplier<Vector2D> positionGetter;
 
-    public Cell(int x, int y, Consumer<SimGraphics> drawer) {
-        this.x = x;
-        this.y = y;
-
+    public MazeObject(Supplier<Vector2D> positionGetter, Consumer<SimGraphics> drawer) {
+        this.positionGetter = positionGetter;
         this.drawer = drawer;
     }
 
@@ -25,11 +24,11 @@ public class Cell implements Drawable {
 
     @Override
     public int getX() {
-        return x;
+        return positionGetter.get().x;
     }
 
     @Override
     public int getY() {
-        return y;
+        return positionGetter.get().y;
     }
 }

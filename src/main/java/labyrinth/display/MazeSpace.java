@@ -1,6 +1,7 @@
 package labyrinth.display;
 
 import labyrinth.maze.Maze;
+import labyrinth.utils.Vector2D;
 import uchicago.src.sim.gui.DisplaySurface;
 import uchicago.src.sim.gui.Object2DDisplay;
 import uchicago.src.sim.space.Object2DGrid;
@@ -12,43 +13,62 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class MazeSpace {
     private BufferedImage wallImage = ImageIO.read(new File("resources/wall.png"));
     private static final Color START_COLOR = Color.BLUE;
     private static final Color END_COLOR = Color.GREEN;
 
-    Object2DDisplay displayables;
+    public MazeSpace() throws IOException {
 
-    public MazeSpace(Maze maze) throws IOException {
-
-        buildMazeGraphics(maze);
     }
 
-    public void addDisplayables(DisplaySurface displaySurf) {
+    public void addDisplayables(Maze maze, List<Supplier<Vector2D>> agentSuppliers, DisplaySurface displaySurf) {
+        Object2DDisplay mazeCells = buildMazeGraphics(maze);
+        displaySurf.addDisplayable(mazeCells, "Maze Cells");
 
-        displaySurf.addDisplayable(displayables, "Maze Cells");
+        Object2DDisplay agentDrawables = buildAgentGraphics(maze, agentSuppliers);
+        displaySurf.addDisplayable(agentDrawables, "Agents");
     }
 
-    private void buildMazeGraphics(Maze maze) {
-        List<Cell> cells = new ArrayList<>();
+    private Object2DDisplay buildGraphics(Maze maze, Consumer<List<MazeObject>> consumer) {
+        Object2DGrid grid = new Object2DGrid(maze.size.x, maze.size.y);
+        List<MazeObject> cells = new ArrayList<>();
 
-        Object2DGrid cellGrid = new Object2DGrid(maze.size.x, maze.size.y);
+        consumer.accept(cells);
 
-        maze.foreachWall((i, j) -> {
-            Cell wall = new Cell(i, j, g -> g.drawImageToFit(wallImage));
-            cells.add(wall);
-            cellGrid.putObjectAt(i, j, wall);
-        });
-
-        Cell start = new Cell(maze.startPos.x, maze.startPos.y, g -> g.drawRoundRect(START_COLOR));
-        cells.add(start);
-
-        Cell end = new Cell(maze.endPos.x, maze.endPos.y, g -> g.drawRoundRect(END_COLOR));
-        cells.add(end);
-
-        displayables = new Object2DDisplay(cellGrid);
+        Object2DDisplay displayables = new Object2DDisplay(grid);
         displayables.setObjectList(cells);
+
+        return displayables;
+    }
+
+    private Object2DDisplay buildMazeGraphics(Maze maze) {
+
+        return buildGraphics(maze, cells -> {
+            maze.foreachWall(p -> {
+                MazeObject wall = new MazeObject(() -> p, g -> g.drawImageToFit(wallImage));
+                cells.add(wall);
+            });
+
+            MazeObject start = new MazeObject(() -> maze.startPos, g -> g.drawRoundRect(START_COLOR));
+            cells.add(start);
+
+            MazeObject end = new MazeObject(() -> maze.endPos, g -> g.drawRoundRect(END_COLOR));
+            cells.add(end);
+        });
+    }
+
+    private Object2DDisplay buildAgentGraphics(Maze maze, List<Supplier<Vector2D>> agentSuppliers) {
+
+        return buildGraphics(maze, cells -> {
+            for (Supplier<Vector2D> supplier : agentSuppliers) {
+                MazeObject agent = new MazeObject(supplier, g -> g.drawRoundRect(Color.RED));
+                cells.add(agent);
+            }
+        });
     }
 
 }

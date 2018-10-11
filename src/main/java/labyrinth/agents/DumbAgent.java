@@ -1,34 +1,25 @@
 package labyrinth.agents;
 
-import labyrinth.maze.MazePosition;
+import labyrinth.utils.Directions;
 import sajas.core.Agent;
-import uchicago.src.sim.gui.Drawable;
-import uchicago.src.sim.gui.SimGraphics;
 
-import java.util.function.Consumer;
-
-public class DumbAgent extends Agent implements Drawable {
+public class DumbAgent extends Agent {
 
     private final MazePosition mazePosition;
-    private final Consumer<SimGraphics> drawer;
 
-    public DumbAgent(MazePosition mazePosition, Consumer<SimGraphics> drawer) {
+    public DumbAgent(MazePosition mazePosition) {
         this.mazePosition = mazePosition;
-        this.drawer = drawer;
     }
 
-    @Override
-    public void draw(SimGraphics simGraphics) {
-        drawer.accept(simGraphics);
-    }
+    public void tick() {
+        if (mazePosition.atExit()) {
+            return;
+        }
 
-    @Override
-    public int getX() {
-        return mazePosition.getPosition().x;
-    }
-
-    @Override
-    public int getY() {
-        return mazePosition.getPosition().y;
+        for (Directions direction : Directions.getRandomDirections()) {
+            if (mazePosition.move(direction)) {
+                return;
+            }
+        }
     }
 }
