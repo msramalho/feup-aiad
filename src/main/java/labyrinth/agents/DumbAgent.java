@@ -11,6 +11,7 @@ public class DumbAgent extends AwareAgent {
         super(position, maze);
     }
 
+    @Override
     public void tick() {
         if (position.atExit()) {
             return;

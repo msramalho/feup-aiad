@@ -2,6 +2,9 @@ package labyrinth.maze;
 
 import labyrinth.utils.Vector2D;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class MazePosition {
 
 
@@ -30,5 +33,22 @@ public class MazePosition {
 
     public boolean atExit() {
         return position.equals(maze.endPos);
+    }
+
+    /**
+     * Get all possible directions for the next move.
+     * @return ArrayList<Directions> with all possible moves
+     */
+    public ArrayList<Directions> getNextDirections(){
+        ArrayList<Directions> nextDirections = new ArrayList<>();
+
+        for (Directions direction : Directions.getRandomDirections()) {
+            Vector2D newPos = position.translate(direction.direction);
+            if (!maze.hasWallAt(newPos)) {
+                nextDirections.add(direction);
+            }
+        }
+
+        return nextDirections;
     }
 }

@@ -44,4 +44,9 @@ public abstract class AwareAgent extends Agent {
      * @param msg not null ACLMessage
      */
     protected void receiveMessage(ACLMessage msg) {}
+
+    /**
+     * Mandatory method to update agents
+     */
+    abstract public void tick();
 }

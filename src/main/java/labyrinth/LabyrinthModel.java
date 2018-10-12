@@ -1,8 +1,10 @@
 package labyrinth;
 
 import jade.wrapper.StaleProxyException;
+import labyrinth.agents.AwareAgent;
 import labyrinth.agents.ClockPublisher;
 import labyrinth.agents.DumbAgent;
+import labyrinth.agents.ForwardAgent;
 import labyrinth.display.MazeSpace;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -18,6 +20,7 @@ import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -89,10 +92,10 @@ public class LabyrinthModel extends Repast3Launcher {
 
         // agents
         MazePosition mazePosition = new MazePosition(maze.startPos, maze);
-        DumbAgent agent = new DumbAgent(mazePosition, maze);
+        AwareAgent agent = new ForwardAgent(mazePosition, maze);
         mainContainer.acceptNewAgent("dumb agent", agent).start();
 
-        List<Supplier<Vector2D>> agentPositions = Arrays.asList(() -> mazePosition.getPosition());
+        List<Supplier<Vector2D>> agentPositions = Collections.singletonList(mazePosition::getPosition);
 
         // graphics
         new MazeSpace().addDisplayables(maze, agentPositions, displaySurf);
@@ -100,8 +103,8 @@ public class LabyrinthModel extends Repast3Launcher {
 
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher();
-        clockPublisher.subscribe(() -> agent.tick());
-        clockPublisher.subscribe(() -> displaySurf.updateDisplay());
+        clockPublisher.subscribe(agent::tick);
+        clockPublisher.subscribe(displaySurf::updateDisplay);
         getSchedule().scheduleActionAtInterval(actionRefreshRate, clockPublisher);
     }
 

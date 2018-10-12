@@ -16,12 +16,24 @@ public enum Directions {
         this.direction = direction;
     }
 
-    private static final List<Directions> directions = Arrays.asList(Directions.class.getEnumConstants());
+    private static final List<Directions> directions = Arrays.asList(Directions.values());
 
-    public static final List<Directions> getRandomDirections() {
+    public static List<Directions> getRandomDirections() {
         List<Directions> directionsCopy = new ArrayList<>(directions);
         Collections.shuffle(directionsCopy);
-        return directionsCopy;
+            return directionsCopy;
+    }
+
+    public static Directions getOpposite(Directions d1) {
+        if (d1 == UP)
+            return DOWN;
+        if (d1 == DOWN)
+            return UP;
+        if (d1 == LEFT)
+            return RIGHT;
+        if (d1 == RIGHT)
+            return LEFT;
+        return null;
     }
 
 }
