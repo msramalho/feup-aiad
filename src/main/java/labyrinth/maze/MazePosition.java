@@ -39,7 +39,7 @@ public class MazePosition {
      * Get all possible directions for the next move.
      * @return ArrayList<Directions> with all possible moves
      */
-    public ArrayList<Directions> getNextDirections(){
+    public ArrayList<Directions> getAvailableDirections(){
         ArrayList<Directions> nextDirections = new ArrayList<>();
 
         for (Directions direction : Directions.getRandomDirections()) {

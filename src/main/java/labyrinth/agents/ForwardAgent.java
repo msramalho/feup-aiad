@@ -23,7 +23,7 @@ public class ForwardAgent extends AwareAgent {
             return;
         }
 
-        ArrayList<Directions> directions = position.getNextDirections();
+        ArrayList<Directions> directions = position.getAvailableDirections();
 
         if(lastDirection != null && directions.size() == 2 && directions.contains(lastDirection)) {
             position.move(lastDirection);
