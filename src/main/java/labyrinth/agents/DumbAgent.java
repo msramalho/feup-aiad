@@ -1,17 +1,18 @@
 package labyrinth.agents;
 
 import labyrinth.maze.Directions;
+import labyrinth.maze.Maze;
 import labyrinth.maze.MazePosition;
-import sajas.core.Agent;
 
-public class DumbAgent extends Agent {
+import java.awt.*;
 
-    private final MazePosition mazePosition;
+public class DumbAgent extends AwareAgent {
 
-    public DumbAgent(MazePosition mazePosition) {
-        this.mazePosition = mazePosition;
+    public DumbAgent(MazePosition position, Maze maze) {
+        super(position, maze);
     }
 
+    @Override
     public void tick() {
         if (mazePosition.atExit()) {
             return;
@@ -23,4 +24,7 @@ public class DumbAgent extends Agent {
             }
         }
     }
+
+    @Override
+    protected Color getAgentColor() { return Color.blue; }
 }

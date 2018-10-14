@@ -1,4 +1,4 @@
-package labyrinth.agents;
+package labyrinth.utils;
 
 import uchicago.src.sim.engine.BasicAction;
 
