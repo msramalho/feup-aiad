@@ -1,11 +1,15 @@
 package labyrinth.agents;
 
 import jade.lang.acl.ACLMessage;
+import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
 import labyrinth.maze.MazeKnowledge;
 import labyrinth.maze.MazePosition;
+import labyrinth.utils.Vector2D;
 import sajas.core.Agent;
 import sajas.core.behaviours.CyclicBehaviour;
+
+import java.awt.*;
 
 
 /**
@@ -14,12 +18,14 @@ import sajas.core.behaviours.CyclicBehaviour;
  * Easily receive and use messages
  */
 public abstract class AwareAgent extends Agent {
-    protected MazePosition position;
-    protected MazeKnowledge knowledge;
+    MazePosition mazePosition;
+    MazeKnowledge knowledge;
+    private static Color color; // each type of agent can have a different color
 
-    public AwareAgent(MazePosition position, Maze maze) {
-        this.position = position;
+    AwareAgent(MazePosition mazePosition, Maze maze) {
+        this.mazePosition = mazePosition;
         knowledge = new MazeKnowledge(maze);
+        color = getAgentColor();
     }
 
     @Override
@@ -39,6 +45,15 @@ public abstract class AwareAgent extends Agent {
     }
 
     /**
+     * Calculate the result of moving from current pos in dir direction
+     * @param dir the direction of the move
+     * @return the new pos
+     */
+    protected Vector2D getPosAfterMove(Directions dir){
+        return mazePosition.getPosition().translate(dir.direction);
+    }
+
+    /**
      * Inheriting classes have a message to directly process received messages
      *
      * @param msg not null ACLMessage
@@ -48,5 +63,11 @@ public abstract class AwareAgent extends Agent {
     /**
      * Mandatory method to update agents
      */
-    abstract public void tick();
+    public abstract void tick();
+
+    /**
+     * Each agent class that extends {@link AwareAgent} needs to set its own color
+     * @return Color for the display
+     */
+    protected abstract Color getAgentColor();
 }
