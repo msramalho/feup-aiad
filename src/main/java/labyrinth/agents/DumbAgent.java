@@ -3,7 +3,8 @@ package labyrinth.agents;
 import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
 import labyrinth.maze.MazePosition;
-import sajas.core.Agent;
+
+import java.awt.*;
 
 public class DumbAgent extends AwareAgent {
 
@@ -13,14 +14,17 @@ public class DumbAgent extends AwareAgent {
 
     @Override
     public void tick() {
-        if (position.atExit()) {
+        if (mazePosition.atExit()) {
             return;
         }
 
         for (Directions direction : Directions.getRandomDirections()) {
-            if (position.move(direction)) {
+            if (mazePosition.move(direction)) {
                 return;
             }
         }
     }
+
+    @Override
+    protected Color getAgentColor() { return Color.blue; }
 }

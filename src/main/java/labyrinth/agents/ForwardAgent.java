@@ -4,6 +4,7 @@ import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
 import labyrinth.maze.MazePosition;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -19,24 +20,27 @@ public class ForwardAgent extends AwareAgent {
 
     @Override
     public void tick() {
-        if (position.atExit()) {
+        if (mazePosition.atExit()) {
             return;
         }
 
-        ArrayList<Directions> directions = position.getAvailableDirections();
+        ArrayList<Directions> directions = mazePosition.getAvailableDirections(false);
 
-        if(lastDirection != null && directions.size() == 2 && directions.contains(lastDirection)) {
-            position.move(lastDirection);
+        if (lastDirection != null && directions.size() == 2 && directions.contains(lastDirection)) {
+            mazePosition.move(lastDirection);
         } else if (directions.size() >= 2) {
             directions.forEach(direction -> {
                 if (direction != Directions.getOpposite(lastDirection)) {
-                    position.move(direction);
+                    mazePosition.move(direction);
                     lastDirection = direction;
                 }
             });
         } else {
-            position.move(directions.get(0));
+            mazePosition.move(directions.get(0));
             lastDirection = directions.get(0);
         }
     }
+
+    @Override
+    protected Color getAgentColor() {return Color.pink; }
 }
