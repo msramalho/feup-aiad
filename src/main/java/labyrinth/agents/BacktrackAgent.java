@@ -40,7 +40,4 @@ public class BacktrackAgent extends AwareAgent {
 
         return backtrackStack.pop();// no new option -> go back
     }
-
-    @Override
-    protected Color getAgentColor() {return Color.orange; }
 }

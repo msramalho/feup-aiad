@@ -6,9 +6,9 @@ import labyrinth.maze.MazePosition;
 
 import java.awt.*;
 
-public class DumbAgent extends AwareAgent {
+public class RandomAgent extends AwareAgent {
 
-    public DumbAgent(MazePosition position, Maze maze) {
+    public RandomAgent(MazePosition position, Maze maze) {
         super(position, maze);
     }
 
@@ -24,7 +24,4 @@ public class DumbAgent extends AwareAgent {
             }
         }
     }
-
-    @Override
-    protected Color getAgentColor() { return Color.blue; }
 }

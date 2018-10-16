@@ -40,13 +40,19 @@ public class AgentBuilder {
     }
 
     public AgentBuilder addForwardAgent() throws StaleProxyException {
-        addAgent(Color.orange, (mazePos) -> new ForwardAgent(mazePos, maze));
+        addAgent(Color.pink, (mazePos) -> new ForwardAgent(mazePos, maze));
 
         return this;
     }
 
     public AgentBuilder addBacktrackAgent() throws StaleProxyException {
-        addAgent(Color.yellow, (mazePos) -> new BacktrackAgent(mazePos, maze));
+        addAgent(Color.orange, (mazePos) -> new BacktrackAgent(mazePos, maze));
+
+        return this;
+    }
+
+    public AgentBuilder addRandomAgent() throws StaleProxyException {
+        addAgent(Color.blue, (mazePos) -> new BacktrackAgent(mazePos, maze));
 
         return this;
     }

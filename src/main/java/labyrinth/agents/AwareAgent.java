@@ -20,12 +20,10 @@ import java.awt.*;
 public abstract class AwareAgent extends Agent {
     MazePosition mazePosition;
     MazeKnowledge knowledge;
-    private static Color color; // each type of agent can have a different color
 
     AwareAgent(MazePosition mazePosition, Maze maze) {
         this.mazePosition = mazePosition;
         knowledge = new MazeKnowledge(maze);
-        color = getAgentColor();
     }
 
     @Override
@@ -64,10 +62,4 @@ public abstract class AwareAgent extends Agent {
      * Mandatory method to update agents
      */
     public abstract void tick();
-
-    /**
-     * Each agent class that extends {@link AwareAgent} needs to set its own color
-     * @return Color for the display
-     */
-    protected abstract Color getAgentColor();
 }

@@ -40,7 +40,4 @@ public class ForwardAgent extends AwareAgent {
             lastDirection = directions.get(0);
         }
     }
-
-    @Override
-    protected Color getAgentColor() {return Color.pink; }
 }
