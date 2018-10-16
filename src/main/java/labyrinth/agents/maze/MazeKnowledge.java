@@ -1,6 +1,8 @@
-package labyrinth.maze;
+package labyrinth.agents.maze;
 
-import java.util.Arrays;
+import labyrinth.maze.Directions;
+import labyrinth.maze.Maze;
+
 import java.util.HashMap;
 import java.util.Map;
 

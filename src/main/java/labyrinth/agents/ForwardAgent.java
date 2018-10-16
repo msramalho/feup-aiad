@@ -1,11 +1,9 @@
 package labyrinth.agents;
 
 import labyrinth.maze.Directions;
-import labyrinth.maze.Maze;
-import labyrinth.maze.MazeKnowledge;
-import labyrinth.maze.MazePosition;
+import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.MazePosition;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**

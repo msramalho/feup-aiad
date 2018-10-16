@@ -1,5 +1,7 @@
-package labyrinth.maze;
+package labyrinth.agents.maze;
 
+import labyrinth.maze.Directions;
+import labyrinth.maze.Maze;
 import labyrinth.utils.Vector2D;
 
 import java.util.ArrayList;

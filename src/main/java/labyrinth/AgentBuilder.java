@@ -6,8 +6,8 @@ import labyrinth.agents.BacktrackAgent;
 import labyrinth.agents.ForwardAgent;
 import labyrinth.agents.RandomAgent;
 import labyrinth.maze.Maze;
-import labyrinth.maze.MazeKnowledge;
-import labyrinth.maze.MazePosition;
+import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
 import sajas.wrapper.ContainerController;
@@ -16,7 +16,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class AgentBuilder {

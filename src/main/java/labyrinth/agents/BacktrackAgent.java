@@ -1,8 +1,8 @@
 package labyrinth.agents;
 
 import labyrinth.maze.Directions;
-import labyrinth.maze.MazeKnowledge;
-import labyrinth.maze.MazePosition;
+import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Vector2D;
 
 import java.util.ArrayList;

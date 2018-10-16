@@ -1,15 +1,11 @@
 package labyrinth;
 
 import jade.wrapper.StaleProxyException;
-import labyrinth.agents.AwareAgent;
-import labyrinth.agents.BacktrackAgent;
 import labyrinth.utils.ClockPublisher;
-import labyrinth.agents.ForwardAgent;
 import labyrinth.display.MazeSpace;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import labyrinth.maze.Maze;
-import labyrinth.maze.MazePosition;
 import labyrinth.utils.Vector2D;
 import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
@@ -19,10 +15,6 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class LabyrinthModel extends Repast3Launcher {
     private Vector2D mazeSize = new Vector2D(20, 20);

@@ -32,13 +32,6 @@ public class Maze {
         return hasWallAt(newPos.x, newPos.y);
     }
 
-    public void foreachWall(BiConsumer<Integer, Integer> consumer) {
-        size.foreachForwardRange((i, j) -> {
-            if (hasWallAt(i, j)) {
-                consumer.accept(i, j);
-            }
-        });
-    }
 
     public void foreachWall(Consumer<Vector2D> consumer) {
         size.foreachForwardRange((i, j) -> {
