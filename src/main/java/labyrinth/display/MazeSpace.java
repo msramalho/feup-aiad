@@ -54,8 +54,10 @@ public class MazeSpace {
                 cells.add(wall);
             });
 
-            MazeObject start = new MazeObject(() -> maze.startPos, g -> g.drawRoundRect(START_COLOR));
-            cells.add(start);
+            for (Vector2D startPos: maze.getStartPositions()) {
+                MazeObject start = new MazeObject(() -> startPos, g -> g.drawRoundRect(START_COLOR));
+                cells.add(start);
+            }
 
             MazeObject end = new MazeObject(() -> maze.endPos, g -> g.drawRoundRect(END_COLOR));
             cells.add(end);

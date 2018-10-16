@@ -80,7 +80,7 @@ public class LabyrinthModel extends Repast3Launcher {
         registerDisplaySurface("Labyrinth Model", displaySurf);
 
         // maze
-        Maze maze = new MazeFactory(mazeSize).buildMaze();
+        Maze maze = new MazeFactory(mazeSize).buildRecursiveMaze();
 
         // agents
         AgentBuilder builder = new AgentBuilder(mainContainer, maze);

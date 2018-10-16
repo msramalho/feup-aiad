@@ -2,22 +2,23 @@ package labyrinth.maze;
 
 import labyrinth.utils.Vector2D;
 
-import java.util.function.BiConsumer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class Maze {
 
     public final Vector2D size;
-    public final Vector2D startPos;
     public final Vector2D endPos;
 
+    private final List<Vector2D> startPositions;
     private final boolean[][] mazeWalls;
 
 
-    public Maze(boolean[][] mazeWalls, Vector2D size, Vector2D startPos, Vector2D endPos) {
+    public Maze(boolean[][] mazeWalls, Vector2D size, List<Vector2D> startPositions, Vector2D endPos) {
         this.mazeWalls = mazeWalls;
         this.size = size;
-        this.startPos = startPos;
+        this.startPositions = startPositions;
         this.endPos = endPos;
     }
 
@@ -41,4 +42,7 @@ public class Maze {
         });
     }
 
+    public List<Vector2D> getStartPositions() {
+        return new ArrayList<>(startPositions);
+    }
 }

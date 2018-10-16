@@ -12,7 +12,7 @@ public class MazeFactory {
         this.mazeSize = mazeSize;
     }
 
-    public Maze buildMaze() {
+    public Maze buildRecursiveMaze() {
 
         Vector2D innerWallsSize = mazeSize.translate(-2, -2);
         boolean[][] innerWalls = new RecursiveBacktracking(innerWallsSize)
@@ -32,6 +32,7 @@ public class MazeFactory {
      * @return
      */
     private Maze addMazePositions(boolean[][] newWalls, Vector2D mazeSize) {
+        MazeBuilder builder = new MazeBuilder(newWalls, mazeSize);
         Vector2D startPos = DEFAULT_POS;
 
         for (int j = mazeSize.y - 1; j >= 0; j--) {
@@ -54,10 +55,13 @@ public class MazeFactory {
         }
 
         if (startPos.equals(DEFAULT_POS) || endPos.equals(DEFAULT_POS) || startPos.equals(endPos)) {
-            throw new IllegalArgumentException("Maze was build incorrectly, no starting or ending spots available");
+            throw new IllegalArgumentException("Maze was built incorrectly, no starting or ending spots available");
         }
 
-        return new Maze(newWalls, mazeSize, startPos, endPos);
+        builder.addStartPos(startPos);
+        builder.setEndPos(endPos);
+
+        return builder.buildMaze();
     }
 
     /**

@@ -24,16 +24,21 @@ public class AgentBuilder {
     private final List<Runnable> agentTickRunners = new ArrayList<>();
     private final ContainerController mainContainer;
     private final Maze maze;
+    private final List<Vector2D> startPositions;
     private int agentCounter = 0;
 
     public AgentBuilder(ContainerController mainContainer, Maze maze) {
 
         this.mainContainer = mainContainer;
         this.maze = maze;
+        this.startPositions = maze.getStartPositions();
     }
 
     private void addAgent(Color agentColor, BiFunction<MazePosition, MazeKnowledge, AwareAgent> agentBuilder) throws StaleProxyException {
-        MazePosition mazePosition = new MazePosition(maze.startPos, maze);
+        final int startIndex = agentCounter % startPositions.size();
+        Vector2D startPos = startPositions.get(startIndex);
+
+        MazePosition mazePosition = new MazePosition(startPos, maze);
         MazeKnowledge knowledge =  new MazeKnowledge(maze);
         AwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
 
