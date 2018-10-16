@@ -23,17 +23,18 @@ public class ForwardAgent extends AwareAgent {
             return;
         }
 
-        ArrayList<Directions> directions = mazePosition.getAvailableDirections(false);
+        ArrayList<Directions> directions = mazePosition.getAvailableDirections(true);
 
         if (lastDirection != null && directions.size() == 2 && directions.contains(lastDirection)) {
             mazePosition.move(lastDirection);
         } else if (directions.size() >= 2) {
-            directions.forEach(direction -> {
+            for (Directions direction : directions) {
                 if (direction != Directions.getOpposite(lastDirection)) {
                     mazePosition.move(direction);
                     lastDirection = direction;
+                    return;
                 }
-            });
+            }
         } else {
             mazePosition.move(directions.get(0));
             lastDirection = directions.get(0);
