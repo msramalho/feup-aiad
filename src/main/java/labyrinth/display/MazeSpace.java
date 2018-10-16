@@ -1,6 +1,7 @@
 package labyrinth.display;
 
 import labyrinth.maze.Maze;
+import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
 import uchicago.src.sim.gui.DisplaySurface;
 import uchicago.src.sim.gui.Object2DDisplay;
@@ -25,7 +26,7 @@ public class MazeSpace {
 
     }
 
-    public void addDisplayables(Maze maze, List<Supplier<Vector2D>> agentSuppliers, DisplaySurface displaySurf) {
+    public void addDisplayables(Maze maze, List<Pair<Color, Supplier<Vector2D>>> agentSuppliers, DisplaySurface displaySurf) {
         Object2DDisplay mazeCells = buildMazeGraphics(maze);
         displaySurf.addDisplayable(mazeCells, "Maze Cells");
 
@@ -61,11 +62,11 @@ public class MazeSpace {
         });
     }
 
-    private Object2DDisplay buildAgentGraphics(Maze maze, List<Supplier<Vector2D>> agentSuppliers) {
+    private Object2DDisplay buildAgentGraphics(Maze maze, List<Pair<Color, Supplier<Vector2D>>> agentSuppliers) {
 
         return buildGraphics(maze, cells -> {
-            for (Supplier<Vector2D> supplier : agentSuppliers) {
-                MazeObject agent = new MazeObject(supplier, g -> g.drawRoundRect(Color.RED));
+            for (Pair<Color, Supplier<Vector2D>> pair: agentSuppliers) {
+                MazeObject agent = new MazeObject(pair.r, g -> g.drawRoundRect(pair.l));
                 cells.add(agent);
             }
         });

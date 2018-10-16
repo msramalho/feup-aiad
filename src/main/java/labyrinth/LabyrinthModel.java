@@ -90,28 +90,19 @@ public class LabyrinthModel extends Repast3Launcher {
         // maze
         Maze maze = new MazeFactory(mazeSize).buildMaze();
 
-        List<Supplier<Vector2D>> agentPositions = new ArrayList<>();
         // agents
-        MazePosition mazePosition1 = new MazePosition(maze.startPos, maze);
-        agentPositions.add(mazePosition1::getPosition);
-        AwareAgent agent = new ForwardAgent(mazePosition1, maze);
-        mainContainer.acceptNewAgent("dumb agent", agent).start();
-
-        MazePosition mazePosition2 = new MazePosition(maze.startPos, maze);
-        agentPositions.add(mazePosition2::getPosition);
-        AwareAgent agent2 = new BacktrackAgent(mazePosition2, maze);
-        mainContainer.acceptNewAgent("backtrack agent", agent2).start();
-
+        AgentBuilder builder = new AgentBuilder(mainContainer, maze);
+        builder.addBacktrackAgent()
+                .addForwardAgent();
 
         // graphics
-        new MazeSpace().addDisplayables(maze, agentPositions, displaySurf);
+        new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
         displaySurf.display();
 
         // clock ticks
-        ClockPublisher clockPublisher = new ClockPublisher();
-        clockPublisher.subscribe(agent::tick);
-        clockPublisher.subscribe(agent2::tick);
-        clockPublisher.subscribe(displaySurf::updateDisplay);
+        ClockPublisher clockPublisher = new ClockPublisher()
+                .subscribe(builder.buildAgentTickRunners())
+                .subscribe(displaySurf::updateDisplay);
         getSchedule().scheduleActionAtInterval(actionRefreshRate, clockPublisher);
     }
 

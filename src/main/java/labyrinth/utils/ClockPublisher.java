@@ -16,7 +16,13 @@ public class ClockPublisher extends BasicAction {
         }
     }
 
-    public void subscribe(Runnable runner) {
+    public ClockPublisher subscribe(Runnable runner) {
         runners.add(runner);
+        return this;
+    }
+
+    public ClockPublisher subscribe(List<Runnable> runners) {
+        this.runners.addAll(runners);
+        return this;
     }
 }
