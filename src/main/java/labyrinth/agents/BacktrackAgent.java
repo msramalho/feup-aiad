@@ -1,11 +1,10 @@
 package labyrinth.agents;
 
 import labyrinth.maze.Directions;
-import labyrinth.maze.Maze;
+import labyrinth.maze.MazeKnowledge;
 import labyrinth.maze.MazePosition;
 import labyrinth.utils.Vector2D;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
@@ -15,7 +14,7 @@ public class BacktrackAgent extends AwareAgent {
     protected HashSet<Vector2D> seen = new HashSet<>();
     protected Stack<Directions> backtrackStack = new Stack<>();
 
-    public BacktrackAgent(MazePosition position, Maze maze) { super(position, maze); }
+    public BacktrackAgent(MazePosition position, MazeKnowledge knowledge) { super(position, knowledge); }
 
     @Override
     public void tick() {

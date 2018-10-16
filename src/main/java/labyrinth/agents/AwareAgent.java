@@ -2,14 +2,11 @@ package labyrinth.agents;
 
 import jade.lang.acl.ACLMessage;
 import labyrinth.maze.Directions;
-import labyrinth.maze.Maze;
 import labyrinth.maze.MazeKnowledge;
 import labyrinth.maze.MazePosition;
 import labyrinth.utils.Vector2D;
 import sajas.core.Agent;
 import sajas.core.behaviours.CyclicBehaviour;
-
-import java.awt.*;
 
 
 /**
@@ -21,9 +18,9 @@ public abstract class AwareAgent extends Agent {
     MazePosition mazePosition;
     MazeKnowledge knowledge;
 
-    AwareAgent(MazePosition mazePosition, Maze maze) {
+    AwareAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
         this.mazePosition = mazePosition;
-        knowledge = new MazeKnowledge(maze);
+        this.knowledge = knowledge;
     }
 
     @Override

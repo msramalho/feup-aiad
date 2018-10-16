@@ -2,14 +2,15 @@ package labyrinth.agents;
 
 import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
+import labyrinth.maze.MazeKnowledge;
 import labyrinth.maze.MazePosition;
 
 import java.awt.*;
 
 public class RandomAgent extends AwareAgent {
 
-    public RandomAgent(MazePosition position, Maze maze) {
-        super(position, maze);
+    public RandomAgent(MazePosition position, MazeKnowledge knowledge) {
+        super(position, knowledge);
     }
 
     @Override

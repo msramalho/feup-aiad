@@ -2,6 +2,7 @@ package labyrinth.agents;
 
 import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
+import labyrinth.maze.MazeKnowledge;
 import labyrinth.maze.MazePosition;
 
 import java.awt.*;
@@ -14,8 +15,8 @@ public class ForwardAgent extends AwareAgent {
 
     private Directions lastDirection;
 
-    public ForwardAgent(MazePosition position, Maze maze) {
-        super(position, maze);
+    public ForwardAgent(MazePosition position, MazeKnowledge knowledge) {
+        super(position, knowledge);
     }
 
     @Override
