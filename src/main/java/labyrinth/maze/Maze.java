@@ -23,7 +23,7 @@ public class Maze {
     }
 
     public boolean hasWallAt(int x, int y) {
-        if (x < 0 || y < 0) {
+        if (x < 0 || y < 0 || x >= size.x || y >= size.y) {
             return true; // maybe throw exception
         }
         return mazeWalls[x][y];

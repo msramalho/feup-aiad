@@ -1,6 +1,7 @@
 package labyrinth.utils;
 
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * 2D point or vector.
@@ -35,9 +36,13 @@ public class Vector2D {
         }
     }
 
-    public boolean isInsideGrid(Vector2D gridSize) {
-        return x >= 0 && x < gridSize.x &&
-                y >= 0 && y < gridSize.y;
+    public Segment toSegment(Vector2D other) {
+        return new Segment(this, other);
+    }
+
+    public boolean isInsideBounds(Vector2D bounds) {
+        return x >= 0 && x < bounds.x &&
+                y >= 0 && y < bounds.y;
     }
 
     public Vector2D translate(Vector2D vec) {

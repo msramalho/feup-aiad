@@ -85,7 +85,8 @@ public class LabyrinthModel extends Repast3Launcher {
         // agents
         AgentBuilder builder = new AgentBuilder(mainContainer, maze);
         builder.addBacktrackAgent()
-                .addForwardAgent();
+                .addForwardAgent()
+                .addRandomAgent();
 
         // graphics
         new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);

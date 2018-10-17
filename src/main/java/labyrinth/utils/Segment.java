@@ -1,8 +1,7 @@
 package labyrinth.utils;
 
-import labyrinth.maze.Maze;
-
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class Segment {
     public final Vector2D start;
@@ -27,14 +26,29 @@ public class Segment {
         return new Segment(start.multiply(factor), end.multiply(factor));
     }
 
-    public void walkSegmentInclusive(Consumer<Vector2D> consumer) {
+    /**
+     * Walks the segment. Can be stopped by the caller's lambda.
+     *
+     * @param func
+     * @return true when the walk is fully consumed, false when interrupted by user
+     */
+    public boolean walkSegmentInclusive(Function<Vector2D, Boolean> func) {
         Vector2D direction = getUnitaryDirection();
 
         for (Vector2D p = start; !p.equals(end); p = p.translate(direction)) {
-            consumer.accept(p);
+            if (!func.apply(p)) {
+                return false;
+            }
         }
 
-        consumer.accept(end);
+        return func.apply(end);
+    }
+
+    public void walkSegmentInclusive(Consumer<Vector2D> consumer) {
+        walkSegmentInclusive((p) -> {
+            consumer.accept(p);
+            return true;
+        });
     }
 
     public boolean isHorizontal() {
@@ -49,5 +63,9 @@ public class Segment {
     public Vector2D getUnitaryDirection() {
         return end.subtract(start)
                 .divide(getLength());
+    }
+
+    public static boolean walkSegment(Vector2D start, Vector2D end, Function<Vector2D, Boolean> func) {
+        return new Segment(start, end).walkSegmentInclusive(func);
     }
 }

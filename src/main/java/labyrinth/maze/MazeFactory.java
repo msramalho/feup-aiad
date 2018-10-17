@@ -3,7 +3,6 @@ package labyrinth.maze;
 
 import labyrinth.maze.generators.RecursiveBacktracking;
 import labyrinth.utils.Vector2D;
-import labyrinth.maze.generators.RandomGenerator;
 
 public class MazeFactory {
     private Vector2D mazeSize;
@@ -27,39 +26,35 @@ public class MazeFactory {
     /**
      * Builds the maze and adds a starting and ending position at opposite ends
      *
-     * @param newWalls
+     * @param walls
      * @param mazeSize
      * @return
      */
-    private Maze addMazePositions(boolean[][] newWalls, Vector2D mazeSize) {
-        MazeBuilder builder = new MazeBuilder(newWalls, mazeSize);
-        Vector2D startPos = DEFAULT_POS;
+    private Maze addMazePositions(boolean[][] walls, Vector2D mazeSize) {
+        MazeBuilder builder = new MazeBuilder(walls, mazeSize);
 
-        for (int j = mazeSize.y - 1; j >= 0; j--) {
-            for (int i = 0; i < mazeSize.x; i++) {
-                if (!newWalls[i][j]) {
-                    startPos = new Vector2D(i, j);
-                    break;
-                }
-            }
+        Vector2D corners[] = new Vector2D[]{
+                new Vector2D(0,0),
+                new Vector2D(mazeSize.x - 1, 0),
+                new Vector2D(0, mazeSize.y - 1),
+                mazeSize.translate(-1, -1)
+        };
+        for (Vector2D corner: corners) {
+            builder.walkSpacesAroundPoint(corner, (pos) -> {
+                builder.addStartPos(pos);
+                return false;
+            });
         }
 
-        Vector2D endPos = DEFAULT_POS;
-        for (int j = 0; j < mazeSize.y; j++) {
-            for (int i = mazeSize.x - 1; i >= 0; i--) {
-                if (!newWalls[i][j]) {
-                    endPos = new Vector2D(i, j);
-                    break;
-                }
-            }
+        if (builder.getNumPositions() == 0) {
+            throw new IllegalArgumentException("Bad maze generation");
         }
 
-        if (startPos.equals(DEFAULT_POS) || endPos.equals(DEFAULT_POS) || startPos.equals(endPos)) {
-            throw new IllegalArgumentException("Maze was built incorrectly, no starting or ending spots available");
-        }
-
-        builder.addStartPos(startPos);
-        builder.setEndPos(endPos);
+        Vector2D middlePoint = new Vector2D(mazeSize.x / 2, mazeSize.y / 2);
+        builder.walkSpacesAroundPoint(middlePoint, (pos) -> {
+            builder.setEndPos(pos);
+            return false;
+        });
 
         return builder.buildMaze();
     }

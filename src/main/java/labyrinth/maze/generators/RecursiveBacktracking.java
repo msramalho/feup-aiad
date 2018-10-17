@@ -24,7 +24,7 @@ public class RecursiveBacktracking implements IGenerator {
     }
 
     private boolean recursive(Vector2D pos) {
-        if (! pos.isInsideGrid(pathSize) || visitedCells[pos.x][pos.y]) {
+        if (! pos.isInsideBounds(pathSize) || visitedCells[pos.x][pos.y]) {
             return false;
         }
 

@@ -61,7 +61,7 @@ public class AgentBuilder {
     }
 
     public AgentBuilder addRandomAgent() throws StaleProxyException {
-        addAgent(Color.blue, (mazePos, knowledge) -> new RandomAgent(mazePos, knowledge));
+        addAgent(Color.cyan, (mazePos, knowledge) -> new RandomAgent(mazePos, knowledge));
 
         return this;
     }
