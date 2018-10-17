@@ -90,4 +90,53 @@ public class MazeBuilder {
 
         return true;
     }
+
+    public MazeBuilder addMazePositionsWith4Corners() {
+        Vector2D corners[] = new Vector2D[]{
+                new Vector2D(0,0),
+                new Vector2D(size.x - 1, 0),
+                new Vector2D(0, size.y - 1),
+                size.translate(-1, -1)
+        };
+        for (Vector2D corner: corners) {
+            walkSpacesAroundPoint(corner, (pos) -> {
+                addStartPos(pos);
+                return false;
+            });
+        }
+
+        if (getNumPositions() == 0) {
+            throw new IllegalArgumentException("Bad maze generation");
+        }
+
+        Vector2D middlePoint = new Vector2D(size.x / 2, size.y / 2);
+        walkSpacesAroundPoint(middlePoint, (pos) -> {
+            setEndPos(pos);
+            return false;
+        });
+
+        return this;
+    }
+
+    public MazeBuilder addWrappingWalls() {
+        Vector2D newSize = size.translate(2, 2);
+        boolean[][] newWalls = new boolean[newSize.x][newSize.y];
+
+        for (int i = 0; i < newSize.x; i++) {
+            newWalls[i][0] = true;
+            newWalls[i][newSize.y - 1] = true;
+        }
+
+        for (int j = 0; j < newSize.y; j++) {
+            newWalls[0][j] = true;
+            newWalls[newSize.x - 1][j] = true;
+        }
+
+        size.foreachForwardRange((i, j) -> newWalls[i + 1][j + 1] = walls[i][j]);
+
+        walls = newWalls;
+        size = newSize;
+
+        return this;
+    }
 }
