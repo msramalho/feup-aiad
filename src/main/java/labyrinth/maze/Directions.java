@@ -1,5 +1,6 @@
 package labyrinth.maze;
 
+import labyrinth.utils.RandomSingleton;
 import labyrinth.utils.Vector2D;
 
 import java.util.*;
@@ -18,9 +19,13 @@ public enum Directions {
 
     public static final List<Directions> directions = Arrays.asList(Directions.values());
 
+    /**
+     * Randomness defined by RandomSingleton
+     * @return
+     */
     public static List<Directions> getRandomDirections() {
         List<Directions> directionsCopy = new ArrayList<>(directions);
-        Collections.shuffle(directionsCopy);
+        Collections.shuffle(directionsCopy, RandomSingleton.instance());
         return directionsCopy;
     }
 

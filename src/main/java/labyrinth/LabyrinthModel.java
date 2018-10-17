@@ -6,6 +6,7 @@ import labyrinth.display.MazeSpace;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import labyrinth.maze.Maze;
+import labyrinth.utils.RandomSingleton;
 import labyrinth.utils.Vector2D;
 import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
@@ -18,7 +19,8 @@ import java.io.IOException;
 
 public class LabyrinthModel extends Repast3Launcher {
     private Vector2D mazeSize = new Vector2D(20, 20);
-    private int actionRefreshRate = 1; // lower is faster
+    private int actionSlownessRate = 1; // lower is faster
+    private long seed = 1;
 
     public LabyrinthModel() {
         super();
@@ -45,17 +47,27 @@ public class LabyrinthModel extends Repast3Launcher {
         this.mazeSize = new Vector2D(length, mazeSize.y);
     }
 
-    public int getRefreshRate() {
-        return actionRefreshRate;
+    public int getSlownessRate() {
+        return actionSlownessRate;
     }
 
-    public void setRefreshRate(int clocks) {
-        this.actionRefreshRate = clocks;
+    public void setSlownessRate(int clocks) {
+        this.actionSlownessRate = clocks;
     }
+
+    public long getSeed() {
+        return this.seed;
+    }
+
+    public void setSeed(long seed) {
+        this.seed = seed;
+    }
+
+
 
     @Override
     public String[] getInitParam() {
-        return new String[]{"MazeHeight", "MazeLength", "RefreshRate"};
+        return new String[]{"MazeHeight", "MazeLength", "SlownessRate", "Seed"};
     }
 
     /**
@@ -75,6 +87,8 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
     private void build(ContainerController mainContainer) throws StaleProxyException, IOException {
+
+        RandomSingleton.setSeed(seed);
 
         DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
         registerDisplaySurface("Labyrinth Model", displaySurf);
@@ -96,7 +110,7 @@ public class LabyrinthModel extends Repast3Launcher {
         ClockPublisher clockPublisher = new ClockPublisher()
                 .subscribe(builder.buildAgentTickRunners())
                 .subscribe(displaySurf::updateDisplay);
-        getSchedule().scheduleActionAtInterval(actionRefreshRate, clockPublisher);
+        getSchedule().scheduleActionAtInterval(actionSlownessRate, clockPublisher);
     }
 
     public static void main(String[] args) {
