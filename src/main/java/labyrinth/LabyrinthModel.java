@@ -12,18 +12,22 @@ import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
+import serviceConsumerProviderVis.Repast3ServiceConsumerProviderLauncher;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
 
 public class LabyrinthModel extends Repast3Launcher {
+    private static final boolean BATCH_MODE = true;
     private Vector2D mazeSize = new Vector2D(20, 20);
     private int actionSlownessRate = 1; // lower is faster
     private long seed = 1;
+    private boolean batchMode;
 
-    public LabyrinthModel() {
+    public LabyrinthModel(boolean batchMode) {
         super();
+        this.batchMode = batchMode;
     }
 
     @Override
@@ -64,7 +68,6 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
 
-
     @Override
     public String[] getInitParam() {
         return new String[]{"MazeHeight", "MazeLength", "SlownessRate", "Seed"};
@@ -86,12 +89,17 @@ public class LabyrinthModel extends Repast3Launcher {
         }
     }
 
+    @Override
+    public void begin() {
+        super.begin();
+        if(!batchMode) {
+            //buildAndScheduleDisplay();
+        }
+    }
+
     private void build(ContainerController mainContainer) throws StaleProxyException, IOException {
 
         RandomSingleton.setSeed(seed);
-
-        DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
-        registerDisplaySurface("Labyrinth Model", displaySurf);
 
         // maze
         Maze maze = new MazeFactory(mazeSize).buildRecursiveMaze();
@@ -102,20 +110,30 @@ public class LabyrinthModel extends Repast3Launcher {
                 .addForwardAgent()
                 .addRandomAgent();
 
-        // graphics
-        new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
-        displaySurf.display();
-
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
-                .subscribe(builder.buildAgentTickRunners())
-                .subscribe(displaySurf::updateDisplay);
+                .subscribe(builder.buildAgentTickRunners());
+
+        // graphics
+        if(!batchMode) {
+            DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
+            registerDisplaySurface("Labyrinth Model", displaySurf);
+
+            new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
+            displaySurf.display();
+            clockPublisher.subscribe(displaySurf::updateDisplay);
+        }
+
         getSchedule().scheduleActionAtInterval(actionSlownessRate, clockPublisher);
     }
 
     public static void main(String[] args) {
+        boolean runMode = !BATCH_MODE;   // BATCH_MODE or !BATCH_MODE
+
         SimInit init = new SimInit();
-        LabyrinthModel model = new LabyrinthModel();
-        init.loadModel(model, null, false);
+        init.setNumRuns(1);   // works only in batch mode
+        LabyrinthModel model = new LabyrinthModel(runMode);
+        init.loadModel(model, null, runMode);
+
     }
 }
