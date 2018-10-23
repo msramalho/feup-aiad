@@ -12,8 +12,6 @@ import labyrinth.utils.Vector2D;
 import sajas.core.AID;
 import sajas.core.Agent;
 import sajas.core.behaviours.*;
-import serviceConsumerProviderVis.onto.ServiceOntology;
-import sun.nio.cs.ext.MS874;
 import uchicago.src.sim.engine.Schedule;
 
 import java.io.IOException;
