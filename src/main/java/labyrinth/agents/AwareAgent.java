@@ -41,17 +41,8 @@ public abstract class AwareAgent extends Agent {
     protected void setup() {
         super.setup();
 
-        // register language and ontology
-        codec = new SLCodec();
-        serviceOntology = ServiceOntology.getInstance();
-        getContentManager().registerLanguage(codec);
-        getContentManager().registerOntology(serviceOntology);
-
         // prepare cfp message
         mACLMessage = new ACLMessage(ACLMessage.CFP);
-        mACLMessage.setLanguage(codec.getName());
-        mACLMessage.setOntology(serviceOntology.getName());
-        mACLMessage.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
 
         addBehaviour(new MessageBehaviour(this, null));
     }
@@ -77,6 +68,8 @@ public abstract class AwareAgent extends Agent {
                     mACLMessage.setContentObject(((AwareAgent) myAgent).request);
                     if(neighborhoodAID != null)
                         mACLMessage.addReceiver(neighborhoodAID);
+                    else
+                        mACLMessage.addReceiver(new AID("agent #2", AID.ISLOCALNAME));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -106,9 +99,9 @@ public abstract class AwareAgent extends Agent {
                             e.printStackTrace();
                         }
                         myAgent.send(reply);
+                        step++;
                     } else System.out.println("RESET MACHINE!!");
 
-                    step++;
                     break;
                 case 1:
                     System.out.println("1");
@@ -142,7 +135,10 @@ public abstract class AwareAgent extends Agent {
                         System.out.println("Accepted!");
                     } else if(msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
                         System.out.println("Rejected!");
-                    } else System.out.println("RESET MACHINE!!");
+                    } else{
+                        System.out.println("RESET MACHINE!!");
+                        return;
+                    }
 
                     step++;
                     break;
