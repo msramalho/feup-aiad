@@ -18,7 +18,7 @@ import uchicago.src.sim.gui.DisplaySurface;
 import java.io.IOException;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final boolean BATCH_MODE = true;
+    private static final boolean BATCH_MODE = false;
     private Vector2D mazeSize = new Vector2D(20, 20);
     private int actionSlownessRate = 1; // lower is faster
     private long seed = 1;
@@ -127,12 +127,10 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
     public static void main(String[] args) {
-        boolean runMode = !BATCH_MODE;   // BATCH_MODE or !BATCH_MODE
-
         SimInit init = new SimInit();
         init.setNumRuns(1);   // works only in batch mode
-        LabyrinthModel model = new LabyrinthModel(runMode);
-        init.loadModel(model, null, runMode);
+        LabyrinthModel model = new LabyrinthModel(BATCH_MODE);
+        init.loadModel(model, null, BATCH_MODE);
 
     }
 }
