@@ -12,7 +12,6 @@ import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
-import serviceConsumerProviderVis.Repast3ServiceConsumerProviderLauncher;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
