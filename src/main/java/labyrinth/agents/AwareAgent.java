@@ -2,19 +2,14 @@ package labyrinth.agents;
 
 import jade.content.lang.sl.SLCodec;
 import jade.content.onto.Ontology;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.UnreadableException;
+import labyrinth.agents.behaviours.MessageBehaviour;
 import labyrinth.maze.Directions;
 import labyrinth.agents.maze.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Vector2D;
-import sajas.core.AID;
 import sajas.core.Agent;
-import sajas.core.behaviours.*;
 import uchicago.src.sim.engine.Schedule;
-
-import java.io.IOException;
 
 
 /**
@@ -44,112 +39,15 @@ public abstract class AwareAgent extends Agent {
         // prepare cfp message
         mACLMessage = new ACLMessage(ACLMessage.CFP);
 
-        addBehaviour(new MessageBehaviour(this, null));
+        addBehaviour(new MessageBehaviour(this, null, mACLMessage));
     }
 
 
-    //TODO: not sure if this is worth isolating in another file (possibly not, as there may be more behaviours)
-    class MessageBehaviour extends Behaviour {
-        private static final long serialVersionUID = 1L;
-
-        int step = 0;
-        private AID neighborhoodAID;
-
-        MessageBehaviour(Agent myAgent, AID neighborhoodAID) {
-            super(myAgent);
-            this.neighborhoodAID = neighborhoodAID;
-        }
-
-        @Override
-        public void action() {
-            ACLMessage msg = myAgent.receive();
-            if(msg == null && step == 0){
-                try {
-                    mACLMessage.setContentObject(((AwareAgent) myAgent).request);
-                    if(neighborhoodAID != null)
-                        mACLMessage.addReceiver(neighborhoodAID);
-                    else
-                        mACLMessage.addReceiver(new AID("agent #2", AID.ISLOCALNAME));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                send(mACLMessage);
-                return;
-            } else if (msg == null) {
-                block();
-                return;
-            }
-
-            //TODO: isolate to another function, state machine function
-            switch(step) {
-                case 0:
-                    System.out.println("0");
-                    if (msg.getPerformative() == ACLMessage.CFP) {
-                        try {
-                            String helloString = (String) msg.getContentObject();
-                            System.out.println(helloString);
-                        } catch (UnreadableException e) {
-                            e.printStackTrace();
-                        }
-                        ACLMessage reply = msg.createReply();
-                        reply.setPerformative(ACLMessage.PROPOSE);
-                        try {
-                            reply.setContentObject("Tudo bem?");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        myAgent.send(reply);
-                        step++;
-                    } else System.out.println("RESET MACHINE!!");
-
-                    break;
-                case 1:
-                    System.out.println("1");
-                    if (msg.getPerformative() == ACLMessage.PROPOSE) {
-                        try {
-                            String replyContent = (String) msg.getContentObject();
-                            if (replyContent.equals("Tudo bem?")) {
-                                ACLMessage accept = msg.createReply();
-                                accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                                accept.setContent("Sim, tudo!");
-                                send(accept);
-                            } else {
-                                ACLMessage reject = msg.createReply();
-                                reject.setPerformative(ACLMessage.REJECT_PROPOSAL);
-                                reject.setContent("Não!");
-                                send(reject);
-                            }
-                        } catch (UnreadableException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        System.out.println("RESET MACHINE!!");
-                        return;
-                    }
-
-                    step++;
-                    break;
-                case 2:
-                    System.out.println("2");
-                    if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
-                        System.out.println("Accepted!");
-                    } else if(msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
-                        System.out.println("Rejected!");
-                    } else{
-                        System.out.println("RESET MACHINE!!");
-                        return;
-                    }
-
-                    step++;
-                    break;
-            }
-        }
-
-        @Override
-        public boolean done() {
-            return step == 3;
-        }
-    }
+    /**
+     * Handle receiving calls for proposals
+     * @param msg the msg that contains the CFP
+     */
+    protected void handleCFP(ACLMessage msg){ }
 
     /**
      * Calculate the result of moving from current pos in dir direction
