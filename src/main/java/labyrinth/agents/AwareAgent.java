@@ -20,13 +20,13 @@ import uchicago.src.sim.engine.Schedule;
  */
 public abstract class AwareAgent extends Agent {
     MazePosition position;
-    MazeKnowledge knowledge;
+    private MazeKnowledge knowledge;
 
-    private SLCodec codec;
-    private Ontology serviceOntology;
+    // private SLCodec codec;
+    // private Ontology serviceOntology;
+    // private String request = "HELLO WORLD";
     private ACLMessage mACLMessage;
     private Schedule sch;
-    private String request = "HELLO WORLD";
 
     AwareAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
         setAID(new AID("AwareAgent", isGUID));
