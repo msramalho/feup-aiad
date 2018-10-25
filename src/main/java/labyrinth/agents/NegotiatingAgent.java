@@ -11,11 +11,6 @@ public class NegotiatingAgent extends AwareAgent {
         super(position, knowledge, isGUID);
     }
 
-    @Override
-    protected void handleCFP(ACLMessage msg) {
-        String content = msg.getContent();
-        // msg.getContentObject();
-    }
 
     @Override
     public void tick() {
