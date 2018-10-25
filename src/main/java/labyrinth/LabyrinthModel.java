@@ -111,9 +111,9 @@ public class LabyrinthModel extends Repast3Launcher {
 
         // agents
         builder = new AgentBuilder(mainContainer, maze);
-        builder.addBacktrackAgent(true)
-                .addForwardAgent(true)
-                .addRandomAgent(true);
+        builder.addBacktrackAgent()
+                .addForwardAgent()
+                .addRandomAgent();
 
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
