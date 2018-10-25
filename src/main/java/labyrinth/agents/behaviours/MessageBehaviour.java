@@ -1,11 +1,12 @@
 package labyrinth.agents.behaviours;
 
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 import labyrinth.agents.AwareAgent;
-import labyrinth.utils.ACLMessageC;
 import sajas.core.behaviours.Behaviour;
 
 
-enum STATE {WAITING_CFP, WAITING_PROPOSAL, WAITING_ANSWER, DONE}
+enum STATE {WAITING_CFP, WAITING_PROPOSAL, WAITING_ANSWER, WAITING_INFO, DONE}
 
 public class MessageBehaviour extends Behaviour {
     private static final long serialVersionUID = 1L;
@@ -14,6 +15,7 @@ public class MessageBehaviour extends Behaviour {
     private STATE step = STATE.WAITING_CFP;
     private AwareAgent myAgent;
     private long timeOfCFP;
+    boolean sentMessage = false;
 
     public MessageBehaviour(AwareAgent myAgent) {
         super(myAgent);
@@ -22,81 +24,71 @@ public class MessageBehaviour extends Behaviour {
 
     @Override
     public void action() {
-        ACLMessageC msg = (ACLMessageC) myAgent.receive();
+        ACLMessage msg = myAgent.receive();
+        // ACLMessage msg = new ACLMessage(myAgent.receive());
         if (msg == null && step == STATE.WAITING_CFP) {
-            timeOfCFP = myAgent.sendTimestamp(myAgent.createCFP());
+            timeOfCFP = myAgent.sendTimestamp(myAgent.createCFP(), true);
+            step = STATE.WAITING_PROPOSAL;
+            sentMessage = true;
             return;
         } else if (msg == null) {
             block();
             return;
         }
+        if (msg.getSender().getName().equals(myAgent.getAID().getName())) {
+            myAgent.print("Will ignore own message");
+            return;
+        }
 
-        myAgent.print(msg.getContentObject().toString() + " from " + msg.getSender().getName());
+        try {
+            myAgent.print(msg.getContentObject().toString() + " from " + msg.getSender().getName() + " at " + msg.getPostTimeStamp());
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+
+
+
+
         //TODO: isolate to another function, state machine function
         switch (step) {
             case WAITING_CFP:
-                if (msg.getPerformative() == ACLMessageC.CFP) {
+                if (msg.getPerformative() == ACLMessage.CFP) {
                     // If I sent my CFP after the other agent, it will ignore my CFP, and I will answer its
-                    if (timeOfCFP > msg.getPostTimeStamp() ||
-                            (timeOfCFP == msg.getPostTimeStamp() && 0 < myAgent.getName().compareTo(msg.getSender().getName()))) {
+                    if (!sentMessage || 0 > myAgent.getAID().getName().compareTo(msg.getSender().getName())) {
                         myAgent.print("I was not the one to send CFP first");
-                        myAgent.sendTimestamp(myAgent.handleCFP(msg));
+                        myAgent.sendTimestamp(myAgent.handleCFP(msg), false);
                     } else myAgent.print("I was the first to send CFP");
 
                     step = STATE.WAITING_PROPOSAL;
-                    // try {
-                    //     String helloString = (String) msg.getContentObject();
-                    //     myAgent.print(helloString);
-                    // } catch (UnreadableException e) {
-                    //     e.printStackTrace();
-                    // }
-                    // ACLMessage reply = msg.createReply();
-                    // reply.setPerformative(ACLMessage.PROPOSE);
-                    // try {
-                    //     reply.setContentObject("Tudo bem?");
-                    // } catch (IOException e) {
-                    //     e.printStackTrace();
-                    // }
                 } else myAgent.print("RESET MACHINE 1!!");
-
-                break;
+                //no break on purpose
             case WAITING_PROPOSAL:
-                // myAgent.print("step 1 in message behaviour");
-                if (msg.getPerformative() == ACLMessageC.PROPOSE) {
-                    myAgent.sendTimestamp(myAgent.handleProposal(msg));
-                    // try {
-                    //     String replyContent = (String) msg.getContentObject();
-                    //     if (replyContent.equals("Tudo bem?")) {
-                    //         ACLMessage accept = msg.createReply();
-                    //         accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                    //         accept.setContent("Sim, tudo!");
-                    //         myAgent.sendTimestamp(accept);
-                    //     } else {
-                    //         ACLMessage reject = msg.createReply();
-                    //         reject.setPerformative(ACLMessage.REJECT_PROPOSAL);
-                    //         reject.setContent("Não!");
-                    //         myAgent.sendTimestamp(reject);
-                    //     }
-                    // } catch (UnreadableException e) {
-                    //     e.printStackTrace();
-                    // }
+                if (msg.getPerformative() == ACLMessage.PROPOSE) {
+                    myAgent.sendTimestamp(myAgent.handleProposal(msg), false);
+                    step = STATE.WAITING_INFO;
                 } else {
-                    // myAgent.print("RESET MACHINE 2!!");
+                    step = STATE.WAITING_ANSWER;
                     return;
                 }
-                step = STATE.WAITING_ANSWER;
                 break;
             case WAITING_ANSWER:
-                if (msg.getPerformative() == ACLMessageC.ACCEPT_PROPOSAL) {
-                    myAgent.sendTimestamp(myAgent.acceptedProposal(msg));
+                if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
+                    myAgent.sendTimestamp(myAgent.acceptedProposal(msg), false);
                     myAgent.print("Accepted!");
-                } else if (msg.getPerformative() == ACLMessageC.REJECT_PROPOSAL) {
+                } else if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
                     myAgent.rejectedProposal(msg);
                     myAgent.print("Rejected!");
                 } else return;
 
                 step = STATE.DONE;
                 break;
+            case WAITING_INFO:
+                if (msg.getPerformative() == ACLMessage.AGREE) {
+                    myAgent.print("I received what he promised me!");
+                    step = STATE.DONE;
+                }
+                break;
+
         }
         myAgent.print("In state: " + step.name());
     }
