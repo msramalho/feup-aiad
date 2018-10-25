@@ -1,15 +1,19 @@
 package labyrinth.agents;
 
+import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 import labyrinth.LabyrinthModel;
 import labyrinth.agents.behaviours.MessageBehaviour;
 import labyrinth.maze.Directions;
 import labyrinth.agents.maze.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
-import labyrinth.utils.ACLMessageC;
 import labyrinth.utils.Vector2D;
-import sajas.core.AID;
+import jade.core.AID;
 import sajas.core.Agent;
 import uchicago.src.sim.engine.Schedule;
+
+import java.io.IOException;
+import java.io.Serializable;
 
 
 /**
@@ -18,6 +22,7 @@ import uchicago.src.sim.engine.Schedule;
  * Easily receive and use messages
  */
 public abstract class AwareAgent extends Agent {
+    private final boolean isGUID;
     public MazePosition position;
     private MazeKnowledge knowledge;
 
@@ -29,6 +34,7 @@ public abstract class AwareAgent extends Agent {
 
     AwareAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
         setAID(new AID("AwareAgent", isGUID));
+        this.isGUID = isGUID;
         this.position = position;
         this.knowledge = knowledge;
     }
@@ -52,8 +58,8 @@ public abstract class AwareAgent extends Agent {
      * @return the proposal message
      */
     //TODO: replace by return null, as this is abstract
-    public ACLMessageC createCFP() {
-        return new ACLMessageC(ACLMessageC.CFP, getAID(), "OLÁ, AGENTE, tens algo para mim?!");
+    public ACLMessage createCFP() {
+        return createACLMessage(ACLMessage.CFP, null, "OLA, AGENTE, tens algo para mim?!");
     }
 
     /**
@@ -62,28 +68,28 @@ public abstract class AwareAgent extends Agent {
      * @param msg the msg that contains the CFP
      * @return the response to the CFP
      */
-    public ACLMessageC handleCFP(ACLMessageC msg) {
-        return new ACLMessageC(ACLMessageC.PROPOSE, getAID(), "Dou-te estes, e tu?");
+    public ACLMessage handleCFP(ACLMessage msg) {
+        return createACLMessage(ACLMessage.PROPOSE, msg.getSender(), "Dou-te estes, e tu?");
     }
 
     /**
      * Handle a proposal and return either rejection or acceptance
      *
      * @param msg the incoming proposal
-     * @return ACLMessageC.ACCEPT_PROPOSAL or ACLMessageC.REJECT_PROPOSAL
+     * @return ACLMessage.ACCEPT_PROPOSAL or ACLMessage.REJECT_PROPOSAL
      */
-    public ACLMessageC handleProposal(ACLMessageC msg) {
-        return new ACLMessageC(ACLMessageC.ACCEPT_PROPOSAL, getAID(), "Aceito, aqui tens. Agora manda os que prometeste.");
+    public ACLMessage handleProposal(ACLMessage msg) {
+        return createACLMessage(ACLMessage.ACCEPT_PROPOSAL, msg.getSender(), "Aceito, aqui tens. Agora manda os que prometeste.");
     }
 
     /**
      * Handle accepted calls for proposals, return the response
      *
      * @param msg the msg that contains the CFP
-     * @return an {@link ACLMessageC} with my data
+     * @return an {@link ACLMessage} with my data
      */
-    public ACLMessageC acceptedProposal(ACLMessageC msg) {
-        return new ACLMessageC(ACLMessageC.AGREE, getAID(), "Obrigado, aqui vão os meus");
+    public ACLMessage acceptedProposal(ACLMessage msg) {
+        return createACLMessage(ACLMessage.AGREE, msg.getSender(), "Obrigado, aqui vão os meus");
     }
 
 
@@ -92,7 +98,7 @@ public abstract class AwareAgent extends Agent {
      *
      * @param msg the msg that contains the CFP
      */
-    public void rejectedProposal(ACLMessageC msg) {
+    public void rejectedProposal(ACLMessage msg) {
         print("The other agent rejected me...");
     }
 
@@ -109,21 +115,43 @@ public abstract class AwareAgent extends Agent {
     /**
      * Inheriting classes have a message to directly process received messages
      *
-     * @param msg not null ACLMessageC
+     * @param msg not null ACLMessage
      */
-    protected void receiveMessage(ACLMessageC msg) {}
+    protected void receiveMessage(ACLMessage msg) {}
 
+
+    private ACLMessage createACLMessage(int perf, AID receiverAID, Serializable content){
+        ACLMessage msg = new ACLMessage(perf);
+        msg.setSender(getAID());
+        msg.addReceiver(receiverAID);
+        try {
+            msg.setContentObject(content);
+        } catch (IOException e) {
+            print("failed to set content of message");
+            e.printStackTrace();
+        }
+        return msg;
+    }
     /**
      * Mandatory method to update agents
      */
     public abstract void tick();
 
-    public long sendTimestamp(ACLMessageC msg) {
+    public long sendTimestamp(ACLMessage msg, boolean sendToNeigbours) {
         msg.setPostTimeStamp((System.currentTimeMillis() / 1000L));
-        // for (Object a : LabyrinthModel.getNeigbours(this)) {
-        //     msg.addReceiver((jade.core.AID) a);
-        // }
+        if (sendToNeigbours) {
+            msg.clearAllReceiver();
+            for (String name : LabyrinthModel.getNeigbours(this)) {
+                print("will send to: " + name);
+                msg.addReceiver(new AID(name, isGUID));
+            }
+        }
         send(msg);
+        try {
+            print("sent message: " + msg.getContentObject().toString() + " at " + msg.getPostTimeStamp() );
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
         return msg.getPostTimeStamp();
     }
 
