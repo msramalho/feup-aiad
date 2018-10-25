@@ -44,19 +44,40 @@ public abstract class AwareAgent extends Agent {
         addBehaviour(new MessageBehaviour(this, null, mACLMessage));
     }
 
+    /**
+     * Generate own call for proposals
+     * @return the proposal message
+     */
+    protected ACLMessage createCFP() { return null; }
 
     /**
      * Handle receiving calls for proposals
+     *
      * @param msg the msg that contains the CFP
      */
-    protected void handleCFP(ACLMessage msg){ }
+    protected void handleCFP(ACLMessage msg) { }
+
+    /**
+     * Handle receiving a rejection on proposal calls for proposals
+     *
+     * @param msg the msg that contains the CFP
+     */
+    protected void rejectedCFP(ACLMessage msg) { }
+
+    /**
+     * Handle accepted calls for proposals
+     *
+     * @param msg the msg that contains the CFP
+     */
+    protected void acceptedCFP(ACLMessage msg) { }
 
     /**
      * Calculate the result of moving from current pos in dir direction
+     *
      * @param dir the direction of the move
      * @return the new pos
      */
-    protected Vector2D getPosAfterMove(Directions dir){
+    protected Vector2D getPosAfterMove(Directions dir) {
         return position.getPosition().translate(dir.direction);
     }
 
