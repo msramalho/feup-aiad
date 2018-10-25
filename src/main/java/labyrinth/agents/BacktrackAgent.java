@@ -14,8 +14,8 @@ public class BacktrackAgent extends AwareAgent {
     protected HashSet<Vector2D> seen = new HashSet<>();
     protected Stack<Directions> backtrackStack = new Stack<>();
 
-    public BacktrackAgent(MazePosition mazePosition, MazeKnowledge knowledge, boolean isGUID) {
-        super(mazePosition, knowledge, isGUID);
+    public BacktrackAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
+        super(mazePosition, knowledge);
     }
 
     @Override

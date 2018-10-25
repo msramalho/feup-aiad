@@ -22,7 +22,6 @@ import java.io.Serializable;
  * Easily receive and use messages
  */
 public abstract class AwareAgent extends Agent {
-    private final boolean isGUID;
     public MazePosition position;
     private MazeKnowledge knowledge;
 
@@ -32,9 +31,8 @@ public abstract class AwareAgent extends Agent {
     private Schedule sch;
     public int visibility = 100;
 
-    AwareAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
-        setAID(new AID("AwareAgent", isGUID));
-        this.isGUID = isGUID;
+    AwareAgent(MazePosition position, MazeKnowledge knowledge) {
+        setAID(new AID("AwareAgent", true));
         this.position = position;
         this.knowledge = knowledge;
     }
@@ -143,7 +141,7 @@ public abstract class AwareAgent extends Agent {
             msg.clearAllReceiver();
             for (String name : LabyrinthModel.getNeigbours(this)) {
                 print("will send to: " + name);
-                msg.addReceiver(new AID(name, isGUID));
+                msg.addReceiver(new AID(name, true));
             }
         }
         send(msg);

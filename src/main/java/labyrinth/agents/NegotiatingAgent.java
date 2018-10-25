@@ -7,8 +7,8 @@ import labyrinth.agents.maze.MazePosition;
 public class NegotiatingAgent extends AwareAgent {
 
 
-    NegotiatingAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
-        super(position, knowledge, isGUID);
+    NegotiatingAgent(MazePosition position, MazeKnowledge knowledge) {
+        super(position, knowledge);
     }
 
 

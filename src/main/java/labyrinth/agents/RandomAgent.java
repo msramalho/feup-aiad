@@ -6,8 +6,8 @@ import labyrinth.agents.maze.MazePosition;
 
 public class RandomAgent extends AwareAgent {
 
-    public RandomAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
-        super(position, knowledge, isGUID);
+    public RandomAgent(MazePosition position, MazeKnowledge knowledge) {
+        super(position, knowledge);
     }
 
     @Override
