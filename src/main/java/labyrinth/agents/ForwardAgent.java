@@ -13,30 +13,31 @@ public class ForwardAgent extends AwareAgent {
 
     private Directions lastDirection;
 
-    public ForwardAgent(MazePosition position, MazeKnowledge knowledge) {
-        super(position, knowledge);
+    ForwardAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
+        super(position, knowledge, isGUID);
     }
+
 
     @Override
     public void tick() {
-        if (mazePosition.atExit()) {
+        if (position.atExit()) {
             return;
         }
 
-        ArrayList<Directions> directions = mazePosition.getAvailableDirections(true);
+        ArrayList<Directions> directions = position.getAvailableDirections(true);
 
         if (lastDirection != null && directions.size() == 2 && directions.contains(lastDirection)) {
-            mazePosition.move(lastDirection);
+            position.move(lastDirection);
         } else if (directions.size() >= 2) {
             for (Directions direction : directions) {
                 if (direction != Directions.getOpposite(lastDirection)) {
-                    mazePosition.move(direction);
+                    position.move(direction);
                     lastDirection = direction;
                     return;
                 }
             }
         } else {
-            mazePosition.move(directions.get(0));
+            position.move(directions.get(0));
             lastDirection = directions.get(0);
         }
     }
