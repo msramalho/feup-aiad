@@ -54,7 +54,7 @@ public class MazeSpace {
                 cells.add(wall);
             });
 
-            for (Vector2D startPos: maze.getStartPositions()) {
+            for (Vector2D startPos : maze.getStartPositions()) {
                 MazeObject start = new MazeObject(() -> startPos, g -> g.drawRoundRect(START_COLOR));
                 cells.add(start);
             }
@@ -67,7 +67,7 @@ public class MazeSpace {
     private Object2DDisplay buildAgentGraphics(Maze maze, List<Pair<Color, Supplier<Vector2D>>> agentSuppliers) {
 
         return buildGraphics(maze, cells -> {
-            for (Pair<Color, Supplier<Vector2D>> pair: agentSuppliers) {
+            for (Pair<Color, Supplier<Vector2D>> pair : agentSuppliers) {
                 MazeObject agent = new MazeObject(pair.r, g -> g.drawRoundRect(pair.l));
                 cells.add(agent);
             }
