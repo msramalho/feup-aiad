@@ -17,15 +17,16 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final boolean BATCH_MODE = true;
+    private static final boolean BATCH_MODE = false;
     private Vector2D mazeSize = new Vector2D(20, 20);
     private int actionSlownessRate = 1; // lower is faster
     private long seed = 1;
     private boolean batchMode;
-    private static MazeSpace mazeSpace;
+    private static AgentBuilder builder;
 
     public LabyrinthModel(boolean batchMode) {
         super();
@@ -95,7 +96,7 @@ public class LabyrinthModel extends Repast3Launcher {
     @Override
     public void begin() {
         super.begin();
-        if(!batchMode) {
+        if (!batchMode) {
             //buildAndScheduleDisplay();
         }
     }
@@ -108,22 +109,21 @@ public class LabyrinthModel extends Repast3Launcher {
         Maze maze = new MazeFactory(mazeSize).buildRecursiveMaze();
 
         // agents
-        AgentBuilder builder = new AgentBuilder(mainContainer, maze);
+        builder = new AgentBuilder(mainContainer, maze);
         builder.addBacktrackAgent(!batchMode)
-                .addForwardAgent(!batchMode);
-                // .addRandomAgent(!batchMode);
+                .addForwardAgent(!batchMode)
+                .addRandomAgent(!batchMode);
 
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
                 .subscribe(builder.buildAgentTickRunners());
 
         // graphics
-        if(!batchMode) {
+        if (!batchMode) {
             DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
             registerDisplaySurface("Labyrinth Model", displaySurf);
 
-            mazeSpace = new MazeSpace();
-            mazeSpace.addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
+            new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
             displaySurf.display();
             clockPublisher.subscribe(displaySurf::updateDisplay);
         }
@@ -139,7 +139,17 @@ public class LabyrinthModel extends Repast3Launcher {
 
     }
 
-    public static Vector getNeigbours(AwareAgent agent) {
-        return mazeSpace.grid.getVonNeumannNeighbors(agent.position.getPosition().x, agent.position.getPosition().x, agent.visibility, agent.visibility, false);
+    public static List<String> getNeigbours(AwareAgent agent) {
+        ArrayList<String> res = new ArrayList<>();
+        builder.allAgents.forEach((name, pos) ->{
+            if (!name.equals(agent.getAID().getName())) {
+                res.add(name);
+            }
+        });
+
+        return res;
+        // return builder.allAgents.entrySet()
+        //         .stream().filter(entry -> !entry.getKey().equals(agent.getName()))
+        //         .map(HashMap.Entry::getKey).collect(Collectors.toList());
     }
 }

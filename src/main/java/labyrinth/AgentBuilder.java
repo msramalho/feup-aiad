@@ -10,7 +10,6 @@ import labyrinth.agents.maze.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
-import sajas.core.Agent;
 import sajas.wrapper.ContainerController;
 
 import java.awt.*;
