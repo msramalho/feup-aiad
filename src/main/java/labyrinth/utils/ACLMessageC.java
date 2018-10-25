@@ -20,6 +20,20 @@ public class ACLMessageC extends ACLMessage {
         setContentObject(s);
     }
 
+    public ACLMessageC(ACLMessage o) {
+        super(o.getPerformative());
+        if(o==null)return;
+        setPostTimeStamp(o.getPostTimeStamp());
+        try {
+            setContentObject(o.getContentObject());
+            setContent(o.getContent());
+            setSender(o.getSender());
+            setOntology(o.getOntology());
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void setContentObject(Serializable s) {
         try {
