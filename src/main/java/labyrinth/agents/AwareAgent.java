@@ -73,6 +73,10 @@ public abstract class AwareAgent extends Agent {
     public abstract void tick();
 
 
+    public void print(String message) {
+        System.out.println("[Agent: " + getAID().getName() + "] - " + message);
+    }
+
     public void setSchedule(Schedule sch) {
         this.sch = sch;
     }
