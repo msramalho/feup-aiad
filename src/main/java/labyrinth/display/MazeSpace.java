@@ -21,6 +21,7 @@ public class MazeSpace {
     private BufferedImage wallImage = ImageIO.read(new File("resources/wall.png"));
     private static final Color START_COLOR = Color.BLUE;
     private static final Color END_COLOR = Color.GREEN;
+    public Object2DGrid grid;//useful for getting neighbours
 
     public MazeSpace() throws IOException {
 
@@ -35,7 +36,7 @@ public class MazeSpace {
     }
 
     private Object2DDisplay buildGraphics(Maze maze, Consumer<List<MazeObject>> consumer) {
-        Object2DGrid grid = new Object2DGrid(maze.size.x, maze.size.y);
+        grid = new Object2DGrid(maze.size.x, maze.size.y);
         List<MazeObject> cells = new ArrayList<>();
 
         consumer.accept(cells);
