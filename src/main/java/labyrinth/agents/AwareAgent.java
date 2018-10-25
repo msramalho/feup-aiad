@@ -8,6 +8,7 @@ import labyrinth.maze.Directions;
 import labyrinth.agents.maze.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Vector2D;
+import sajas.core.AID;
 import sajas.core.Agent;
 import uchicago.src.sim.engine.Schedule;
 
@@ -18,7 +19,7 @@ import uchicago.src.sim.engine.Schedule;
  * Easily receive and use messages
  */
 public abstract class AwareAgent extends Agent {
-    MazePosition mazePosition;
+    MazePosition position;
     MazeKnowledge knowledge;
 
     private SLCodec codec;
@@ -27,8 +28,9 @@ public abstract class AwareAgent extends Agent {
     private Schedule sch;
     private String request = "HELLO WORLD";
 
-    AwareAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
-        this.mazePosition = mazePosition;
+    AwareAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
+        setAID(new AID("AwareAgent", isGUID));
+        this.position = position;
         this.knowledge = knowledge;
     }
 
@@ -55,7 +57,7 @@ public abstract class AwareAgent extends Agent {
      * @return the new pos
      */
     protected Vector2D getPosAfterMove(Directions dir){
-        return mazePosition.getPosition().translate(dir.direction);
+        return position.getPosition().translate(dir.direction);
     }
 
     /**
