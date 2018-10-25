@@ -17,11 +17,12 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final boolean BATCH_MODE = false;
+    private static final boolean BATCH_MODE = true;
     private Vector2D mazeSize = new Vector2D(20, 20);
     private int actionSlownessRate = 1; // lower is faster
     private long seed = 1;
@@ -140,16 +141,8 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
     public static List<String> getNeigbours(AwareAgent agent) {
-        ArrayList<String> res = new ArrayList<>();
-        builder.allAgents.forEach((name, pos) ->{
-            if (!name.equals(agent.getAID().getName())) {
-                res.add(name);
-            }
-        });
-
-        return res;
-        // return builder.allAgents.entrySet()
-        //         .stream().filter(entry -> !entry.getKey().equals(agent.getName()))
-        //         .map(HashMap.Entry::getKey).collect(Collectors.toList());
+        return builder.allAgents.entrySet()
+                .stream().filter(entry -> !entry.getKey().equals(agent.getAID().getName()))
+                .map(HashMap.Entry::getKey).collect(Collectors.toList());
     }
 }
