@@ -14,13 +14,15 @@ public class BacktrackAgent extends AwareAgent {
     protected HashSet<Vector2D> seen = new HashSet<>();
     protected Stack<Directions> backtrackStack = new Stack<>();
 
-    public BacktrackAgent(MazePosition position, MazeKnowledge knowledge) { super(position, knowledge); }
+    public BacktrackAgent(MazePosition mazePosition, MazeKnowledge knowledge, boolean isGUID) {
+        super(mazePosition, knowledge, isGUID);
+    }
 
     @Override
     public void tick() {
-        if (mazePosition.atExit()) return;
-        seen.add(mazePosition.getPosition()); // mark this as seen
-        mazePosition.move(getNextStep());
+        if (position.atExit()) return;
+        seen.add(position.getPosition()); // mark this as seen
+        position.move(getNextStep());
     }
 
     /**
@@ -29,7 +31,7 @@ public class BacktrackAgent extends AwareAgent {
      * @return the next step
      */
     private Directions getNextStep() {
-        ArrayList<Directions> directions = mazePosition.getAvailableDirections(true);
+        ArrayList<Directions> directions = position.getAvailableDirections(true);
 
         for (Directions d : directions)
             if (!seen.contains(getPosAfterMove(d))) {
