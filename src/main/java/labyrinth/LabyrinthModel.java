@@ -1,6 +1,7 @@
 package labyrinth;
 
 import jade.wrapper.StaleProxyException;
+import labyrinth.agents.AwareAgent;
 import labyrinth.utils.ClockPublisher;
 import labyrinth.display.MazeSpace;
 import jade.core.Profile;
@@ -16,17 +17,20 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
+import java.util.Vector;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final boolean BATCH_MODE = false;
+    private static final boolean BATCH_MODE = true;
     private Vector2D mazeSize = new Vector2D(20, 20);
     private int actionSlownessRate = 1; // lower is faster
     private long seed = 1;
     private boolean batchMode;
+    private static MazeSpace mazeSpace;
 
     public LabyrinthModel(boolean batchMode) {
         super();
         this.batchMode = batchMode;
+
     }
 
     @Override
@@ -106,8 +110,8 @@ public class LabyrinthModel extends Repast3Launcher {
         // agents
         AgentBuilder builder = new AgentBuilder(mainContainer, maze);
         builder.addBacktrackAgent(!batchMode)
-                .addForwardAgent(!batchMode)
-                .addRandomAgent(!batchMode);
+                .addForwardAgent(!batchMode);
+                // .addRandomAgent(!batchMode);
 
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
@@ -118,7 +122,8 @@ public class LabyrinthModel extends Repast3Launcher {
             DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
             registerDisplaySurface("Labyrinth Model", displaySurf);
 
-            new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
+            mazeSpace = new MazeSpace();
+            mazeSpace.addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
             displaySurf.display();
             clockPublisher.subscribe(displaySurf::updateDisplay);
         }
@@ -132,5 +137,9 @@ public class LabyrinthModel extends Repast3Launcher {
         LabyrinthModel model = new LabyrinthModel(BATCH_MODE);
         init.loadModel(model, null, BATCH_MODE);
 
+    }
+
+    public static Vector getNeigbours(AwareAgent agent) {
+        return mazeSpace.grid.getVonNeumannNeighbors(agent.position.getPosition().x, agent.position.getPosition().x, agent.visibility, agent.visibility, false);
     }
 }
