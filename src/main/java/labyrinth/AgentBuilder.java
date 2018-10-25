@@ -48,21 +48,18 @@ public class AgentBuilder {
         agentCounter++;
     }
 
-    public AgentBuilder addForwardAgent() throws StaleProxyException {
-        addAgent(Color.pink, (mazePos, knowledge) -> new ForwardAgent(mazePos, knowledge));
-
+    public AgentBuilder addForwardAgent(boolean isGUID) throws StaleProxyException {
+        addAgent(Color.pink, (mazePos, knowledge) -> new ForwardAgent(mazePos, knowledge, isGUID));
         return this;
     }
 
-    public AgentBuilder addBacktrackAgent() throws StaleProxyException {
-        addAgent(Color.orange, (mazePos, knowledge) -> new BacktrackAgent(mazePos, knowledge));
-
+    public AgentBuilder addBacktrackAgent(boolean isGUID) throws StaleProxyException {
+        addAgent(Color.orange, (mazePos, knowledge) -> new BacktrackAgent(mazePos, knowledge, isGUID));
         return this;
     }
 
-    public AgentBuilder addRandomAgent() throws StaleProxyException {
-        addAgent(Color.cyan, (mazePos, knowledge) -> new RandomAgent(mazePos, knowledge));
-
+    public AgentBuilder addRandomAgent(boolean isGUID) throws StaleProxyException {
+        addAgent(Color.cyan, (mazePos, knowledge) -> new RandomAgent(mazePos, knowledge, isGUID));
         return this;
     }
 

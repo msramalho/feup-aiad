@@ -13,7 +13,7 @@ public class ForwardAgent extends AwareAgent {
 
     private Directions lastDirection;
 
-    ForwardAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
+    public ForwardAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
         super(position, knowledge, isGUID);
     }
 
