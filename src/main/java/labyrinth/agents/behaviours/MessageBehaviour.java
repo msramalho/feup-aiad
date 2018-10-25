@@ -3,39 +3,29 @@ package labyrinth.agents.behaviours;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import labyrinth.agents.AwareAgent;
-import sajas.core.AID;
 import sajas.core.behaviours.Behaviour;
 
 import java.io.IOException;
+
+enum STATE {WAITING_CFP, WAITING_PROPOSAL, WAITING_ANSWER, DONE}
 
 public class MessageBehaviour extends Behaviour {
     private static final long serialVersionUID = 1L;
 
 
-    private int step = 0;
-    private AID neighborhoodAID;
-    private ACLMessage mACLMessage;
+    private STATE step = STATE.WAITING_CFP;
     private AwareAgent myAgent;
 
-    public MessageBehaviour(AwareAgent myAgent, AID neighborhoodAID, ACLMessage mACLMessage) {
+    public MessageBehaviour(AwareAgent myAgent) {
         super(myAgent);
         this.myAgent = myAgent;
-        this.neighborhoodAID = neighborhoodAID;
-        this.mACLMessage = mACLMessage;
     }
 
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive();
-        if (msg == null && step == 0) {
-            try {
-                mACLMessage.setContentObject("OLÁ, AGENTE!");
-                if (neighborhoodAID != null) mACLMessage.addReceiver(neighborhoodAID);
-                else mACLMessage.addReceiver(myAgent.getAID());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            myAgent.send(mACLMessage);
+        if (msg == null && step == STATE.WAITING_CFP) {
+            myAgent.send(myAgent.createCFP());
             return;
         } else if (msg == null) {
             block();
@@ -44,7 +34,7 @@ public class MessageBehaviour extends Behaviour {
 
         //TODO: isolate to another function, state machine function
         switch (step) {
-            case 0:
+            case WAITING_CFP:
                 myAgent.print("step 0 in message behaviour");
                 if (msg.getPerformative() == ACLMessage.CFP) {
                     try {
@@ -61,11 +51,11 @@ public class MessageBehaviour extends Behaviour {
                         e.printStackTrace();
                     }
                     myAgent.send(reply);
-                    step++;
+                    step = STATE.WAITING_PROPOSAL;
                 } else myAgent.print("RESET MACHINE 1!!");
 
                 break;
-            case 1:
+            case WAITING_PROPOSAL:
                 // myAgent.print("step 1 in message behaviour");
                 if (msg.getPerformative() == ACLMessage.PROPOSE) {
                     try {
@@ -88,10 +78,9 @@ public class MessageBehaviour extends Behaviour {
                     // myAgent.print("RESET MACHINE 2!!");
                     return;
                 }
-
-                step++;
+                step = STATE.WAITING_ANSWER;
                 break;
-            case 2:
+            case WAITING_ANSWER:
                 myAgent.print("step 3 in message behaviour");
                 if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
                     myAgent.print("Accepted!");
@@ -102,13 +91,13 @@ public class MessageBehaviour extends Behaviour {
                     return;
                 }
 
-                step++;
+                step= STATE.DONE;
                 break;
         }
     }
 
     @Override
     public boolean done() {
-        return step == 3;
+        return step == STATE.DONE;
     }
 }
