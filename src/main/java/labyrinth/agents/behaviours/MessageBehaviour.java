@@ -2,23 +2,24 @@ package labyrinth.agents.behaviours;
 
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
+import labyrinth.agents.AwareAgent;
 import sajas.core.AID;
-import sajas.core.Agent;
-import sajas.core.behaviours.CyclicBehaviour;
+import sajas.core.behaviours.Behaviour;
 
 import java.io.IOException;
 
-//TODO: not sure if this is worth isolating in another file (possibly not, as there may be more behaviours)
-public class MessageBehaviour extends CyclicBehaviour {
+public class MessageBehaviour extends Behaviour {
     private static final long serialVersionUID = 1L;
 
 
-    int step = 0;
+    private int step = 0;
     private AID neighborhoodAID;
     private ACLMessage mACLMessage;
+    private AwareAgent myAgent;
 
-    public MessageBehaviour(Agent myAgent, AID neighborhoodAID, ACLMessage mACLMessage) {
+    public MessageBehaviour(AwareAgent myAgent, AID neighborhoodAID, ACLMessage mACLMessage) {
         super(myAgent);
+        this.myAgent = myAgent;
         this.neighborhoodAID = neighborhoodAID;
         this.mACLMessage = mACLMessage;
     }
@@ -26,13 +27,11 @@ public class MessageBehaviour extends CyclicBehaviour {
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive();
-        if(msg == null && step == 0){
+        if (msg == null && step == 0) {
             try {
-                mACLMessage.setContentObject(null);
-                if(neighborhoodAID != null)
-                    mACLMessage.addReceiver(neighborhoodAID);
-                else
-                    mACLMessage.addReceiver(new AID("agent #2", AID.ISLOCALNAME));
+                mACLMessage.setContentObject("OLÁ, AGENTE!");
+                if (neighborhoodAID != null) mACLMessage.addReceiver(neighborhoodAID);
+                else mACLMessage.addReceiver(myAgent.getAID());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -44,13 +43,13 @@ public class MessageBehaviour extends CyclicBehaviour {
         }
 
         //TODO: isolate to another function, state machine function
-        switch(step) {
+        switch (step) {
             case 0:
-                System.out.println("0");
+                myAgent.print("step 0 in message behaviour");
                 if (msg.getPerformative() == ACLMessage.CFP) {
                     try {
                         String helloString = (String) msg.getContentObject();
-                        System.out.println(helloString);
+                        myAgent.print(helloString);
                     } catch (UnreadableException e) {
                         e.printStackTrace();
                     }
@@ -63,11 +62,11 @@ public class MessageBehaviour extends CyclicBehaviour {
                     }
                     myAgent.send(reply);
                     step++;
-                } else System.out.println("RESET MACHINE!!");
+                } else myAgent.print("RESET MACHINE 1!!");
 
                 break;
             case 1:
-                System.out.println("1");
+                // myAgent.print("step 1 in message behaviour");
                 if (msg.getPerformative() == ACLMessage.PROPOSE) {
                     try {
                         String replyContent = (String) msg.getContentObject();
@@ -86,25 +85,30 @@ public class MessageBehaviour extends CyclicBehaviour {
                         e.printStackTrace();
                     }
                 } else {
-                    System.out.println("RESET MACHINE!!");
+                    // myAgent.print("RESET MACHINE 2!!");
                     return;
                 }
 
                 step++;
                 break;
             case 2:
-                System.out.println("2");
+                myAgent.print("step 3 in message behaviour");
                 if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
-                    System.out.println("Accepted!");
-                } else if(msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
-                    System.out.println("Rejected!");
-                } else{
-                    System.out.println("RESET MACHINE!!");
+                    myAgent.print("Accepted!");
+                } else if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
+                    myAgent.print("Rejected!");
+                } else {
+                    myAgent.print("RESET MACHINE 3!!");
                     return;
                 }
 
                 step++;
                 break;
         }
+    }
+
+    @Override
+    public boolean done() {
+        return step == 3;
     }
 }
