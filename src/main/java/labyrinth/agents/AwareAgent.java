@@ -12,6 +12,8 @@ import sajas.core.AID;
 import sajas.core.Agent;
 import uchicago.src.sim.engine.Schedule;
 
+import java.io.IOException;
+
 
 /**
  * Maze Agent with some general useful skills, such as:
@@ -25,7 +27,6 @@ public abstract class AwareAgent extends Agent {
     // private SLCodec codec;
     // private Ontology serviceOntology;
     // private String request = "HELLO WORLD";
-    private ACLMessage mACLMessage;
     private Schedule sch;
 
     AwareAgent(MazePosition position, MazeKnowledge knowledge, boolean isGUID) {
@@ -39,37 +40,49 @@ public abstract class AwareAgent extends Agent {
         super.setup();
 
         // prepare cfp message
-        mACLMessage = new ACLMessage(ACLMessage.CFP);
+        addBehaviour(new MessageBehaviour(this));
 
-        addBehaviour(new MessageBehaviour(this, null, mACLMessage));
+        //TODO: after testing above code, replace by below
+        // if (createCFP()!=null) {
+        //     addBehaviour(new MessageBehaviour(this, null, createCFP()));
+        // }
     }
 
     /**
      * Generate own call for proposals
+     *
      * @return the proposal message
      */
-    protected ACLMessage createCFP() { return null; }
+    //TODO: replace by return null, as this is abstract
+    public ACLMessage createCFP() {
+        ACLMessage msg = new ACLMessage(ACLMessage.CFP);
+        msg.addReceiver(getAID());
+        try {
+            msg.setContentObject("OLÁ, AGENTE!");
+        } catch (IOException e) { e.printStackTrace(); }
+        return msg;
+    }
 
     /**
      * Handle receiving calls for proposals
      *
      * @param msg the msg that contains the CFP
      */
-    protected void handleCFP(ACLMessage msg) { }
+    public void handleCFP(ACLMessage msg) { }
 
     /**
      * Handle receiving a rejection on proposal calls for proposals
      *
      * @param msg the msg that contains the CFP
      */
-    protected void rejectedCFP(ACLMessage msg) { }
+    public void rejectedCFP(ACLMessage msg) { }
 
     /**
      * Handle accepted calls for proposals
      *
      * @param msg the msg that contains the CFP
      */
-    protected void acceptedCFP(ACLMessage msg) { }
+    public void acceptedCFP(ACLMessage msg) { }
 
     /**
      * Calculate the result of moving from current pos in dir direction
@@ -77,7 +90,7 @@ public abstract class AwareAgent extends Agent {
      * @param dir the direction of the move
      * @return the new pos
      */
-    protected Vector2D getPosAfterMove(Directions dir) {
+    Vector2D getPosAfterMove(Directions dir) {
         return position.getPosition().translate(dir.direction);
     }
 
