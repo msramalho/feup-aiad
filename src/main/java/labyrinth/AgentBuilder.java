@@ -1,10 +1,7 @@
 package labyrinth;
 
 import jade.wrapper.StaleProxyException;
-import labyrinth.agents.AwareAgent;
-import labyrinth.agents.BacktrackAgent;
-import labyrinth.agents.ForwardAgent;
-import labyrinth.agents.RandomAgent;
+import labyrinth.agents.*;
 import labyrinth.maze.Maze;
 import labyrinth.agents.maze.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
@@ -27,7 +24,7 @@ public class AgentBuilder {
     private final Maze maze;
     private final List<Vector2D> startPositions;
     private int agentCounter = 0;
-    public HashMap<String, MazePosition> allAgents = new HashMap<>();
+    public HashMap<String, AwareAgent> allAgents = new HashMap<>();
 
     public AgentBuilder(ContainerController mainContainer, Maze maze) {
         this.mainContainer = mainContainer;
@@ -46,7 +43,7 @@ public class AgentBuilder {
         agentGraphics.add(new Pair<>(agentColor, mazePosition::getPosition));
         agentTickRunners.add(agent::tick);
         mainContainer.acceptNewAgent("agent #" + agentCounter, agent).start();
-        allAgents.put(agent.getAID().getName(), mazePosition);
+        allAgents.put(agent.getAID().getName(), agent);
         agentCounter++;
     }
 
@@ -62,6 +59,11 @@ public class AgentBuilder {
 
     public AgentBuilder addRandomAgent() throws StaleProxyException {
         addAgent(Color.cyan, (mazePos, knowledge) -> new RandomAgent(mazePos, knowledge));
+        return this;
+    }
+
+    public AgentBuilder addNegotiatingAgent() throws StaleProxyException {
+        addAgent(Color.red, (mazePos, knowledge) -> new NegotiatingAgent(mazePos, knowledge));
         return this;
     }
 
