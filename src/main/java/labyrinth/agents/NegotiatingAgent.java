@@ -20,7 +20,7 @@ public class NegotiatingAgent extends BacktrackAgent {
 
     @Override
     public ACLMessage handleCFP(ACLMessage msg) {
-        envelope = new NegotiationEnvelope("Me too", knowledge, 10);
+        envelope = new NegotiationEnvelope("Me too", knowledge, 100);
         System.out.println("I will be proposing: " + envelope.proposal.size());
         return createACLMessage(ACLMessage.PROPOSE, msg.getSender(), envelope);
     }
