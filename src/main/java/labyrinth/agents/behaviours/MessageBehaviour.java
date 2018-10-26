@@ -1,21 +1,17 @@
 package labyrinth.agents.behaviours;
 
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import labyrinth.agents.AwareAgent;
 import sajas.core.behaviours.CyclicBehaviour;
 
 
-enum STATE {WAITING_CFP, WAITING_PROPOSAL, WAITING_ANSWER, WAITING_INFO, DONE}
-
 public class MessageBehaviour extends CyclicBehaviour {
     private static final long serialVersionUID = 1L;
 
 
-    private STATE step = STATE.WAITING_CFP;
     private AwareAgent myAgent;
-    boolean sentMessage = false;
+    public boolean negotiating = false;
 
     public MessageBehaviour(AwareAgent myAgent) {
         super(myAgent);
@@ -34,62 +30,65 @@ public class MessageBehaviour extends CyclicBehaviour {
                 e.printStackTrace();
             }
 
-            // OPTION 1, I am the one receiving the Call for Proposal
-            if (msg.getPerformative() == ACLMessage.CFP) {
-                ACLMessage response = myAgent.handleCFP(msg);
-                myAgent.sendTimestamp(response, false);
-                if (response.getPerformative() != ACLMessage.PROPOSE) return; //If I did not propose anything
-
-                //if he accepts, then I handle it
-                myAgent.print("sent Proposal, waiting for next message");
-                msg = myAgent.receive();
-                myAgent.print("Got next message: ");
-                try {
-                    myAgent.print("it is " + msg==null?"null": msg.getContentObject().toString());
-                } catch (UnreadableException e) {
-                    e.printStackTrace();
-                }
-                if (msg == null || msg.getPerformative() != ACLMessage.ACCEPT_PROPOSAL) return;
-
-                //if he accepts, then I handle it
-                myAgent.sendTimestamp(myAgent.acceptedProposal(msg), false);
-            }
-
-            // switch (msg.getPerformative()) {
-            //     case ACLMessage.CFP:
-            //         myAgent.sendTimestamp(myAgent.handleCFP(msg), false);
-            //         break;
-            //     case ACLMessage.PROPOSE:
-            //         myAgent.sendTimestamp(myAgent.handleProposal(msg), false);
-            //         break;
-            //     case ACLMessage.ACCEPT_PROPOSAL:
-            //         myAgent.sendTimestamp(myAgent.acceptedProposal(msg), false);
-            //         break;
-            //     case ACLMessage.REJECT_PROPOSAL:
-            //         myAgent.rejectedProposal(msg);
-            //         break;
-            //     case ACLMessage.AGREE:
-            //         myAgent.print("I received what he promised me!");
-            //         break;
+            // // OPTION 1, I am the one receiving the Call for Proposal
+            // if (msg.getPerformative() == ACLMessage.CFP) {
+            //     ACLMessage response = myAgent.handleCFP(msg);
+            //     myAgent.sendTimestamp(response, false);
+            //     if (response.getPerformative() != ACLMessage.PROPOSE) return; //If I did not propose anything
+            //
+            //     //if he accepts, then I handle it
+            //     myAgent.print("sent Proposal, waiting for next message");
+            //     msg = myAgent.receive();
+            //     myAgent.print("Got next message: ");
+            //     try {
+            //         myAgent.print("it is " + msg==null?"null": msg.getContentObject().toString());
+            //     } catch (UnreadableException e) {
+            //         e.printStackTrace();
+            //     }
+            //     if (msg == null || msg.getPerformative() != ACLMessage.ACCEPT_PROPOSAL) return;
+            //
+            //     //if he accepts, then I handle it
+            //     myAgent.sendTimestamp(myAgent.acceptedProposal(msg), false);
             // }
+
+            switch (msg.getPerformative()) {
+                case ACLMessage.CFP:
+                    myAgent.sendTimestamp(myAgent.handleCFP(msg), false);
+                    break;
+                case ACLMessage.PROPOSE:
+                    negotiating = true;
+                    myAgent.sendTimestamp(myAgent.handleProposal(msg), false);
+                    break;
+                case ACLMessage.ACCEPT_PROPOSAL:
+                    myAgent.sendTimestamp(myAgent.acceptedProposal(msg), false);
+                    break;
+                case ACLMessage.REJECT_PROPOSAL:
+                    myAgent.rejectedProposal(msg);
+                    break;
+                case ACLMessage.AGREE: // does not break on purpose
+                    myAgent.print("I received what he promised me!");
+                case ACLMessage.CANCEL:
+                    negotiating = false;
+                    break;
+            }
         } else {
             // OPTION 2, I am the one proposing
             myAgent.sendTimestamp(myAgent.createCFP(), true);
-            myAgent.print("sent CFP, waiting for next message");
-            msg = myAgent.receive();
-            myAgent.print("Got next message: ");
-            myAgent.print("it is " + msg==null?"null":" not null");
-            if (msg == null || msg.getPerformative() != ACLMessage.PROPOSE) return;
-
-            ACLMessage response = myAgent.handleProposal(msg);
-            myAgent.sendTimestamp(response, false);
-            if (response.getPerformative() != ACLMessage.ACCEPT_PROPOSAL) return; //If I did not accept
-
-            //if I accepted, then he should send his info
-            msg = myAgent.receive();
-            if (msg != null && msg.getPerformative() == ACLMessage.AGREE) {
-                myAgent.print("I received what he promised me!");
-            }
+            // myAgent.print("sent CFP, waiting for next message");
+            // msg = myAgent.receive();
+            // myAgent.print("Got next message: ");
+            // myAgent.print("it is " + msg==null?"null":" not null");
+            // if (msg == null || msg.getPerformative() != ACLMessage.PROPOSE) return;
+            //
+            // ACLMessage response = myAgent.handleProposal(msg);
+            // myAgent.sendTimestamp(response, false);
+            // if (response.getPerformative() != ACLMessage.ACCEPT_PROPOSAL) return; //If I did not accept
+            //
+            // //if I accepted, then he should send his info
+            // msg = myAgent.receive();
+            // if (msg != null && msg.getPerformative() == ACLMessage.AGREE) {
+            //     myAgent.print("I received what he promised me!");
+            // }
         }
 
         // if (msg == null && step == STATE.WAITING_CFP) {
