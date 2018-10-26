@@ -130,11 +130,34 @@ public abstract class AwareAgent extends Agent {
         }
         return msg;
     }
+
+
     /**
      * Mandatory method to update agents
      */
-    public abstract void tick();
+    public void tick() {
+        if (position.atExit()) {
+            //TODO: handle dead agents by removing them from the scheduler or something
+            takeDown();
+            doDelete();
+            print("I AM DEAD");
+            return;
+        }
+        if (isNegotiating()) return;
+        knowledge.update(position.getPosition().x, position.getPosition().y, MazeKnowledge.CELL_STATE.PATH);
+        handleTick();//TODO: maybe pass the available directions here (but each agent should say if random or not)
+    }
 
+    public abstract void handleTick();
+
+    /**
+     * Sets the timestamp on a message and either send to predifined destinations
+     * or to all both-ways visible neighbours
+     *
+     * @param msg             the message
+     * @param sendToNeigbours if true ignore current receivers and send to neighbours
+     * @return the timestamp of the message
+     */
     public long sendTimestamp(ACLMessage msg, boolean sendToNeigbours) {
         msg.setPostTimeStamp((System.currentTimeMillis() / 1000L));
         if (sendToNeigbours) {

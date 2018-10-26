@@ -19,8 +19,7 @@ public class BacktrackAgent extends AwareAgent {
     }
 
     @Override
-    public void tick() {
-        if (position.atExit()) return;
+    public void handleTick() {
         seen.add(position.getPosition()); // mark this as seen
         position.move(getNextStep());
     }

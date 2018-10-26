@@ -19,11 +19,7 @@ public class ForwardAgent extends AwareAgent {
 
 
     @Override
-    public void tick() {
-        if (position.atExit()) {
-            return;
-        }
-
+    public void handleTick() {
         ArrayList<Directions> directions = position.getAvailableDirections(true);
 
         if (lastDirection != null && directions.size() == 2 && directions.contains(lastDirection)) {
