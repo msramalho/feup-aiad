@@ -11,7 +11,6 @@ import java.util.Stack;
 
 public class BacktrackAgent extends AwareAgent {
 
-    protected HashSet<Vector2D> seen = new HashSet<>();
     protected Stack<Directions> backtrackStack = new Stack<>();
 
     public BacktrackAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
@@ -20,7 +19,6 @@ public class BacktrackAgent extends AwareAgent {
 
     @Override
     public void handleTick() {
-        seen.add(position.getPosition()); // mark this as seen
         position.move(getNextStep());
     }
 
@@ -32,12 +30,14 @@ public class BacktrackAgent extends AwareAgent {
     private Directions getNextStep() {
         ArrayList<Directions> directions = position.getAvailableDirections(true);
 
-        for (Directions d : directions)
-            if (!seen.contains(getPosAfterMove(d))) {
+        for (Directions d : directions){
+            Vector2D pos = getPosAfterMove(d);
+            if (knowledge.confidences[pos.x][pos.y].isUnknown()) {
                 backtrackStack.push(Directions.getOpposite(d)); // add this to backtrackable steps
                 return d;
             }
 
+        }
         return backtrackStack.pop();// no new option -> go back
     }
 }
