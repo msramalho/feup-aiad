@@ -13,7 +13,7 @@ import java.util.Map;
  */
 
 public class MazeKnowledge {
-
+    //TODO: be able to classify cell + direction as dead end.
     public enum CELL_STATE {MISTERY, WALL, PATH, END;}
 
     public int lines, columns;
