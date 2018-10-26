@@ -21,7 +21,6 @@ public class MessageBehaviour extends CyclicBehaviour {
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive();
-        //LOL: WARNING: SAJaS does not currently support blocking approaches -- returning null
 
         if (msg != null) {
             try {
