@@ -32,6 +32,7 @@ public class MessageBehaviour extends CyclicBehaviour {
 
             switch (msg.getPerformative()) {
                 case ACLMessage.CFP:
+                    negotiatingWith = null;
                     myAgent.sendTimestamp(myAgent.handleCFP(msg), false);
                     break;
                 case ACLMessage.PROPOSE:
@@ -39,6 +40,7 @@ public class MessageBehaviour extends CyclicBehaviour {
                     myAgent.sendTimestamp(myAgent.handleProposal(msg), false);
                     break;
                 case ACLMessage.ACCEPT_PROPOSAL:
+                    negotiatingWith = msg.getSender();
                     myAgent.sendTimestamp(myAgent.acceptedProposal(msg), false);
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
