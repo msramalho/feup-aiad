@@ -43,6 +43,7 @@ public class MessageBehaviour extends CyclicBehaviour {
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
                     myAgent.rejectedProposal(msg);
+                    negotiatingWith = null;
                     break;
                 case ACLMessage.AGREE: // does not break on purpose
                     myAgent.print("I received what he promised me!");
