@@ -3,6 +3,7 @@ package labyrinth.agents.behaviours;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import labyrinth.agents.AwareAgent;
+import jade.core.AID;
 import sajas.core.behaviours.CyclicBehaviour;
 
 
@@ -11,7 +12,7 @@ public class MessageBehaviour extends CyclicBehaviour {
 
 
     private AwareAgent myAgent;
-    public boolean negotiating = false;
+    public AID negotiatingWith = null;
 
     public MessageBehaviour(AwareAgent myAgent) {
         super(myAgent);
@@ -22,7 +23,7 @@ public class MessageBehaviour extends CyclicBehaviour {
     public void action() {
         ACLMessage msg = myAgent.receive();
 
-        if (msg != null) {
+        if (msg != null && (negotiatingWith == null || msg.getSender().equals(negotiatingWith))) {
             try {
                 myAgent.print(msg.getContentObject().toString() + " from " + msg.getSender().getName() + " at " + msg.getPostTimeStamp());
             } catch (UnreadableException e) {
@@ -34,7 +35,7 @@ public class MessageBehaviour extends CyclicBehaviour {
                     myAgent.sendTimestamp(myAgent.handleCFP(msg), false);
                     break;
                 case ACLMessage.PROPOSE:
-                    negotiating = true;
+                    negotiatingWith = msg.getSender();
                     myAgent.sendTimestamp(myAgent.handleProposal(msg), false);
                     break;
                 case ACLMessage.ACCEPT_PROPOSAL:
@@ -46,7 +47,7 @@ public class MessageBehaviour extends CyclicBehaviour {
                 case ACLMessage.AGREE: // does not break on purpose
                     myAgent.print("I received what he promised me!");
                 case ACLMessage.CANCEL:
-                    negotiating = false;
+                    negotiatingWith = null;
                     break;
             }
         } else {
