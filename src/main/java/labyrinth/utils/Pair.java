@@ -1,6 +1,8 @@
 package labyrinth.utils;
 
-public class Pair<T, V> {
+import java.io.Serializable;
+
+public class Pair<T, V> implements Serializable{
     public final T l;
     public final V r;
 
