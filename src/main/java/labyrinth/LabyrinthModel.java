@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final boolean BATCH_MODE = true;
-    private Vector2D mazeSize = new Vector2D(20, 20);
+    private static final boolean BATCH_MODE = false;
+    private Vector2D mazeSize = new Vector2D(10, 10);
     private int actionSlownessRate = 1; // lower is faster
     private long seed = 1;
     private boolean batchMode;
@@ -111,9 +111,8 @@ public class LabyrinthModel extends Repast3Launcher {
 
         // agents
         builder = new AgentBuilder(mainContainer, maze);
-        builder.addBacktrackAgent()
-                .addForwardAgent()
-                .addRandomAgent();
+        builder.addNegotiatingAgent()
+                .addNegotiatingAgent();
 
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
@@ -140,9 +139,20 @@ public class LabyrinthModel extends Repast3Launcher {
 
     }
 
+    /**
+     * Get the neighbours of an agent that are within its visibility range, that can also see it
+     * If A and B can speak, only one of them will receive the address of the other
+     * @param agent the querying agent
+     * @return a list of agent AID names
+     */
     public static List<String> getNeigbours(AwareAgent agent) {
-        return builder.allAgents.entrySet()
-                .stream().filter(entry -> !entry.getKey().equals(agent.getAID().getName()))
+        return builder.allAgents.entrySet().stream()
+                .filter(entry -> 0 < entry.getKey().compareTo(agent.getAID().getName()))
+                .filter(entry -> {
+                    int dist = entry.getValue().position.getPosition().manhattanDistance(agent.position.getPosition());
+                    agent.print("My distance to " + entry.getValue().getAID().getName() + " is " + dist);
+                    return dist <= agent.visibility && dist <= entry.getValue().visibility;
+                })
                 .map(HashMap.Entry::getKey).collect(Collectors.toList());
     }
 }
