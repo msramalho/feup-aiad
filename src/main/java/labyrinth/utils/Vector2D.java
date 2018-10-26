@@ -1,5 +1,7 @@
 package labyrinth.utils;
 
+import labyrinth.agents.maze.MazePosition;
+
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -61,6 +63,9 @@ public class Vector2D {
         return new Vector2D(x / divisor, y / divisor);
     }
 
+    public int manhattanDistance(Vector2D other) {
+        return Math.abs(x - other.x) + Math.abs(y - other.y);
+    }
     @Override
     public String toString() {
         return "{" + "x=" + x + ", y=" + y + '}';
@@ -83,4 +88,5 @@ public class Vector2D {
         result = 31 * result + y;
         return result;
     }
+
 }
