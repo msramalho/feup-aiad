@@ -23,13 +23,11 @@ import java.io.Serializable;
  */
 public abstract class AwareAgent extends Agent {
     public MazePosition position;
-    private MazeKnowledge knowledge;
+    protected MazeKnowledge knowledge;
+    private MessageBehaviour messageBehaviour;
 
-    // private SLCodec codec;
-    // private Ontology serviceOntology;
-    // private String request = "HELLO WORLD";
     private Schedule sch;
-    public int visibility = 100;
+    public int visibility = 1;
 
     AwareAgent(MazePosition position, MazeKnowledge knowledge) {
         setAID(new AID("AwareAgent", true));
@@ -40,14 +38,8 @@ public abstract class AwareAgent extends Agent {
     @Override
     protected void setup() {
         super.setup();
-
-        // prepare cfp message
-        addBehaviour(new MessageBehaviour(this));
-
-        //TODO: after testing above code, replace by below
-        // if (createCFP()!=null) {
-        //     addBehaviour(new MessageBehaviour(this, null, createCFP()));
-        // }
+        // init message exchange behaviour, as defined by the CFP classes
+        addBehaviour(messageBehaviour = new MessageBehaviour(this));
     }
 
     /**
@@ -111,14 +103,14 @@ public abstract class AwareAgent extends Agent {
     }
 
     /**
-     * Inheriting classes have a message to directly process received messages
+     * Helper function to create an ACL message
      *
-     * @param msg not null ACLMessage
+     * @param perf        the performative type of the message
+     * @param receiverAID the id of the destination agent
+     * @param content     the content to include
+     * @return ACLMessage with the content, if possible
      */
-    protected void receiveMessage(ACLMessage msg) {}
-
-
-    private ACLMessage createACLMessage(int perf, AID receiverAID, Serializable content){
+    ACLMessage createACLMessage(int perf, AID receiverAID, Serializable content) {
         ACLMessage msg = new ACLMessage(perf);
         msg.setSender(getAID());
         msg.addReceiver(receiverAID);
@@ -167,19 +159,27 @@ public abstract class AwareAgent extends Agent {
                 msg.addReceiver(new AID(name, true));
             }
         }
-        send(msg);
-        try {
-            print("sent message: " + msg.getContentObject().toString() + " at " + msg.getPostTimeStamp() );
-        } catch (UnreadableException e) {
-            e.printStackTrace();
+        //TODO: remove following debug code
+        if (msg.getAllReceiver().hasNext()) {
+            send(msg);
+            try {
+                print("sent message: " + msg.getContentObject().toString() + " at " + msg.getPostTimeStamp());
+            } catch (UnreadableException e) {
+                e.printStackTrace();
+            }
         }
         return msg.getPostTimeStamp();
+    }
+
+    private boolean isNegotiating() {
+        return messageBehaviour.negotiatingWith != null;
     }
 
     public void print(String message) {
         System.out.println("[Agent: " + getAID().getName() + "] - " + message);
     }
 
+    //TODO: @ros para que é isto? não vejo a ser usada
     public void setSchedule(Schedule sch) {
         this.sch = sch;
     }
