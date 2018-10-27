@@ -17,15 +17,16 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
     private static final boolean BATCH_MODE = false;
-    private Vector2D mazeSize = new Vector2D(10, 10);
+    private Vector2D mazeSize = new Vector2D(30, 30);
     private int actionSlownessRate = 1; // lower is faster
-    private long seed = 1;
+    private long seed = System.currentTimeMillis();
     private boolean batchMode;
     private static AgentBuilder builder;
 
@@ -103,7 +104,6 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
     private void build(ContainerController mainContainer) throws StaleProxyException, IOException {
-
         RandomSingleton.setSeed(seed);
 
         // maze
@@ -112,6 +112,11 @@ public class LabyrinthModel extends Repast3Launcher {
         // agents
         builder = new AgentBuilder(mainContainer, maze);
         builder.addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent()
                 .addNegotiatingAgent();
 
         // clock ticks
@@ -150,7 +155,6 @@ public class LabyrinthModel extends Repast3Launcher {
                 .filter(entry -> 0 < entry.getKey().compareTo(agent.getAID().getName()))
                 .filter(entry -> {
                     int dist = entry.getValue().position.getPosition().manhattanDistance(agent.position.getPosition());
-                    agent.print("My distance to " + entry.getValue().getAID().getName() + " is " + dist);
                     return dist <= agent.visibility && dist <= entry.getValue().visibility;
                 })
                 .map(HashMap.Entry::getKey).collect(Collectors.toList());
