@@ -11,15 +11,9 @@ public class RandomAgent extends AwareAgent {
     }
 
     @Override
-    public void tick() {
-        if (mazePosition.atExit()) {
-            return;
-        }
-
+    public void handleTick() {
         for (Directions direction : Directions.getRandomDirections()) {
-            if (mazePosition.move(direction)) {
-                return;
-            }
+            if (position.move(direction)) return;
         }
     }
 }

@@ -6,3 +6,5 @@ libs/*.log
 src/main/java/META-INF/
 
 gradle/wrapper/
+
+src/main/java/serviceConsumerProviderVis/

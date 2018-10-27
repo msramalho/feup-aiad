@@ -3,6 +3,7 @@ package labyrinth.agents;
 import labyrinth.maze.Directions;
 import labyrinth.agents.maze.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
+import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
 
 import java.util.ArrayList;
@@ -11,16 +12,17 @@ import java.util.Stack;
 
 public class BacktrackAgent extends AwareAgent {
 
-    protected HashSet<Vector2D> seen = new HashSet<>();
-    protected Stack<Directions> backtrackStack = new Stack<>();
+    private Stack<Directions> backtrackStack = new Stack<>();
+    private int countContinuosBacktracks = 0;
+    private Directions lastMove;
 
-    public BacktrackAgent(MazePosition position, MazeKnowledge knowledge) { super(position, knowledge); }
+    public BacktrackAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
+        super(mazePosition, knowledge);
+    }
 
     @Override
-    public void tick() {
-        if (mazePosition.atExit()) return;
-        seen.add(mazePosition.getPosition()); // mark this as seen
-        mazePosition.move(getNextStep());
+    public void handleTick() {
+        position.move(lastMove = getNextStep());
     }
 
     /**
@@ -29,14 +31,28 @@ public class BacktrackAgent extends AwareAgent {
      * @return the next step
      */
     private Directions getNextStep() {
-        ArrayList<Directions> directions = mazePosition.getAvailableDirections(true);
+        ArrayList<Directions> directions = position.getAvailableDirections(true);
 
-        for (Directions d : directions)
-            if (!seen.contains(getPosAfterMove(d))) {
+        for (Directions d : directions) {
+            Vector2D pos = getPosAfterMove(d);
+            // if this is not yet explored
+            if (getKnowledge().confidences[pos.x][pos.y].isUnknown() && !getKnowledge().isDeadEnd(position.getPosition(), d)) {
+                if (countContinuosBacktracks > 0) { //if there was backtrack onto this position
+                    ArrayList<Directions> dirs = new ArrayList<>();
+                    dirs.add(Directions.getOpposite(lastMove));
+                    getKnowledge().updateDeadEnds(new Pair<>(position.getPosition().x, position.getPosition().y), dirs, countContinuosBacktracks);
+                    print("FOUND DEAD END AT " + position.getPosition().x + ", " + position.getPosition().y + " going " + Directions.getOpposite(lastMove).toString() + " of cost " + countContinuosBacktracks);
+                    countContinuosBacktracks = 0;
+                }
                 backtrackStack.push(Directions.getOpposite(d)); // add this to backtrackable steps
                 return d;
             }
-
+        }
+        countContinuosBacktracks++;
+        if (backtrackStack.empty()) { // failed to find exit, so restart, might have been due to wrong info from other agents
+            getKnowledge().init();
+            return getNextStep();
+        }
         return backtrackStack.pop();// no new option -> go back
     }
 }

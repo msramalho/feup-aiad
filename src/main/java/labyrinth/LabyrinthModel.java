@@ -1,6 +1,7 @@
 package labyrinth;
 
 import jade.wrapper.StaleProxyException;
+import labyrinth.agents.AwareAgent;
 import labyrinth.utils.ClockPublisher;
 import labyrinth.display.MazeSpace;
 import jade.core.Profile;
@@ -16,14 +17,23 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private Vector2D mazeSize = new Vector2D(20, 20);
+    private static final boolean BATCH_MODE = false;
+    private Vector2D mazeSize = new Vector2D(30, 30);
     private int actionSlownessRate = 1; // lower is faster
-    private long seed = 1;
+    private long seed = System.currentTimeMillis();
+    private boolean batchMode;
+    private static AgentBuilder builder;
 
-    public LabyrinthModel() {
+    public LabyrinthModel(boolean batchMode) {
         super();
+        this.batchMode = batchMode;
+
     }
 
     @Override
@@ -64,7 +74,6 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
 
-
     @Override
     public String[] getInitParam() {
         return new String[]{"MazeHeight", "MazeLength", "SlownessRate", "Seed"};
@@ -86,36 +95,68 @@ public class LabyrinthModel extends Repast3Launcher {
         }
     }
 
+    @Override
+    public void begin() {
+        super.begin();
+        if (!batchMode) {
+            //buildAndScheduleDisplay();
+        }
+    }
+
     private void build(ContainerController mainContainer) throws StaleProxyException, IOException {
-
         RandomSingleton.setSeed(seed);
-
-        DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
-        registerDisplaySurface("Labyrinth Model", displaySurf);
 
         // maze
         Maze maze = new MazeFactory(mazeSize).buildRecursiveMaze();
 
         // agents
-        AgentBuilder builder = new AgentBuilder(mainContainer, maze);
-        builder.addBacktrackAgent()
-                .addForwardAgent()
-                .addRandomAgent();
-
-        // graphics
-        new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
-        displaySurf.display();
+        builder = new AgentBuilder(mainContainer, maze);
+        builder.addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent()
+                .addNegotiatingAgent();
 
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
-                .subscribe(builder.buildAgentTickRunners())
-                .subscribe(displaySurf::updateDisplay);
+                .subscribe(builder.buildAgentTickRunners());
+
+        // graphics
+        if (!batchMode) {
+            DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
+            registerDisplaySurface("Labyrinth Model", displaySurf);
+
+            new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
+            displaySurf.display();
+            clockPublisher.subscribe(displaySurf::updateDisplay);
+        }
+
         getSchedule().scheduleActionAtInterval(actionSlownessRate, clockPublisher);
     }
 
     public static void main(String[] args) {
         SimInit init = new SimInit();
-        LabyrinthModel model = new LabyrinthModel();
-        init.loadModel(model, null, false);
+        init.setNumRuns(1);   // works only in batch mode
+        LabyrinthModel model = new LabyrinthModel(BATCH_MODE);
+        init.loadModel(model, null, BATCH_MODE);
+
+    }
+
+    /**
+     * Get the neighbours of an agent that are within its visibility range, that can also see it
+     * If A and B can speak, only one of them will receive the address of the other
+     * @param agent the querying agent
+     * @return a list of agent AID names
+     */
+    public static List<String> getNeigbours(AwareAgent agent) {
+        return builder.allAgents.entrySet().stream()
+                .filter(entry -> 0 < entry.getKey().compareTo(agent.getAID().getName()))
+                .filter(entry -> {
+                    int dist = entry.getValue().position.getPosition().manhattanDistance(agent.position.getPosition());
+                    return dist <= agent.visibility && dist <= entry.getValue().visibility;
+                })
+                .map(HashMap.Entry::getKey).collect(Collectors.toList());
     }
 }

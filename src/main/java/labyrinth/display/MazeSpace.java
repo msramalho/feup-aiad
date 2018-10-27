@@ -21,6 +21,7 @@ public class MazeSpace {
     private BufferedImage wallImage = ImageIO.read(new File("resources/wall.png"));
     private static final Color START_COLOR = Color.BLUE;
     private static final Color END_COLOR = Color.GREEN;
+    public Object2DGrid grid;//useful for getting neighbours
 
     public MazeSpace() throws IOException {
 
@@ -35,7 +36,7 @@ public class MazeSpace {
     }
 
     private Object2DDisplay buildGraphics(Maze maze, Consumer<List<MazeObject>> consumer) {
-        Object2DGrid grid = new Object2DGrid(maze.size.x, maze.size.y);
+        grid = new Object2DGrid(maze.size.x, maze.size.y);
         List<MazeObject> cells = new ArrayList<>();
 
         consumer.accept(cells);
@@ -54,7 +55,7 @@ public class MazeSpace {
                 cells.add(wall);
             });
 
-            for (Vector2D startPos: maze.getStartPositions()) {
+            for (Vector2D startPos : maze.getStartPositions()) {
                 MazeObject start = new MazeObject(() -> startPos, g -> g.drawRoundRect(START_COLOR));
                 cells.add(start);
             }
@@ -67,7 +68,7 @@ public class MazeSpace {
     private Object2DDisplay buildAgentGraphics(Maze maze, List<Pair<Color, Supplier<Vector2D>>> agentSuppliers) {
 
         return buildGraphics(maze, cells -> {
-            for (Pair<Color, Supplier<Vector2D>> pair: agentSuppliers) {
+            for (Pair<Color, Supplier<Vector2D>> pair : agentSuppliers) {
                 MazeObject agent = new MazeObject(pair.r, g -> g.drawRoundRect(pair.l));
                 cells.add(agent);
             }
