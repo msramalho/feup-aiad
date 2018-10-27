@@ -132,7 +132,6 @@ public abstract class AwareAgent extends Agent {
             //TODO: handle dead agents by removing them from the scheduler or something
             takeDown();
             doDelete();
-            print("I AM DEAD");
             return;
         }
         if (isNegotiating()) return;
