@@ -3,7 +3,9 @@ package labyrinth.agents.maze;
 import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
 import labyrinth.utils.NegotiationEnvelope;
+import labyrinth.utils.Pair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,10 +15,16 @@ import java.util.Map;
  */
 
 public class MazeKnowledge {
+
     //TODO: be able to classify cell + direction as dead end.
-    public enum CELL_STATE {MISTERY, WALL, PATH, END;}
+    public enum CELL_STATE {
+        MISTERY, WALL, PATH, END;
+    }
 
     public int lines, columns;
+    //marks crossings + directions that lead to dead ends.
+    // Coordinate -> directions that lead to dead ends + size (cumulative number of cells in the dead end)
+    public HashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new HashMap<>();
 
     /**
      * Reflects the confidence in each state that the agent has over a given cell
@@ -52,11 +60,7 @@ public class MazeKnowledge {
         lines = maze.size.x;
         columns = maze.size.y;
         confidences = new CellConfidence[maze.size.x][maze.size.y];
-        for (int i = 0; i < lines; i++) {
-            for (int j = 0; j < columns; j++) {
-                confidences[i][j] = new CellConfidence(CELL_STATE.MISTERY, (float) 1);
-            }
-        }
+        init();
     }
 
     /**
@@ -82,7 +86,8 @@ public class MazeKnowledge {
     }
 
     public void update(NegotiationEnvelope envelope) {
-        //TODO: make the update on the current knoledge
+        for (Map.Entry<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> de : envelope.proposal.entrySet())
+            updateDeadEnds(de.getKey(), de.getValue().l, de.getValue().r);
     }
 
     /**
@@ -92,15 +97,35 @@ public class MazeKnowledge {
      * @param envelope containing the new info to assess
      * @return the ratio between 0 (useless) and 1 (very usefull)
      */
-    public float getUtility(NegotiationEnvelope envelope) {
+    /*public float getUtility(NegotiationEnvelope envelope) {
         return envelope.proposal.size() == 0 ? 0 : envelope.proposal.entrySet().stream()
                 .filter(c -> confidences[c.getKey().l][c.getKey().r].isUnknown())
                 .count() / envelope.proposal.size();
+    }*/
+    public void init() {
+        for (int i = 0; i < lines; i++)
+            for (int j = 0; j < columns; j++)
+                confidences[i][j] = new CellConfidence(CELL_STATE.MISTERY, (float) 1);
     }
 
 
-    public void merge(MazeKnowledge newInfo) {
-        //TODO: usefull for agents to share and update their internal confidences
+    /**
+     * put or update deadends given a position, a direction and the number
+     * of steps wasted in that direction for that cell
+     *
+     * @param coord
+     * @param dir
+     * @param cost
+     */
+    public void updateDeadEnds(Pair<Integer, Integer> coord, ArrayList<Directions> dir, Integer cost) {
+        // Pair<Integer, Integer> coord = new Pair<>(position.getPosition().x, position.getPosition().y);
+        Pair<ArrayList<Directions>, Integer> de = deadEnds.get(coord);
+        if (de == null) {
+            deadEnds.put(coord, new Pair<>(dir, cost));
+        } else {
+            de.l.addAll(dir);
+            deadEnds.put(coord, new Pair<>(de.l, de.r + cost));
+        }
     }
 
 }
