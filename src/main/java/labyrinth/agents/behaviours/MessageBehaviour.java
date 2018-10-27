@@ -30,9 +30,9 @@ public class MessageBehaviour extends CyclicBehaviour {
                 e.printStackTrace();
             }
 
+            negotiatingWith = null;
             switch (msg.getPerformative()) {
                 case ACLMessage.CFP:
-                    negotiatingWith = null;
                     myAgent.sendTimestamp(myAgent.handleCFP(msg), false);
                     break;
                 case ACLMessage.PROPOSE:
@@ -45,16 +45,15 @@ public class MessageBehaviour extends CyclicBehaviour {
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
                     myAgent.rejectedProposal(msg);
-                    negotiatingWith = null;
                     break;
                 case ACLMessage.AGREE: // does not break on purpose
                     myAgent.print("I received what he promised me!");
                 case ACLMessage.CANCEL:
-                    negotiatingWith = null;
                     break;
             }
         } else {
             myAgent.sendTimestamp(myAgent.createCFP(), true);
+            negotiatingWith = null;
         }
 
     }
