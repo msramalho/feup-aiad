@@ -67,6 +67,11 @@ public class AgentBuilder {
         return this;
     }
 
+    public AgentBuilder addSwarmAgent() throws StaleProxyException {
+        addAgent(Color.yellow, (mazePos, knowledge) -> new SwarmAgent(mazePos, knowledge));
+        return this;
+    }
+
     public List<Pair<Color, Supplier<Vector2D>>> buildAgentGraphics() {
         return this.agentGraphics;
     }

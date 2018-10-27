@@ -111,13 +111,13 @@ public class LabyrinthModel extends Repast3Launcher {
 
         // agents
         builder = new AgentBuilder(mainContainer, maze);
-        builder.addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent();
+        builder.addSwarmAgent()
+                .addSwarmAgent()
+                .addSwarmAgent()
+                .addSwarmAgent()
+                .addSwarmAgent()
+                .addSwarmAgent()
+                .addSwarmAgent();
 
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
