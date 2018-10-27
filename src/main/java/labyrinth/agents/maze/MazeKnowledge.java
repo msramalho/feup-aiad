@@ -4,6 +4,7 @@ import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
 import labyrinth.utils.NegotiationEnvelope;
 import labyrinth.utils.Pair;
+import labyrinth.utils.Vector2D;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,6 +109,12 @@ public class MazeKnowledge {
                 confidences[i][j] = new CellConfidence(CELL_STATE.MISTERY, (float) 1);
     }
 
+
+    public boolean isDeadEnd(Vector2D position, Directions d) {
+        Pair<ArrayList<Directions>, Integer> potentialDeadEnd = deadEnds.get(new Pair<>(position.x, position.y));
+        if (potentialDeadEnd == null) return false;
+        return potentialDeadEnd.l.contains(d);
+    }
 
     /**
      * put or update deadends given a position, a direction and the number
