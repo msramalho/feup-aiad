@@ -53,9 +53,8 @@ public abstract class AwareAgent extends Agent {
      *
      * @return the proposal message
      */
-    //TODO: replace by return null, as this is abstract
     public ACLMessage createCFP() {
-        return createACLMessage(ACLMessage.CFP, null, "OLA, AGENTE, tens algo para mim?!");
+        return null;
     }
 
     /**
@@ -65,7 +64,7 @@ public abstract class AwareAgent extends Agent {
      * @return the response to the CFP
      */
     public ACLMessage handleCFP(ACLMessage msg) {
-        return createACLMessage(ACLMessage.PROPOSE, msg.getSender(), "Dou-te estes, e tu?");
+        return null;
     }
 
     /**
@@ -75,7 +74,7 @@ public abstract class AwareAgent extends Agent {
      * @return ACLMessage.ACCEPT_PROPOSAL or ACLMessage.REJECT_PROPOSAL
      */
     public ACLMessage handleProposal(ACLMessage msg) {
-        return createACLMessage(ACLMessage.ACCEPT_PROPOSAL, msg.getSender(), "Aceito, aqui tens. Agora manda os que prometeste.");
+        return null;
     }
 
     /**
@@ -85,7 +84,7 @@ public abstract class AwareAgent extends Agent {
      * @return an {@link ACLMessage} with my data
      */
     public ACLMessage acceptedProposal(ACLMessage msg) {
-        return createACLMessage(ACLMessage.AGREE, msg.getSender(), "Obrigado, aqui vão os meus");
+        return null;
     }
 
 
@@ -94,9 +93,7 @@ public abstract class AwareAgent extends Agent {
      *
      * @param msg the msg that contains the CFP
      */
-    public void rejectedProposal(ACLMessage msg) {
-        print("The other agent rejected me...");
-    }
+    public void rejectedProposal(ACLMessage msg) { }
 
     /**
      * Calculate the result of moving from current pos in dir direction
@@ -177,7 +174,7 @@ public abstract class AwareAgent extends Agent {
     }
 
     private boolean isNegotiating() {
-        return messageBehaviour!= null && messageBehaviour.negotiatingWith != null;
+        return messageBehaviour != null && messageBehaviour.negotiatingWith != null;
     }
 
     public void print(String message) {
