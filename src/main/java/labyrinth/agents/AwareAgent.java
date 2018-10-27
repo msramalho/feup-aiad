@@ -10,7 +10,6 @@ import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Vector2D;
 import jade.core.AID;
 import sajas.core.Agent;
-import uchicago.src.sim.engine.Schedule;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,11 +22,12 @@ import java.io.Serializable;
  */
 public abstract class AwareAgent extends Agent {
     public MazePosition position;
-    protected MazeKnowledge knowledge;
+    private MazeKnowledge knowledge;
     private MessageBehaviour messageBehaviour;
 
-    private Schedule sch;
+    // private Schedule sch;
     public int visibility = 1;
+    public boolean communicatingAgent = false;
 
     AwareAgent(MazePosition position, MazeKnowledge knowledge) {
         setAID(new AID("AwareAgent", true));
@@ -39,7 +39,13 @@ public abstract class AwareAgent extends Agent {
     protected void setup() {
         super.setup();
         // init message exchange behaviour, as defined by the CFP classes
-        addBehaviour(messageBehaviour = new MessageBehaviour(this));
+        if (communicatingAgent) {
+            addBehaviour(messageBehaviour = new MessageBehaviour(this));
+        }
+    }
+
+    public MazeKnowledge getKnowledge() {
+        return knowledge;
     }
 
     /**
@@ -171,7 +177,7 @@ public abstract class AwareAgent extends Agent {
     }
 
     private boolean isNegotiating() {
-        return messageBehaviour.negotiatingWith != null;
+        return messageBehaviour!= null && messageBehaviour.negotiatingWith != null;
     }
 
     public void print(String message) {
@@ -179,7 +185,7 @@ public abstract class AwareAgent extends Agent {
     }
 
     //TODO: @ros para que é isto? não vejo a ser usada
-    public void setSchedule(Schedule sch) {
-        this.sch = sch;
-    }
+    // public void setSchedule(Schedule sch) {
+    //     this.sch = sch;
+    // }
 }

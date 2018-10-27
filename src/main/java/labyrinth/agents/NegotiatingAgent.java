@@ -11,6 +11,7 @@ public class NegotiatingAgent extends BacktrackAgent {
 
     public NegotiatingAgent(MazePosition position, MazeKnowledge knowledge) {
         super(position, knowledge);
+        communicatingAgent = true;
     }
 
     @Override
@@ -20,7 +21,7 @@ public class NegotiatingAgent extends BacktrackAgent {
 
     @Override
     public ACLMessage handleCFP(ACLMessage msg) {
-        envelope = new NegotiationEnvelope("Me too", knowledge, 100);
+        envelope = new NegotiationEnvelope("Me too", getKnowledge(), 100);
         System.out.println("I will be proposing: " + envelope.utility);
         return createACLMessage(ACLMessage.PROPOSE, msg.getSender(), envelope);
     }
@@ -29,7 +30,7 @@ public class NegotiatingAgent extends BacktrackAgent {
     public ACLMessage handleProposal(ACLMessage msg) {
         try {
             if (((NegotiationEnvelope) msg.getContentObject()).utility > 1) {
-                envelope = new NegotiationEnvelope("Hope you like it", knowledge, 100);
+                envelope = new NegotiationEnvelope("Hope you like it", getKnowledge(), 100);
                 envelope.revealMystery();
                 return createACLMessage(ACLMessage.ACCEPT_PROPOSAL, msg.getSender(), envelope);
             }
@@ -40,7 +41,7 @@ public class NegotiatingAgent extends BacktrackAgent {
     @Override
     public ACLMessage acceptedProposal(ACLMessage msg) {
         try {
-            knowledge.update((NegotiationEnvelope) msg.getContentObject());
+            getKnowledge().update((NegotiationEnvelope) msg.getContentObject());
             envelope.revealMystery();
             return createACLMessage(ACLMessage.AGREE, msg.getSender(), envelope);
         } catch (UnreadableException e) {e.printStackTrace();}

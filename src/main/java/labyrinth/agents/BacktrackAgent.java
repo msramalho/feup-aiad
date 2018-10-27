@@ -36,11 +36,11 @@ public class BacktrackAgent extends AwareAgent {
         for (Directions d : directions) {
             Vector2D pos = getPosAfterMove(d);
             // if this is not yet explored
-            if (knowledge.confidences[pos.x][pos.y].isUnknown() && !knowledge.isDeadEnd(position.getPosition(), d)) {
+            if (getKnowledge().confidences[pos.x][pos.y].isUnknown() && !getKnowledge().isDeadEnd(position.getPosition(), d)) {
                 if (countContinuosBacktracks > 0) { //if there was backtrack onto this position
                     ArrayList<Directions> dirs = new ArrayList<>();
                     dirs.add(Directions.getOpposite(lastMove));
-                    knowledge.updateDeadEnds(new Pair<>(position.getPosition().x, position.getPosition().y), dirs, countContinuosBacktracks);
+                    getKnowledge().updateDeadEnds(new Pair<>(position.getPosition().x, position.getPosition().y), dirs, countContinuosBacktracks);
                     print("FOUND DEAD END AT " + position.getPosition().x + ", " + position.getPosition().y + " going " + Directions.getOpposite(lastMove).toString() + " of cost " + countContinuosBacktracks);
                     countContinuosBacktracks = 0;
                 }
@@ -50,7 +50,7 @@ public class BacktrackAgent extends AwareAgent {
         }
         countContinuosBacktracks++;
         if (backtrackStack.empty()) { // failed to find exit, so restart, might have been due to wrong info from other agents
-            knowledge.init();
+            getKnowledge().init();
             return getNextStep();
         }
         return backtrackStack.pop();// no new option -> go back
