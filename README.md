@@ -22,6 +22,17 @@ $ ./gradlew run --args="configurations/agents.yaml"
 $ ./gradlew run --args="configurations/defaults.json"
 ```
 
+#### To package
+
+Simply run:
+```bash
+$ ./gradlew tar
+```
+
+This will create a `<name>.jar` file in the `./build/libs` directory.
+
+This is a dependency free `.jar` which means you only need the `.jar` and a java runtime to execute it since all dependencies and resources are already included in the zip.
+
 ## Configuration File Example
 YAML:
 ```yaml
