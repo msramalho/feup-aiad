@@ -29,7 +29,7 @@ public class WinChecker {
         });
 
         if (mazePositions.size() == 0) {
-            System.out.println("======= All agents found the exit");
+            System.out.println("======= All agents found the exit ==================");
             allExited = true;
             if (batchMode) {
                 System.out.println("Exiting");

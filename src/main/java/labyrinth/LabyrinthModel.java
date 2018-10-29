@@ -2,15 +2,9 @@ package labyrinth;
 
 import jade.wrapper.StaleProxyException;
 import labyrinth.agents.AwareAgent;
-import labyrinth.cli.WinChecker;
-import labyrinth.utils.ClockPublisher;
-import labyrinth.display.MazeSpace;
+import labyrinth.cli.ConfigurationFactory;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
-import labyrinth.maze.Maze;
-import labyrinth.utils.RandomSingleton;
-import labyrinth.utils.Vector2D;
-import labyrinth.maze.MazeFactory;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
@@ -18,23 +12,18 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final boolean BATCH_MODE = true;
-    private Vector2D mazeSize = new Vector2D(30, 30);
-    private int actionSlownessRate = 1; // lower is faster
-    private long seed = System.currentTimeMillis();
-    private boolean batchMode;
-    private static AgentBuilder builder;
+    private static Map<String, AwareAgent> agents;
+    private final ConfigurationFactory config;
 
-    public LabyrinthModel(boolean batchMode) {
+    public LabyrinthModel(ConfigurationFactory config) {
         super();
-        this.batchMode = batchMode;
-
+        this.config = config;
     }
 
     @Override
@@ -43,35 +32,35 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
     public int getMazeHeight() {
-        return mazeSize.y;
+        return config.getMazeHeight();
     }
 
     public void setMazeHeight(int height) {
-        this.mazeSize = new Vector2D(mazeSize.x, height);
+        config.setMazeHeight(height);
     }
 
     public int getMazeLength() {
-        return mazeSize.x;
+        return config.getMazeLength();
     }
 
     public void setMazeLength(int length) {
-        this.mazeSize = new Vector2D(length, mazeSize.y);
+        config.setMazeLength(length);
     }
 
     public int getSlownessRate() {
-        return actionSlownessRate;
+        return config.getSlownessRate();
     }
 
     public void setSlownessRate(int clocks) {
-        this.actionSlownessRate = clocks;
+        config.setSlownessRate(clocks);
     }
 
     public long getSeed() {
-        return this.seed;
+        return config.getSeed();
     }
 
     public void setSeed(long seed) {
-        this.seed = seed;
+        config.setSeed(seed);
     }
 
 
@@ -85,7 +74,6 @@ public class LabyrinthModel extends Repast3Launcher {
      */
     @Override
     protected void launchJADE() {
-        // don't know the purpose of this
         Runtime rt = Runtime.instance();
         Profile p1 = new ProfileImpl();
         ContainerController mainContainer = rt.createMainContainer(p1);
@@ -97,62 +85,35 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
     private void build(ContainerController mainContainer) throws StaleProxyException, IOException {
-        RandomSingleton.setSeed(seed);
+        DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
+        registerDisplaySurface("Labyrinth Model", displaySurf);
 
-        // maze
-        Maze maze = new MazeFactory(mazeSize).buildRecursiveMaze();
-
-        // agents
-        builder = new AgentBuilder(mainContainer, maze);
-        builder.addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent()
-                .addNegotiatingAgent();
-
-
-        // clock ticks
-        ClockPublisher clockPublisher = new ClockPublisher()
-                .subscribe(builder.buildAgentTickRunners());
-
-        // graphics
-        if (!batchMode) {
-            DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
-            registerDisplaySurface("Labyrinth Model", displaySurf);
-
-            new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
-            displaySurf.display();
-            clockPublisher.subscribe(displaySurf::updateDisplay);
-        }
-
-        // win checker
-        WinChecker checker = new WinChecker(builder.getMazePositions(), batchMode);
-        clockPublisher.subscribe(checker::tick);
-
-        getSchedule().scheduleActionAtInterval(actionSlownessRate, clockPublisher);
+        agents = config.build(mainContainer, displaySurf, getSchedule());
     }
 
     public static void main(String[] args) {
+        ConfigurationFactory config = new ConfigurationFactory();
+
         SimInit init = new SimInit();
         init.setNumRuns(1);   // works only in batch mode
-        LabyrinthModel model = new LabyrinthModel(BATCH_MODE);
-        init.loadModel(model, null, BATCH_MODE);
-
+        LabyrinthModel model = new LabyrinthModel(config);
+        init.loadModel(model, null, config.getBatchMode());
     }
 
     /**
      * Get the neighbours of an agent that are within its visibility range, that can also see it
      * If A and B can speak, only one of them will receive the address of the other
+     *
      * @param agent the querying agent
      * @return a list of agent AID names
      */
     public static List<String> getNeigbours(AwareAgent agent) {
-        return builder.allAgents.entrySet().stream()
+        return agents.entrySet().stream()
                 .filter(entry -> 0 < entry.getKey().compareTo(agent.getAID().getName()))
                 .filter(entry -> {
-                    int dist = entry.getValue().position.getPosition().manhattanDistance(agent.position.getPosition());
+                    int dist = entry.getValue()
+                            .position.getPosition()
+                            .manhattanDistance(agent.position.getPosition());
                     return dist <= agent.visibility && dist <= entry.getValue().visibility;
                 })
                 .map(HashMap.Entry::getKey).collect(Collectors.toList());

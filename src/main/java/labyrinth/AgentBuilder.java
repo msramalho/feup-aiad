@@ -13,6 +13,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
@@ -25,8 +26,7 @@ public class AgentBuilder {
     private final List<Vector2D> startPositions;
     private int agentCounter = 0;
     private List<MazePosition> mazePositions = new ArrayList<>();
-
-    public HashMap<String, AwareAgent> allAgents = new HashMap<>();
+    private HashMap<String, AwareAgent> allAgents = new HashMap<>();
 
     public AgentBuilder(ContainerController mainContainer, Maze maze) {
         this.mainContainer = mainContainer;
@@ -80,6 +80,10 @@ public class AgentBuilder {
 
     public List<MazePosition> getMazePositions() {
         return new ArrayList<>(mazePositions);
+    }
+
+    public Map<String, AwareAgent> getAgents() {
+        return new HashMap<>(allAgents);
     }
 
 }
