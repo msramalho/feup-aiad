@@ -1,5 +1,6 @@
 package labyrinth.cli;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jade.wrapper.StaleProxyException;
 import labyrinth.AgentBuilder;
 import labyrinth.agents.AwareAgent;
@@ -26,38 +27,43 @@ public class ConfigurationFactory {
         return mazeSize.y;
     }
 
-    public void setMazeHeight(int height) {
-        this.mazeSize = new Vector2D(mazeSize.x, height);
-    }
-
     public int getMazeLength() {
         return mazeSize.x;
-    }
-
-    public void setMazeLength(int length) {
-        this.mazeSize = new Vector2D(length, mazeSize.y);
-    }
-
-    public int getSlownessRate() {
-        return actionSlownessRate;
-    }
-
-    public void setSlownessRate(int clocks) {
-        this.actionSlownessRate = clocks;
     }
 
     public long getSeed() {
         return this.seed;
     }
 
-    public void setSeed(long seed) {
-        this.seed = seed;
-    }
-
     public boolean getBatchMode() {
         return batchMode;
     }
 
+    public int getSlownessRate() {
+        return actionSlownessRate;
+    }
+
+    @JsonProperty
+    public void setMazeLength(int length) {
+        this.mazeSize = new Vector2D(length, mazeSize.y);
+    }
+
+    @JsonProperty
+    public void setSlownessRate(int clocks) {
+        this.actionSlownessRate = clocks;
+    }
+
+    @JsonProperty
+    public void setMazeHeight(int height) {
+        this.mazeSize = new Vector2D(mazeSize.x, height);
+    }
+
+    @JsonProperty
+    public void setSeed(long seed) {
+        this.seed = seed;
+    }
+
+    @JsonProperty
     public void setBatchMode(boolean batchMode) {
         this.batchMode = batchMode;
     }
@@ -99,4 +105,5 @@ public class ConfigurationFactory {
         return builder.getAgents();
 
     }
+
 }

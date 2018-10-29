@@ -1,5 +1,7 @@
 package labyrinth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import jade.wrapper.StaleProxyException;
 import labyrinth.agents.AwareAgent;
 import labyrinth.cli.ConfigurationFactory;
@@ -11,6 +13,7 @@ import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -78,21 +81,58 @@ public class LabyrinthModel extends Repast3Launcher {
         Profile p1 = new ProfileImpl();
         ContainerController mainContainer = rt.createMainContainer(p1);
         try {
-            build(mainContainer);
+            DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
+            registerDisplaySurface("Labyrinth Model", displaySurf);
+
+            agents = config.build(mainContainer, displaySurf, getSchedule());
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    private void build(ContainerController mainContainer) throws StaleProxyException, IOException {
-        DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
-        registerDisplaySurface("Labyrinth Model", displaySurf);
 
-        agents = config.build(mainContainer, displaySurf, getSchedule());
+    private static String getFileExtension(String path) {
+        int lastIndexOf = path.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return ""; // empty extension
+        }
+        return path.substring(lastIndexOf + 1).toLowerCase();
+    }
+
+    private static ConfigurationFactory buildConfiguration(String[] args) {
+        if (args.length == 0) {
+            return new ConfigurationFactory();
+        }
+
+        if (args.length > 2) {
+            throw new IllegalArgumentException("Invalid usage, write a json or yaml config filename path");
+        }
+
+        String path = args[0];
+        File file = new File(path);
+        if (!file.exists() || file.isDirectory()) {
+            throw new IllegalArgumentException("Invalid file: " + path);
+        }
+
+        String extension = getFileExtension(path);
+        ObjectMapper yamlMapper;
+        if (extension.equals("json")) {
+            yamlMapper = new ObjectMapper();
+        } else if (extension.equals("yaml") || extension.equals("yml")) {
+            yamlMapper = new ObjectMapper(new YAMLFactory());
+        } else {
+            throw new IllegalArgumentException("invalid path: " + path);
+        }
+
+        try {
+            return yamlMapper.readValue(file, ConfigurationFactory.class);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public static void main(String[] args) {
-        ConfigurationFactory config = new ConfigurationFactory();
+        ConfigurationFactory config = buildConfiguration(args);
 
         SimInit init = new SimInit();
         init.setNumRuns(1);   // works only in batch mode

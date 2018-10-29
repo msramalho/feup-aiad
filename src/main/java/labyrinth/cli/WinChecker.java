@@ -32,7 +32,7 @@ public class WinChecker {
             System.out.println("======= All agents found the exit ==================");
             allExited = true;
             if (batchMode) {
-                System.out.println("Exiting");
+                System.out.println("Success. Exiting");
                 System.exit(0);
             }
         }
