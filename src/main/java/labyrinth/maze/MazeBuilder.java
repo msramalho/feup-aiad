@@ -1,6 +1,6 @@
 package labyrinth.maze;
 
-import labyrinth.utils.LMath;
+import labyrinth.utils.Utilities;
 import labyrinth.utils.Segment;
 import labyrinth.utils.Vector2D;
 
@@ -8,29 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class MazeBuilder {
+class MazeBuilder {
 
     private List<Vector2D> startingPositions = new ArrayList<>();
     private boolean[][] walls;
     private Vector2D size;
     private Vector2D endPos;
 
-    public MazeBuilder(boolean[][] walls, Vector2D size) {
+    MazeBuilder(boolean[][] walls, Vector2D size) {
         this.walls = walls;
         this.size = size;
     }
 
-    public MazeBuilder setEndPos(Vector2D endPos) {
+    private MazeBuilder setEndPos(Vector2D endPos) {
         this.endPos = endPos;
         return this;
     }
 
-    public MazeBuilder addStartPos(Vector2D startPos) {
+    private MazeBuilder addStartPos(Vector2D startPos) {
         startingPositions.add(startPos);
         return this;
     }
 
-    public Maze buildMaze() {
+    Maze buildMaze() {
         if (walls == null || size == null || endPos == null || startingPositions.size() == 0) {
             throw new IllegalArgumentException();
         }
@@ -38,7 +38,7 @@ public class MazeBuilder {
         return new Maze(walls, size, startingPositions, endPos);
     }
 
-    public int getNumPositions() {
+    private int getNumPositions() {
         return startingPositions.size();
     }
 
@@ -55,7 +55,7 @@ public class MazeBuilder {
      * @param point
      * @param func
      */
-    public boolean walkSpacesAroundPoint(Vector2D point, Function<Vector2D, Boolean> func) {
+    private boolean walkSpacesAroundPoint(Vector2D point, Function<Vector2D, Boolean> func) {
         if (!point.isInsideBounds(size)) {
             throw new IllegalArgumentException("Point out of bounds");
         }
@@ -71,7 +71,7 @@ public class MazeBuilder {
             return false;
         }
 
-        final int highestDistance = LMath.max(point.x, point.y, size.x - point.x - 1, size.y - point.y - 1);
+        final int highestDistance = Utilities.max(point.x, point.y, size.x - point.x - 1, size.y - point.y - 1);
 
         for (int distance = 1; distance <= highestDistance; distance++) {
             Vector2D topLeft = point.translate(-distance, distance);
@@ -91,7 +91,7 @@ public class MazeBuilder {
         return true;
     }
 
-    public MazeBuilder addMazePositionsWith4Corners() {
+    MazeBuilder addMazePositionsWith4Corners() {
         Vector2D corners[] = new Vector2D[]{
                 new Vector2D(0,0),
                 new Vector2D(size.x - 1, 0),
@@ -118,7 +118,7 @@ public class MazeBuilder {
         return this;
     }
 
-    public MazeBuilder addWrappingWalls() {
+    MazeBuilder addWrappingWalls() {
         Vector2D newSize = size.translate(2, 2);
         boolean[][] newWalls = new boolean[newSize.x][newSize.y];
 

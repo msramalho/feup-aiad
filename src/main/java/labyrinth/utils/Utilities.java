@@ -1,6 +1,6 @@
 package labyrinth.utils;
 
-public class LMath {
+public class Utilities {
     public static int max(int ... numbers) {
         if (numbers.length <= 1) {
             throw new IllegalArgumentException();
@@ -12,5 +12,15 @@ public class LMath {
         }
 
         return maxValue;
+    }
+
+    public interface ExceptionRunner<T extends Exception> {
+        void run() throws T;
+    }
+
+    public static <T extends Exception> void rangeExecutors(int numIterations, ExceptionRunner<T> executor) throws T {
+        for (int i = 0; i < numIterations; i++ ) {
+            executor.run();
+        }
     }
 }
