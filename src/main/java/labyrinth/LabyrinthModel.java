@@ -2,6 +2,7 @@ package labyrinth;
 
 import jade.wrapper.StaleProxyException;
 import labyrinth.agents.AwareAgent;
+import labyrinth.cli.WinChecker;
 import labyrinth.utils.ClockPublisher;
 import labyrinth.display.MazeSpace;
 import jade.core.Profile;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final boolean BATCH_MODE = false;
+    private static final boolean BATCH_MODE = true;
     private Vector2D mazeSize = new Vector2D(30, 30);
     private int actionSlownessRate = 1; // lower is faster
     private long seed = System.currentTimeMillis();
@@ -95,14 +96,6 @@ public class LabyrinthModel extends Repast3Launcher {
         }
     }
 
-    @Override
-    public void begin() {
-        super.begin();
-        if (!batchMode) {
-            //buildAndScheduleDisplay();
-        }
-    }
-
     private void build(ContainerController mainContainer) throws StaleProxyException, IOException {
         RandomSingleton.setSeed(seed);
 
@@ -119,6 +112,7 @@ public class LabyrinthModel extends Repast3Launcher {
                 .addNegotiatingAgent()
                 .addNegotiatingAgent();
 
+
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
                 .subscribe(builder.buildAgentTickRunners());
@@ -132,6 +126,10 @@ public class LabyrinthModel extends Repast3Launcher {
             displaySurf.display();
             clockPublisher.subscribe(displaySurf::updateDisplay);
         }
+
+        // win checker
+        WinChecker checker = new WinChecker(builder.getMazePositions(), batchMode);
+        clockPublisher.subscribe(checker::tick);
 
         getSchedule().scheduleActionAtInterval(actionSlownessRate, clockPublisher);
     }

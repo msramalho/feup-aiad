@@ -24,6 +24,8 @@ public class AgentBuilder {
     private final Maze maze;
     private final List<Vector2D> startPositions;
     private int agentCounter = 0;
+    private List<MazePosition> mazePositions = new ArrayList<>();
+
     public HashMap<String, AwareAgent> allAgents = new HashMap<>();
 
     public AgentBuilder(ContainerController mainContainer, Maze maze) {
@@ -37,6 +39,7 @@ public class AgentBuilder {
         Vector2D startPos = startPositions.get(startIndex);
 
         MazePosition mazePosition = new MazePosition(startPos, maze);
+        mazePositions.add(mazePosition);
         MazeKnowledge knowledge = new MazeKnowledge(maze);
         AwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
 
@@ -73,6 +76,10 @@ public class AgentBuilder {
 
     public List<Runnable> buildAgentTickRunners() {
         return agentTickRunners;
+    }
+
+    public List<MazePosition> getMazePositions() {
+        return new ArrayList<>(mazePositions);
     }
 
 }
