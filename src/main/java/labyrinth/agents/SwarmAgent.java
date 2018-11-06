@@ -4,18 +4,17 @@ import labyrinth.agents.maze.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 
 public class SwarmAgent extends BacktrackAgent {
-    static public MazeKnowledge swarmKnowledge = null;
+    private static MazeKnowledge swarmKnowledgeSingleton = null;
 
 
     public SwarmAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
-        super(mazePosition, knowledge);
-        if (swarmKnowledge == null) {
-            swarmKnowledge = knowledge;
-        }
+        super(mazePosition, calculateMazeKnowledge(knowledge));
     }
 
-    @Override
-    public MazeKnowledge getKnowledge() {
-        return swarmKnowledge;
+    private static MazeKnowledge calculateMazeKnowledge(MazeKnowledge currentKnowledge) {
+        if (swarmKnowledgeSingleton == null) {
+            swarmKnowledgeSingleton = currentKnowledge;
+        }
+        return swarmKnowledgeSingleton;
     }
 }

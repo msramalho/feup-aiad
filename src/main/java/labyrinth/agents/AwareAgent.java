@@ -140,7 +140,11 @@ public abstract class AwareAgent extends Agent {
             doDelete();
             return;
         }
-        if (isNegotiating()) return;
+
+        if (isNegotiating()) {
+            return;
+        }
+
         knowledge.update(position.getPosition().x, position.getPosition().y, MazeKnowledge.CELL_STATE.PATH);
         handleTick();//TODO: maybe pass the available directions here (but each agent should say if random or not)
     }
