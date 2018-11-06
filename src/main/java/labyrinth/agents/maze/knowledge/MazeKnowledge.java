@@ -20,7 +20,8 @@ public class MazeKnowledge {
     public int lines, columns;
     //marks crossings + directions that lead to dead ends.
     // Coordinate -> directions that lead to dead ends + size (cumulative number of cells in the dead end)
-    public Map<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new HashMap<>();
+    public HashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new HashMap<>();
+
     public CellConfidence[][] confidences;
 
     public MazeKnowledge(Maze maze) {
@@ -42,17 +43,7 @@ public class MazeKnowledge {
         confidences[x][y] = new CellConfidence(state, confidence);
     }
 
-    public void update(int x, int y, CellState state) {
-        update(x, y, state, 1F);
-    }
-
-    public void update(Directions d, CellState state, Float confidence) {
-        update(d.direction.x, d.direction.y, state, confidence);
-    }
-
-    public void update(Directions d, CellState state) {
-        update(d.direction.x, d.direction.y, state, 1F);
-    }
+    public void update(int x, int y, CellState state) { update(x, y, state, 1F);}
 
     public void update(NegotiationEnvelope envelope) {
         for (Map.Entry<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> de : envelope.proposal.entrySet())
