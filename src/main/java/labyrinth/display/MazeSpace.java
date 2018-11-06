@@ -10,7 +10,6 @@ import uchicago.src.sim.space.Object2DGrid;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +17,12 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class MazeSpace {
-    private BufferedImage wallImage = ImageIO.read(new File("resources/wall.png"));
+    private BufferedImage wallImage = ImageIO.read(getClass().getClassLoader().getResource("wall.png"));
     private static final Color START_COLOR = Color.BLUE;
     private static final Color END_COLOR = Color.GREEN;
     public Object2DGrid grid;//useful for getting neighbours
 
     public MazeSpace() throws IOException {
-
     }
 
     public void addDisplayables(Maze maze, List<Pair<Color, Supplier<Vector2D>>> agentSuppliers, DisplaySurface displaySurf) {

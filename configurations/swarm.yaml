@@ -1,0 +1,8 @@
+batchMode: true
+mazeHeight: 30
+mazeLength: 30
+numForwardAgents: 0
+numBacktrackAgents: 0
+numRandomAgents: 0
+numNegotiatingAgents: 0
+numSwarmAgents: 6

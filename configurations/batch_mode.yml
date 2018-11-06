@@ -1,0 +1,6 @@
+---
+seed: 1
+batchMode: true
+mazeHeight: 50
+mazeLength: 50
+slownessRate: 1

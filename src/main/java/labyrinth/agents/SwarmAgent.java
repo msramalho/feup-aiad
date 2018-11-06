@@ -8,10 +8,10 @@ public class SwarmAgent extends BacktrackAgent {
 
 
     public SwarmAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
-        super(mazePosition, calculateMazeKnowledge(knowledge));
+        super(mazePosition, getSwarmKnoweldge(knowledge));
     }
 
-    private static MazeKnowledge calculateMazeKnowledge(MazeKnowledge currentKnowledge) {
+    private static MazeKnowledge getSwarmKnoweldge(MazeKnowledge currentKnowledge) {
         if (swarmKnowledgeSingleton == null) {
             swarmKnowledgeSingleton = currentKnowledge;
         }

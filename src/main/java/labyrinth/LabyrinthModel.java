@@ -1,39 +1,33 @@
 package labyrinth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import jade.wrapper.StaleProxyException;
 import labyrinth.agents.AwareAgent;
-import labyrinth.utils.ClockPublisher;
-import labyrinth.display.MazeSpace;
+import labyrinth.cli.ConfigurationFactory;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
-import labyrinth.maze.Maze;
-import labyrinth.utils.RandomSingleton;
-import labyrinth.utils.Vector2D;
-import labyrinth.maze.MazeFactory;
+import labyrinth.utils.Utilities;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
+import java.io.File;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static final boolean BATCH_MODE = false;
-    private Vector2D mazeSize = new Vector2D(30, 30);
-    private int actionSlownessRate = 1; // lower is faster
-    private long seed = System.currentTimeMillis();
-    private boolean batchMode;
-    private static AgentBuilder builder;
+    private static Map<String, AwareAgent> agents;
+    private final ConfigurationFactory config;
 
-    public LabyrinthModel(boolean batchMode) {
+    public LabyrinthModel(ConfigurationFactory config) {
         super();
-        this.batchMode = batchMode;
-
+        this.config = config;
     }
 
     @Override
@@ -42,35 +36,35 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
     public int getMazeHeight() {
-        return mazeSize.y;
+        return config.getMazeHeight();
     }
 
     public void setMazeHeight(int height) {
-        this.mazeSize = new Vector2D(mazeSize.x, height);
+        config.setMazeHeight(height);
     }
 
     public int getMazeLength() {
-        return mazeSize.x;
+        return config.getMazeLength();
     }
 
     public void setMazeLength(int length) {
-        this.mazeSize = new Vector2D(length, mazeSize.y);
+        config.setMazeLength(length);
     }
 
     public int getSlownessRate() {
-        return actionSlownessRate;
+        return config.getSlownessRate();
     }
 
     public void setSlownessRate(int clocks) {
-        this.actionSlownessRate = clocks;
+        config.setSlownessRate(clocks);
     }
 
     public long getSeed() {
-        return this.seed;
+        return config.getSeed();
     }
 
     public void setSeed(long seed) {
-        this.seed = seed;
+        config.setSeed(seed);
     }
 
 
@@ -84,77 +78,76 @@ public class LabyrinthModel extends Repast3Launcher {
      */
     @Override
     protected void launchJADE() {
-        // don't know the purpose of this
         Runtime rt = Runtime.instance();
         Profile p1 = new ProfileImpl();
         ContainerController mainContainer = rt.createMainContainer(p1);
         try {
-            build(mainContainer);
+            DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
+            registerDisplaySurface("Labyrinth Model", displaySurf);
+
+            agents = config.build(mainContainer, displaySurf, getSchedule());
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    @Override
-    public void begin() {
-        super.begin();
-        if (!batchMode) {
-            //buildAndScheduleDisplay();
-        }
-    }
 
-    private void build(ContainerController mainContainer) throws StaleProxyException, IOException {
-        RandomSingleton.setSeed(seed);
 
-        // maze
-        Maze maze = new MazeFactory(mazeSize).buildRecursiveMaze();
-
-        // agents
-        builder = new AgentBuilder(mainContainer, maze);
-        builder.addSwarmAgent()
-                .addSwarmAgent()
-                .addSwarmAgent()
-                .addSwarmAgent()
-                .addSwarmAgent()
-                .addSwarmAgent()
-                .addSwarmAgent();
-
-        // clock ticks
-        ClockPublisher clockPublisher = new ClockPublisher()
-                .subscribe(builder.buildAgentTickRunners());
-
-        // graphics
-        if (!batchMode) {
-            DisplaySurface displaySurf = new DisplaySurface(this, "Labyrinth Model");
-            registerDisplaySurface("Labyrinth Model", displaySurf);
-
-            new MazeSpace().addDisplayables(maze, builder.buildAgentGraphics(), displaySurf);
-            displaySurf.display();
-            clockPublisher.subscribe(displaySurf::updateDisplay);
+    private static ConfigurationFactory buildConfiguration(String[] args) {
+        if (args.length == 0) {
+            return new ConfigurationFactory();
         }
 
-        getSchedule().scheduleActionAtInterval(actionSlownessRate, clockPublisher);
+        if (args.length > 2) {
+            throw new IllegalArgumentException("Invalid usage, write a json or yaml config filename path");
+        }
+
+        String path = args[0];
+        File file = new File(path);
+        if (!file.exists() || file.isDirectory()) {
+            throw new IllegalArgumentException("Invalid file: " + path);
+        }
+
+        String extension = Utilities.getFileExtension(path);
+        ObjectMapper yamlMapper;
+        if (extension.equals("json")) {
+            yamlMapper = new ObjectMapper();
+        } else if (extension.equals("yaml") || extension.equals("yml")) {
+            yamlMapper = new ObjectMapper(new YAMLFactory());
+        } else {
+            throw new IllegalArgumentException("invalid path: " + path);
+        }
+
+        try {
+            return yamlMapper.readValue(file, ConfigurationFactory.class);
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     public static void main(String[] args) {
+        ConfigurationFactory config = buildConfiguration(args);
+
         SimInit init = new SimInit();
         init.setNumRuns(1);   // works only in batch mode
-        LabyrinthModel model = new LabyrinthModel(BATCH_MODE);
-        init.loadModel(model, null, BATCH_MODE);
-
+        LabyrinthModel model = new LabyrinthModel(config);
+        init.loadModel(model, null, config.getBatchMode());
     }
 
     /**
      * Get the neighbours of an agent that are within its visibility range, that can also see it
      * If A and B can speak, only one of them will receive the address of the other
+     *
      * @param agent the querying agent
      * @return a list of agent AID names
      */
     public static List<String> getNeigbours(AwareAgent agent) {
-        return builder.allAgents.entrySet().stream()
+        return agents.entrySet().stream()
                 .filter(entry -> 0 < entry.getKey().compareTo(agent.getAID().getName()))
                 .filter(entry -> {
-                    int dist = entry.getValue().position.getPosition().manhattanDistance(agent.position.getPosition());
+                    int dist = entry.getValue()
+                            .position.getPosition()
+                            .manhattanDistance(agent.position.getPosition());
                     return dist <= agent.visibility && dist <= entry.getValue().visibility;
                 })
                 .map(HashMap.Entry::getKey).collect(Collectors.toList());

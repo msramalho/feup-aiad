@@ -41,8 +41,9 @@ public class BacktrackAgent extends AwareAgent {
                     ArrayList<Directions> dirs = new ArrayList<>();
                     dirs.add(Directions.getOpposite(lastMove));
                     getKnowledge().updateDeadEnds(new Pair<>(position.getPosition().x, position.getPosition().y), dirs, countContinuosBacktracks);
-                    print("FOUND DEAD END AT " + position.getPosition().x + ", " + position.getPosition().y + " going " + Directions.getOpposite(lastMove).toString() + " of cost " + countContinuosBacktracks);
                     countContinuosBacktracks = 0;
+
+                    print(getKnowledge().deadEnds.size() + "||" + "FOUND DEAD END AT " + position.getPosition().x + ", " + position.getPosition().y + " going " + Directions.getOpposite(lastMove).toString() + " of cost " + countContinuosBacktracks);
                 }
                 backtrackStack.push(Directions.getOpposite(d)); // add this to backtrackable steps
                 return d;
