@@ -7,6 +7,7 @@ import labyrinth.agents.AwareAgent;
 import labyrinth.cli.ConfigurationFactory;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
+import labyrinth.utils.Utilities;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
@@ -91,13 +92,7 @@ public class LabyrinthModel extends Repast3Launcher {
     }
 
 
-    private static String getFileExtension(String path) {
-        int lastIndexOf = path.lastIndexOf(".");
-        if (lastIndexOf == -1) {
-            return ""; // empty extension
-        }
-        return path.substring(lastIndexOf + 1).toLowerCase();
-    }
+
 
     private static ConfigurationFactory buildConfiguration(String[] args) {
         if (args.length == 0) {
@@ -114,7 +109,7 @@ public class LabyrinthModel extends Repast3Launcher {
             throw new IllegalArgumentException("Invalid file: " + path);
         }
 
-        String extension = getFileExtension(path);
+        String extension = Utilities.getFileExtension(path);
         ObjectMapper yamlMapper;
         if (extension.equals("json")) {
             yamlMapper = new ObjectMapper();

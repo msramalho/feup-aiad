@@ -23,4 +23,12 @@ public class Utilities {
             executor.run();
         }
     }
+
+    public static String getFileExtension(String path) {
+        int lastIndexOf = path.lastIndexOf(".");
+        if (lastIndexOf == -1) {
+            return ""; // empty extension
+        }
+        return path.substring(lastIndexOf + 1).toLowerCase();
+    }
 }
