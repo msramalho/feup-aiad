@@ -20,7 +20,7 @@ public class MazeKnowledge {
     public int lines, columns;
     //marks crossings + directions that lead to dead ends.
     // Coordinate -> directions that lead to dead ends + size (cumulative number of cells in the dead end)
-    public HashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new HashMap<>();
+    public Map<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new HashMap<>();
     public CellConfidence[][] confidences;
 
     public MazeKnowledge(Maze maze) {
