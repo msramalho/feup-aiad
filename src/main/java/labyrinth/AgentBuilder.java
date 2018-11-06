@@ -3,7 +3,7 @@ package labyrinth;
 import jade.wrapper.StaleProxyException;
 import labyrinth.agents.*;
 import labyrinth.maze.Maze;
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;

@@ -1,7 +1,7 @@
 package labyrinth.agents;
 
 import labyrinth.maze.Directions;
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 
 import java.util.ArrayList;

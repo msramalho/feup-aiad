@@ -1,6 +1,6 @@
 package labyrinth.agents;
 
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 
 public class SwarmAgent extends BacktrackAgent {

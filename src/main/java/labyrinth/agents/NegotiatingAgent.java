@@ -2,7 +2,7 @@ package labyrinth.agents;
 
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.NegotiationEnvelope;
 

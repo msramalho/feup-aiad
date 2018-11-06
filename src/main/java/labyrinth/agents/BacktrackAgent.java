@@ -1,13 +1,12 @@
 package labyrinth.agents;
 
 import labyrinth.maze.Directions;
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Stack;
 
 public class BacktrackAgent extends AwareAgent {

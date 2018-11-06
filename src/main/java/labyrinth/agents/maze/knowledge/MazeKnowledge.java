@@ -1,4 +1,4 @@
-package labyrinth.agents.maze;
+package labyrinth.agents.maze.knowledge;
 
 import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
@@ -17,44 +17,10 @@ import java.util.Map;
 
 public class MazeKnowledge {
 
-    //TODO: be able to classify cell + direction as dead end.
-    public enum CELL_STATE {
-        MISTERY, WALL, PATH, END;
-    }
-
     public int lines, columns;
     //marks crossings + directions that lead to dead ends.
     // Coordinate -> directions that lead to dead ends + size (cumulative number of cells in the dead end)
     public HashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new HashMap<>();
-
-    /**
-     * Reflects the confidence in each state that the agent has over a given cell
-     * Total trust in WALL is {Wall: 1.0}
-     */
-    public class CellConfidence {
-        //TODO: maybe implement functions to combine certainties and such
-        HashMap<CELL_STATE, Float> confidence = new HashMap<>();
-
-        public CellConfidence(CELL_STATE state, Float conf) { confidence.put(state, conf);}
-
-
-        /**
-         * @return the CELL_STATE in which the agent trusts the most
-         */
-        public CELL_STATE getValue() {
-            return confidence.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
-        }
-
-        /**
-         * Check if there is still no information about this cell
-         *
-         * @return true if no info is stored
-         */
-        public boolean isUnknown() {
-            return getValue() == CELL_STATE.MISTERY;
-        }
-    }
-
     public CellConfidence[][] confidences;
 
     public MazeKnowledge(Maze maze) {
@@ -69,20 +35,22 @@ public class MazeKnowledge {
      *
      * @param x          line
      * @param y          col
-     * @param state      {@link CELL_STATE}
+     * @param state      {@link CellState}
      * @param confidence confidence level [0,1]
      */
-    public void update(int x, int y, CELL_STATE state, Float confidence) {
+    public void update(int x, int y, CellState state, Float confidence) {
         confidences[x][y] = new CellConfidence(state, confidence);
     }
 
-    public void update(int x, int y, CELL_STATE state) { update(x, y, state, 1F);}
+    public void update(int x, int y, CellState state) {
+        update(x, y, state, 1F);
+    }
 
-    public void update(Directions d, CELL_STATE state, Float confidence) {
+    public void update(Directions d, CellState state, Float confidence) {
         update(d.direction.x, d.direction.y, state, confidence);
     }
 
-    public void update(Directions d, CELL_STATE state) {
+    public void update(Directions d, CellState state) {
         update(d.direction.x, d.direction.y, state, 1F);
     }
 
@@ -106,7 +74,7 @@ public class MazeKnowledge {
     public void init() {
         for (int i = 0; i < lines; i++)
             for (int j = 0; j < columns; j++)
-                confidences[i][j] = new CellConfidence(CELL_STATE.MISTERY, (float) 1);
+                confidences[i][j] = new CellConfidence(CellState.MISTERY, (float) 1);
     }
 
 
