@@ -28,7 +28,7 @@ public class ConfigurationFactory {
     private int numBacktrackAgents = 1;
     private int numRandomAgents = 1;
     private int numNegotiatingAgents = 1;
-    private int numSwarmAgents = 1;
+    private int numSwarmAgents = 0;
 
     public Map<String, AwareAgent> build(ContainerController mainContainer, DisplaySurface displaySurf, Schedule schedule) throws StaleProxyException, IOException {
         RandomSingleton.setSeed(seed);
