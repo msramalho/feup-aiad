@@ -142,7 +142,7 @@ public class LabyrinthModel extends Repast3Launcher {
      * @param agent the querying agent
      * @return a list of agent AID names
      */
-    public static List<String> getNeigbours(AwareAgent agent) {
+    public static List<String> getNeighbours(AwareAgent agent) {
         return agents.entrySet().stream()
                 .filter(entry -> 0 < entry.getKey().compareTo(agent.getAID().getName()))
                 .filter(entry -> {

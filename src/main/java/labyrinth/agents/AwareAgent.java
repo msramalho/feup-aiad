@@ -156,7 +156,7 @@ public abstract class AwareAgent extends Agent {
         msg.setPostTimeStamp((System.currentTimeMillis() / 1000L));
         if (sendToNeigbours) {
             msg.clearAllReceiver();
-            for (String name : LabyrinthModel.getNeigbours(this)) {
+            for (String name : LabyrinthModel.getNeighbours(this)) {
                 print("will send to: " + name);
                 msg.addReceiver(new AID(name, true));
             }
