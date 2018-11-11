@@ -25,9 +25,8 @@ public enum Directions {
      * @return
      */
     public static List<Directions> getRandomDirections() {
-        List<Directions> directionsCopy = new ArrayList<>(directions);
-        Collections.shuffle(directionsCopy, RandomSingleton.instance());
-        return directionsCopy;
+        Collections.shuffle(directions, RandomSingleton.instance());
+        return directions;
     }
 
     public static Directions getOpposite(Directions d1) {
