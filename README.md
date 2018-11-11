@@ -17,9 +17,9 @@ $ ./gradlew run
 
 To run with a configuration file (YAML or JSON), specify the file path as the first argument:
 ```bash
-$ ./gradlew run --args="configurations/agents.yaml"
+$ gradle run --args="configurations/agents.yaml"
 # or
-$ ./gradlew run --args="configurations/defaults.json"
+$ gradle run --args="configurations/defaults.json"
 ```
 
 #### To package
