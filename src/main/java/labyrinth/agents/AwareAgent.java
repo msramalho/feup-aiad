@@ -138,7 +138,7 @@ public abstract class AwareAgent extends Agent {
             return;
         }
         if (isNegotiating()) return;
-        knowledge.update(position.getPosition().x, position.getPosition().y, MazeKnowledge.CELL_STATE.PATH);
+        knowledge.update(position.getPosition().x, position.getPosition().y, CellState.PATH);
         handleTick();
     }
 
