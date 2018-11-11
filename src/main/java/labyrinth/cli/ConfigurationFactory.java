@@ -28,6 +28,7 @@ public class ConfigurationFactory {
     private int numBacktrackAgents = 1;
     private int numRandomAgents = 1;
     private int numNegotiatingAgents = 1;
+    private int numSwarmAgents = 0;
 
     public Map<String, AwareAgent> build(ContainerController mainContainer, DisplaySurface displaySurf, Schedule schedule) throws StaleProxyException, IOException {
         RandomSingleton.setSeed(seed);
@@ -41,6 +42,7 @@ public class ConfigurationFactory {
         Utilities.rangeExecutors(numForwardAgents, builder::addForwardAgent);
         Utilities.rangeExecutors(numRandomAgents, builder::addRandomAgent);
         Utilities.rangeExecutors(numNegotiatingAgents, builder::addNegotiatingAgent);
+        Utilities.rangeExecutors(numSwarmAgents, builder::addSwarmAgent);
 
 
         // clock ticks
@@ -62,26 +64,6 @@ public class ConfigurationFactory {
 
         return builder.getAgents();
 
-    }
-
-    public int getMazeHeight() {
-        return mazeSize.y;
-    }
-
-    public int getMazeLength() {
-        return mazeSize.x;
-    }
-
-    public long getSeed() {
-        return this.seed;
-    }
-
-    public boolean getBatchMode() {
-        return batchMode;
-    }
-
-    public int getSlownessRate() {
-        return actionSlownessRate;
     }
 
     @JsonProperty
@@ -110,17 +92,14 @@ public class ConfigurationFactory {
     }
 
 
-    public int getNumForwardAgents() {
-        return numForwardAgents;
-    }
-
     @JsonProperty
     public void setNumForwardAgents(int numForwardAgents) {
         this.numForwardAgents = numForwardAgents;
     }
 
-    public int getNumBacktrackAgents() {
-        return numBacktrackAgents;
+    @JsonProperty
+    public void setNumNegotiatingAgents(int numNegotiatingAgents) {
+        this.numNegotiatingAgents = numNegotiatingAgents;
     }
 
     @JsonProperty
@@ -128,21 +107,53 @@ public class ConfigurationFactory {
         this.numBacktrackAgents = numBacktrackAgents;
     }
 
-    public int getNumRandomAgents() {
-        return numRandomAgents;
-    }
-
     @JsonProperty
     public void setNumRandomAgents(int numRandomAgents) {
         this.numRandomAgents = numRandomAgents;
+    }
+
+    @JsonProperty
+    public void setNumSwarmAgents(int numSwarmAgents) {
+        this.numSwarmAgents = numSwarmAgents;
+    }
+
+    public int getNumForwardAgents() {
+        return numForwardAgents;
+    }
+
+    public int getNumRandomAgents() {
+        return numRandomAgents;
     }
 
     public int getNumNegotiatingAgents() {
         return numNegotiatingAgents;
     }
 
-    @JsonProperty
-    public void setNumNegotiatingAgents(int numNegotiatingAgents) {
-        this.numNegotiatingAgents = numNegotiatingAgents;
+    public int getNumBacktrackAgents() {
+        return numBacktrackAgents;
+    }
+
+    public int getNumSwarmAgents() {
+        return numSwarmAgents;
+    }
+
+    public int getMazeHeight() {
+        return mazeSize.y;
+    }
+
+    public int getMazeLength() {
+        return mazeSize.x;
+    }
+
+    public long getSeed() {
+        return this.seed;
+    }
+
+    public boolean getBatchMode() {
+        return batchMode;
+    }
+
+    public int getSlownessRate() {
+        return actionSlownessRate;
     }
 }

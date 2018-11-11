@@ -1,13 +1,12 @@
 package labyrinth.agents;
 
 import labyrinth.maze.Directions;
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Stack;
 
 public class BacktrackAgent extends AwareAgent {
@@ -31,26 +30,30 @@ public class BacktrackAgent extends AwareAgent {
      * @return the next step
      */
     private Directions getNextStep() {
-        ArrayList<Directions> directions = position.getAvailableDirections(true);
 
-        for (Directions d : directions) {
+        MazeKnowledge knowledge = getKnowledge();
+
+        for (Directions d : position.getAvailableDirections(true)) {
             Vector2D pos = getPosAfterMove(d);
+
             // if this is not yet explored
-            if (getKnowledge().confidences[pos.x][pos.y].isUnknown() && !getKnowledge().isDeadEnd(position.getPosition(), d)) {
+            if (!knowledge.confidences[pos.x][pos.y] &&
+                    !knowledge.isDeadEnd(position.getPosition(), d)) {
                 if (countContinuosBacktracks > 0) { //if there was backtrack onto this position
                     ArrayList<Directions> dirs = new ArrayList<>();
                     dirs.add(Directions.getOpposite(lastMove));
-                    getKnowledge().updateDeadEnds(new Pair<>(position.getPosition().x, position.getPosition().y), dirs, countContinuosBacktracks);
-                    print("FOUND DEAD END AT " + position.getPosition().x + ", " + position.getPosition().y + " going " + Directions.getOpposite(lastMove).toString() + " of cost " + countContinuosBacktracks);
+                    knowledge.updateDeadEnds(new Pair<>(position.getPosition().x, position.getPosition().y), dirs, countContinuosBacktracks);
                     countContinuosBacktracks = 0;
+
                 }
                 backtrackStack.push(Directions.getOpposite(d)); // add this to backtrackable steps
                 return d;
             }
         }
+
         countContinuosBacktracks++;
         if (backtrackStack.empty()) { // failed to find exit, so restart, might have been due to wrong info from other agents
-            getKnowledge().init();
+            knowledge.init();
             return getNextStep();
         }
         return backtrackStack.pop();// no new option -> go back

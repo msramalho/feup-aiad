@@ -1,11 +1,10 @@
 package labyrinth.utils;
 
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.maze.Directions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 

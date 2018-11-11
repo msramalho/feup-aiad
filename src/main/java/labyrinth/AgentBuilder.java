@@ -3,7 +3,7 @@ package labyrinth;
 import jade.wrapper.StaleProxyException;
 import labyrinth.agents.*;
 import labyrinth.maze.Maze;
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
@@ -67,6 +67,11 @@ public class AgentBuilder {
 
     public AgentBuilder addNegotiatingAgent() throws StaleProxyException {
         addAgent(Color.red, (mazePos, knowledge) -> new NegotiatingAgent(mazePos, knowledge));
+        return this;
+    }
+
+    public AgentBuilder addSwarmAgent() throws StaleProxyException {
+        addAgent(Color.yellow, (mazePos, knowledge) -> new SwarmAgent(mazePos, knowledge));
         return this;
     }
 

@@ -4,8 +4,9 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
 import labyrinth.LabyrinthModel;
 import labyrinth.agents.behaviours.MessageBehaviour;
+import labyrinth.agents.maze.knowledge.CellState;
 import labyrinth.maze.Directions;
-import labyrinth.agents.maze.MazeKnowledge;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.utils.Vector2D;
 import jade.core.AID;
@@ -137,7 +138,7 @@ public abstract class AwareAgent extends Agent {
             return;
         }
         if (isNegotiating()) return;
-        knowledge.update(position.getPosition().x, position.getPosition().y, MazeKnowledge.CELL_STATE.PATH);
+        knowledge.update(position.getPosition().x, position.getPosition().y, CellState.PATH);
         handleTick();
     }
 

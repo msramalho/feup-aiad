@@ -92,7 +92,6 @@ public class LabyrinthModel extends Repast3Launcher {
 
 
 
-
     private static ConfigurationFactory buildConfiguration(String[] args) {
         if (args.length == 0) {
             return new ConfigurationFactory();
