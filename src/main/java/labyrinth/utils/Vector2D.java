@@ -72,14 +72,16 @@ public class Vector2D {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Vector2D)) {
+            return false;
+        }
 
-        Vector2D vector2D = (Vector2D) o;
-
-        if (x != vector2D.x) return false;
-        return y == vector2D.y;
+        Vector2D vector2D = (Vector2D) other;
+        return x == vector2D.x && y == vector2D.y;
     }
 
     @Override

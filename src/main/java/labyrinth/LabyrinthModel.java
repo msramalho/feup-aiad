@@ -2,7 +2,6 @@ package labyrinth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import jade.wrapper.StaleProxyException;
 import labyrinth.agents.AwareAgent;
 import labyrinth.cli.ConfigurationFactory;
 import jade.core.Profile;
@@ -110,12 +109,16 @@ public class LabyrinthModel extends Repast3Launcher {
 
         String extension = Utilities.getFileExtension(path);
         ObjectMapper yamlMapper;
-        if (extension.equals("json")) {
-            yamlMapper = new ObjectMapper();
-        } else if (extension.equals("yaml") || extension.equals("yml")) {
-            yamlMapper = new ObjectMapper(new YAMLFactory());
-        } else {
-            throw new IllegalArgumentException("invalid path: " + path);
+        switch (extension) {
+            case "json":
+                yamlMapper = new ObjectMapper();
+                break;
+            case "yaml":
+            case "yml":
+                yamlMapper = new ObjectMapper(new YAMLFactory());
+                break;
+            default:
+                throw new IllegalArgumentException("invalid path: " + path);
         }
 
         try {
@@ -141,7 +144,7 @@ public class LabyrinthModel extends Repast3Launcher {
      * @param agent the querying agent
      * @return a list of agent AID names
      */
-    public static List<String> getNeigbours(AwareAgent agent) {
+    public static List<String> getNeighbours(AwareAgent agent) {
         return agents.entrySet().stream()
                 .filter(entry -> 0 < entry.getKey().compareTo(agent.getAID().getName()))
                 .filter(entry -> {

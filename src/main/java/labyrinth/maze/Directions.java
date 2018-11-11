@@ -21,6 +21,7 @@ public enum Directions {
 
     /**
      * Randomness defined by RandomSingleton
+     *
      * @return
      */
     public static List<Directions> getRandomDirections() {
@@ -38,7 +39,6 @@ public enum Directions {
     }
 
 
-    //TODO: maybe remove after debug is done OR use reflection to simplify
     @Override
     public String toString() {
         if (direction == UP.direction) return "UP";
