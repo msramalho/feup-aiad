@@ -26,7 +26,7 @@ $ ./gradlew run --args="configurations/defaults.json"
 
 Simply run:
 ```bash
-$ ./gradlew tar
+$ ./gradlew jar
 ```
 
 This will create a `<name>.jar` file in the `./build/libs` directory.
