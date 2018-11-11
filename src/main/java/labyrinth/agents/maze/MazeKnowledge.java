@@ -17,7 +17,6 @@ import java.util.Map;
 
 public class MazeKnowledge {
 
-    //TODO: be able to classify cell + direction as dead end.
     public enum CELL_STATE {
         MISTERY, WALL, PATH, END;
     }
@@ -32,7 +31,6 @@ public class MazeKnowledge {
      * Total trust in WALL is {Wall: 1.0}
      */
     public class CellConfidence {
-        //TODO: maybe implement functions to combine certainties and such
         HashMap<CELL_STATE, Float> confidence = new HashMap<>();
 
         public CellConfidence(CELL_STATE state, Float conf) { confidence.put(state, conf);}

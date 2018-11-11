@@ -132,14 +132,13 @@ public abstract class AwareAgent extends Agent {
      */
     public void tick() {
         if (position.atExit()) {
-            //TODO: handle dead agents by removing them from the scheduler or something
             takeDown();
             doDelete();
             return;
         }
         if (isNegotiating()) return;
         knowledge.update(position.getPosition().x, position.getPosition().y, MazeKnowledge.CELL_STATE.PATH);
-        handleTick();//TODO: maybe pass the available directions here (but each agent should say if random or not)
+        handleTick();
     }
 
     public abstract void handleTick();
@@ -161,7 +160,6 @@ public abstract class AwareAgent extends Agent {
                 msg.addReceiver(new AID(name, true));
             }
         }
-        //TODO: remove following debug code
         if (msg.getAllReceiver().hasNext()) {
             send(msg);
             try {
@@ -178,11 +176,7 @@ public abstract class AwareAgent extends Agent {
     }
 
     public void print(String message) {
-        System.out.println("[Agent: " + getAID().getName() + "] - " + message);
+        System.out.println("[" + getAID().getName() + "] - " + message);
     }
 
-    //TODO: @ros para que é isto? não vejo a ser usada
-    // public void setSchedule(Schedule sch) {
-    //     this.sch = sch;
-    // }
 }
