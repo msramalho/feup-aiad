@@ -23,12 +23,12 @@ public class MazeKnowledge {
     // Coordinate -> directions that lead to dead ends + size (cumulative number of cells in the dead end)
     public ConcurrentHashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new ConcurrentHashMap<>();
 
-    public CellConfidence[][] confidences;
+    public boolean[][] confidences;
 
     public MazeKnowledge(Maze maze) {
         lines = maze.size.x;
         columns = maze.size.y;
-        confidences = new CellConfidence[maze.size.x][maze.size.y];
+        confidences = new boolean[maze.size.x][maze.size.y];
         init();
     }
 
@@ -41,7 +41,7 @@ public class MazeKnowledge {
      * @param confidence confidence level [0,1]
      */
     public void update(int x, int y, CellState state, Float confidence) {
-        confidences[x][y] = new CellConfidence(state, confidence);
+        confidences[x][y] = true;// new CellConfidence(state, confidence);
     }
 
     public void update(int x, int y, CellState state) { update(x, y, state, 1F);}
@@ -66,7 +66,7 @@ public class MazeKnowledge {
     public void init() {
         for (int i = 0; i < lines; i++)
             for (int j = 0; j < columns; j++)
-                confidences[i][j] = new CellConfidence(CellState.MISTERY, (float) 1);
+                confidences[i][j] = false;//new CellConfidence(CellState.MISTERY, (float) 1);
     }
 
 

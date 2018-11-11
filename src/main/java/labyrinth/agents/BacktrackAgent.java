@@ -37,7 +37,7 @@ public class BacktrackAgent extends AwareAgent {
             Vector2D pos = getPosAfterMove(d);
 
             // if this is not yet explored
-            if (knowledge.confidences[pos.x][pos.y].isUnknown() &&
+            if (!knowledge.confidences[pos.x][pos.y] &&
                     !knowledge.isDeadEnd(position.getPosition(), d)) {
                 if (countContinuosBacktracks > 0) { //if there was backtrack onto this position
                     ArrayList<Directions> dirs = new ArrayList<>();
