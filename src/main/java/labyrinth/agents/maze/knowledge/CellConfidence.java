@@ -1,5 +1,6 @@
 package labyrinth.agents.maze.knowledge;
 
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  */
 public class CellConfidence {
     //TODO: maybe implement functions to combine certainties and such
-    Map<CellState, Float> confidence = new EnumMap<>(CellState.class);
+    Map<CellState, Float> confidence = Collections.synchronizedMap(new EnumMap<>(CellState.class));
 
     public CellConfidence(CellState state, Float conf) {
         confidence.put(state, conf);

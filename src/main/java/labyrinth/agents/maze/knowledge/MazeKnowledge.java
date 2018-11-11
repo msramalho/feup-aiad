@@ -9,6 +9,7 @@ import labyrinth.utils.Vector2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Represents the internal confidences an Agent has over the maze
@@ -20,7 +21,7 @@ public class MazeKnowledge {
     public int lines, columns;
     //marks crossings + directions that lead to dead ends.
     // Coordinate -> directions that lead to dead ends + size (cumulative number of cells in the dead end)
-    public HashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new HashMap<>();
+    public ConcurrentHashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds = new ConcurrentHashMap<>();
 
     public CellConfidence[][] confidences;
 
