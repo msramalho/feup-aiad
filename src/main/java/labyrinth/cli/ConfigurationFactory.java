@@ -57,7 +57,7 @@ public class ConfigurationFactory {
         }
 
         // win checker
-        WinChecker checker = new WinChecker(builder.getMazePositions(), batchMode);
+        WinChecker checker = new WinChecker(builder.getAgentsDescriptions(), batchMode);
         clockPublisher.subscribe(checker::tick);
 
         schedule.scheduleActionAtInterval(actionSlownessRate, clockPublisher);

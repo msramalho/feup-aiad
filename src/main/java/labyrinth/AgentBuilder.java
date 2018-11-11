@@ -2,6 +2,7 @@ package labyrinth;
 
 import jade.wrapper.StaleProxyException;
 import labyrinth.agents.*;
+import labyrinth.cli.AgentDescription;
 import labyrinth.maze.Maze;
 import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
@@ -25,7 +26,7 @@ public class AgentBuilder {
     private final Maze maze;
     private final List<Vector2D> startPositions;
     private int agentCounter = 0;
-    private List<MazePosition> mazePositions = new ArrayList<>();
+    private List<AgentDescription> agentDescriptions = new ArrayList<>();
     private HashMap<String, AwareAgent> allAgents = new HashMap<>();
 
     public AgentBuilder(ContainerController mainContainer, Maze maze) {
@@ -39,15 +40,17 @@ public class AgentBuilder {
         Vector2D startPos = startPositions.get(startIndex);
 
         MazePosition mazePosition = new MazePosition(startPos, maze);
-        mazePositions.add(mazePosition);
         MazeKnowledge knowledge = new MazeKnowledge(maze);
         AwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
 
         agentGraphics.add(new Pair<>(agentColor, mazePosition::getPosition));
         agentTickRunners.add(agent::tick);
-        mainContainer.acceptNewAgent("agent #" + agentCounter, agent).start();
+        String agentName = "agent " + agent.getClass().getSimpleName() + " #" + agentCounter;
+        mainContainer.acceptNewAgent(agentName, agent).start();
         allAgents.put(agent.getAID().getName(), agent);
         agentCounter++;
+
+        agentDescriptions.add(new AgentDescription(mazePosition, agent, agentName));
     }
 
     public AgentBuilder addForwardAgent() throws StaleProxyException {
@@ -56,7 +59,8 @@ public class AgentBuilder {
     }
 
     public AgentBuilder addBacktrackAgent() throws StaleProxyException {
-        addAgent(Color.orange, (mazePos, knowledge) -> new BacktrackAgent(mazePos, knowledge));
+        //orange
+        addAgent(Color.decode("#FF8C00"), (mazePos, knowledge) -> new BacktrackAgent(mazePos, knowledge));
         return this;
     }
 
@@ -83,8 +87,8 @@ public class AgentBuilder {
         return agentTickRunners;
     }
 
-    public List<MazePosition> getMazePositions() {
-        return new ArrayList<>(mazePositions);
+    public List<AgentDescription> getAgentsDescriptions() {
+        return new ArrayList<>(agentDescriptions);
     }
 
     public Map<String, AwareAgent> getAgents() {

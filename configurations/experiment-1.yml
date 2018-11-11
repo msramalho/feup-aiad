@@ -1,0 +1,11 @@
+
+batchMode: true
+mazeHeight: 1000
+mazeLength: 1000
+seed: 1
+numForwardAgents: 100
+numBacktrackAgents: 100
+numRandomAgents: 100
+numNegotiatingAgents: 100
+numSwarmAgents: 0
+#slownessRate: 5
