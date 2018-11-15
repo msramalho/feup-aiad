@@ -1,5 +1,7 @@
 package labyrinth.utils;
 
+import java.io.File;
+
 public class Utilities {
     public static int max(int ... numbers) {
         if (numbers.length <= 1) {
@@ -24,11 +26,6 @@ public class Utilities {
         }
     }
 
-    public static String getFileExtension(String path) {
-        int lastIndexOf = path.lastIndexOf(".");
-        if (lastIndexOf == -1) {
-            return ""; // empty extension
-        }
-        return path.substring(lastIndexOf + 1).toLowerCase();
-    }
+
+
 }

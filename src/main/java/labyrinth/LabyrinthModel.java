@@ -1,20 +1,18 @@
 package labyrinth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import labyrinth.agents.AwareAgent;
 import labyrinth.cli.ConfigurationFactory;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
-import labyrinth.utils.Utilities;
+import labyrinth.utils.Serialization;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +88,7 @@ public class LabyrinthModel extends Repast3Launcher {
         }
     }
 
-    private static ConfigurationFactory buildConfiguration(String[] args) {
+    private static ConfigurationFactory buildConfiguration(String[] args) throws IOException {
         if (args.length == 0) {
             return new ConfigurationFactory();
         }
@@ -99,34 +97,19 @@ public class LabyrinthModel extends Repast3Launcher {
             throw new IllegalArgumentException("Invalid usage, write a json or yaml config filename path");
         }
 
-        String path = args[0];
-        File file = new File(path);
-        if (!file.exists() || file.isDirectory()) {
-            throw new IllegalArgumentException("Invalid file: " + path);
-        }
+        String configPath = args[0];
 
-        String extension = Utilities.getFileExtension(path);
-        ObjectMapper yamlMapper;
-        switch (extension) {
-            case "json":
-                yamlMapper = new ObjectMapper();
-                break;
-            case "yaml":
-            case "yml":
-                yamlMapper = new ObjectMapper(new YAMLFactory());
-                break;
-            default:
-                throw new IllegalArgumentException("invalid path: " + path);
-        }
+        ConfigurationFactory config = Serialization.deserializeYamlOrJsonObject(configPath, ConfigurationFactory.class);
 
-        try {
-            return yamlMapper.readValue(file, ConfigurationFactory.class);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        }
+
+        String path = "data.csv";
+        List<ConfigurationFactory> list = Arrays.asList(config);
+        Serialization.serialize(path, list, ConfigurationFactory.class);
+
+        return config;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ConfigurationFactory config = buildConfiguration(args);
 
         SimInit init = new SimInit();
