@@ -88,28 +88,30 @@ public class LabyrinthModel extends Repast3Launcher {
         }
     }
 
-    private static ConfigurationFactory buildConfiguration(String[] args) throws IOException {
+    private static ConfigurationFactory buildConfiguration(String[] args) {
         if (args.length == 0) {
+            System.out.println("Running defaults");
             return new ConfigurationFactory();
         }
 
-        if (args.length > 2) {
-            throw new IllegalArgumentException("Invalid usage, write a json or yaml config filename path");
+        if (args.length >= 3) {
+            throw new IllegalArgumentException("Invalid usage, Ex: java -jar [yaml config path] [csv statistics data destination path]");
         }
 
         String configPath = args[0];
 
         ConfigurationFactory config = Serialization.deserializeYamlOrJsonObject(configPath, ConfigurationFactory.class);
 
+        if (args.length == 1) {
+            return config;
+        }
 
-        String path = "data.csv";
-        List<ConfigurationFactory> list = Arrays.asList(config);
-        Serialization.serialize(path, list, ConfigurationFactory.class);
-
+        String csvPath = args[1];
+        config.setStatisticsPath(csvPath);
         return config;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ConfigurationFactory config = buildConfiguration(args);
 
         SimInit init = new SimInit();

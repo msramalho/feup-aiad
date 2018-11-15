@@ -8,10 +8,7 @@ import labyrinth.display.MazeSpace;
 import labyrinth.maze.Maze;
 import labyrinth.maze.MazeFactory;
 import labyrinth.statistics.StepsAverages;
-import labyrinth.utils.ClockPublisher;
-import labyrinth.utils.RandomSingleton;
-import labyrinth.utils.Utilities;
-import labyrinth.utils.Vector2D;
+import labyrinth.utils.*;
 import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.Schedule;
 import uchicago.src.sim.gui.DisplaySurface;
@@ -30,6 +27,7 @@ public class ConfigurationFactory {
     private int numRandomAgents = 1;
     private int numNegotiatingAgents = 1;
     private int numSwarmAgents = 0;
+    private String statisticsPath = null;
 
     public Map<String, AwareAgent> build(ContainerController mainContainer, DisplaySurface displaySurf, Schedule schedule) throws StaleProxyException, IOException {
         RandomSingleton.setSeed(seed);
@@ -62,6 +60,13 @@ public class ConfigurationFactory {
         WinChecker checker = new WinChecker(builder.getAgentsDescriptions(), batchMode)
                 .addAgentExitedHandler(stepsAverages::oneAgentExited)
                 .addAllAgentsExitedHandler(stepsAverages::allAgentsExited);
+
+        if (statisticsPath != null && ! statisticsPath.equals("")) {
+            checker.addAllAgentsExitedHandler((data, tick) -> {
+
+                Serialization.serializeDataAsCsv(statisticsPath, data, AgentDescription.class);
+            });
+        }
 
         clockPublisher.subscribe(checker::tick);
 
@@ -122,6 +127,11 @@ public class ConfigurationFactory {
         this.numSwarmAgents = numSwarmAgents;
     }
 
+    @JsonProperty
+    public void setStatisticsPath(String statisticsPath) {
+        this.statisticsPath = statisticsPath;
+    }
+
     public int getNumForwardAgents() {
         return numForwardAgents;
     }
@@ -160,5 +170,9 @@ public class ConfigurationFactory {
 
     public int getSlownessRate() {
         return actionSlownessRate;
+    }
+
+    public String getStatisticsPath() {
+        return statisticsPath;
     }
 }

@@ -8,7 +8,6 @@ import labyrinth.cli.ConfigurationFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class Serialization {
@@ -30,20 +29,23 @@ public class Serialization {
         return file;
     }
 
-    public static<T> void serialize(String serializationPath, List<ConfigurationFactory> objectsList, Class<T> csvSchemaPdo) throws IOException {
-
-        if (!getFileExtension(serializationPath).equals("csv")) {
-            throw new IllegalArgumentException("not a csv file: " + serializationPath);
+    public static<T> void serializeDataAsCsv(String filePath, List data, Class<T> dataClazz) {
+        if (!getFileExtension(filePath).equals("csv")) {
+            throw new IllegalArgumentException("not a csv file: " + filePath);
         }
 
-        File file = getFile(serializationPath);
+        File file = getFile(filePath);
 
         CsvMapper mapper = new CsvMapper();
-        CsvSchema schema = mapper.schemaFor(csvSchemaPdo)
+        CsvSchema schema = mapper.schemaFor(dataClazz)
                 .withHeader();
 
-        mapper.writer(schema)
-                .writeValue(file, objectsList);
+        try {
+            mapper.writer(schema)
+                    .writeValue(file, data);
+        } catch (IOException e) {
+           throw new RuntimeException("Failed to save csv to path: " + filePath, e);
+        }
     }
 
     public static<T> T deserializeYamlOrJsonObject(String path, Class<T> clazz) {

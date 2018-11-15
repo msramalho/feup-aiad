@@ -1,7 +1,6 @@
 package labyrinth.statistics;
 
 import labyrinth.cli.AgentDescription;
-import labyrinth.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,10 +20,7 @@ public class StepsAverages {
         
     }
 
-    public void oneAgentExited(Pair<AgentDescription, Long> agentPair) {
-        AgentDescription agentDesc = agentPair.l;
-        long tickAtExit = agentPair.r;
-        
+    public void oneAgentExited(AgentDescription agentDesc, Long tickAtExit) {
         String msg = "@tick:" + tickAtExit + ", " + agentDesc.getAgentName() + " EXITED";
         messages.add(msg);
         System.out.println(msg);
@@ -36,7 +32,7 @@ public class StepsAverages {
         agentExitsByType.put(agentType, exits);
     }
 
-    public void allAgentsExited(Long tickAtExit) {
+    public void allAgentsExited(List<AgentDescription> unused, Long tickAtExit) {
         System.out.println("================== At tick: " + tickAtExit + " All agents found the exit ==================");
         this.messages.forEach(System.out::println);
 
