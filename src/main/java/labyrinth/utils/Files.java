@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class Serialization {
+public class Files {
 
     private static String getFileExtension(String path) {
         int lastIndexOf = path.lastIndexOf(".");

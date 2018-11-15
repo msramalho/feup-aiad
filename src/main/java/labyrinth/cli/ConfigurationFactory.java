@@ -64,7 +64,7 @@ public class ConfigurationFactory {
         if (statisticsPath != null && ! statisticsPath.equals("")) {
             checker.addAllAgentsExitedHandler((data, tick) -> {
 
-                Serialization.serializeDataAsCsv(statisticsPath, data, AgentDescription.class);
+                Files.serializeDataAsCsv(statisticsPath, data, AgentDescription.class);
             });
         }
 

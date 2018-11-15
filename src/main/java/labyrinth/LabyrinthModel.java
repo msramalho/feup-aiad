@@ -4,15 +4,13 @@ import labyrinth.agents.AwareAgent;
 import labyrinth.cli.ConfigurationFactory;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
-import labyrinth.utils.Serialization;
+import labyrinth.utils.Files;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,21 +92,12 @@ public class LabyrinthModel extends Repast3Launcher {
             return new ConfigurationFactory();
         }
 
-        if (args.length >= 3) {
-            throw new IllegalArgumentException("Invalid usage, Ex: java -jar [yaml config path] [csv statistics data destination path]");
+        if (args.length >= 2) {
+            throw new IllegalArgumentException("Invalid usage. Check Readme");
         }
 
         String configPath = args[0];
-
-        ConfigurationFactory config = Serialization.deserializeYamlOrJsonObject(configPath, ConfigurationFactory.class);
-
-        if (args.length == 1) {
-            return config;
-        }
-
-        String csvPath = args[1];
-        config.setStatisticsPath(csvPath);
-        return config;
+        return Files.deserializeYamlOrJsonObject(configPath, ConfigurationFactory.class);
     }
 
     public static void main(String[] args) {
