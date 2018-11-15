@@ -7,6 +7,7 @@ import labyrinth.agents.AwareAgent;
 import labyrinth.display.MazeSpace;
 import labyrinth.maze.Maze;
 import labyrinth.maze.MazeFactory;
+import labyrinth.statistics.StepsAverages;
 import labyrinth.utils.ClockPublisher;
 import labyrinth.utils.RandomSingleton;
 import labyrinth.utils.Utilities;
@@ -56,8 +57,12 @@ public class ConfigurationFactory {
             clockPublisher.subscribe(displaySurf::updateDisplay);
         }
 
-        // win checker
-        WinChecker checker = new WinChecker(builder.getAgentsDescriptions(), batchMode);
+        // statistics, win checker
+        StepsAverages stepsAverages = new StepsAverages();
+        WinChecker checker = new WinChecker(builder.getAgentsDescriptions(), batchMode)
+                .addAgentExitedHandler(stepsAverages::oneAgentExited)
+                .addAllAgentsExitedHandler(stepsAverages::allAgentsExited);
+
         clockPublisher.subscribe(checker::tick);
 
         schedule.scheduleActionAtInterval(actionSlownessRate, clockPublisher);
