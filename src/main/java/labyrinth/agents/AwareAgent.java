@@ -8,6 +8,7 @@ import labyrinth.agents.maze.knowledge.CellState;
 import labyrinth.maze.Directions;
 import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
+import labyrinth.statistics.AgentMetrics;
 import labyrinth.utils.Vector2D;
 import jade.core.AID;
 import sajas.core.Agent;
@@ -29,6 +30,7 @@ public abstract class AwareAgent extends Agent {
     // private Schedule sch;
     public int visibility = 1;
     public boolean communicatingAgent = false;
+    private AgentMetrics agentMetrics;
 
     public AwareAgent(MazePosition position, MazeKnowledge knowledge) {
         setAID(new AID("AwareAgent", true));
@@ -180,4 +182,12 @@ public abstract class AwareAgent extends Agent {
         System.out.println("[" + getAID().getName() + "] - " + message);
     }
 
+    void setMetrics(AgentMetrics agentMetrics) {
+
+        this.agentMetrics = agentMetrics;
+    }
+
+    public AgentMetrics getAgentMetrics() {
+        return agentMetrics;
+    }
 }

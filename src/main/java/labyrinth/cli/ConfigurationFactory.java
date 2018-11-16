@@ -2,7 +2,7 @@ package labyrinth.cli;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jade.wrapper.StaleProxyException;
-import labyrinth.AgentBuilder;
+import labyrinth.agents.AgentBuilder;
 import labyrinth.agents.AwareAgent;
 import labyrinth.display.MazeSpace;
 import labyrinth.maze.Maze;
@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ConfigurationFactory {
     private Vector2D mazeSize = new Vector2D(30, 30);

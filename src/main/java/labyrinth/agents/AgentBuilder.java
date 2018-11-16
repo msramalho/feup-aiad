@@ -1,11 +1,10 @@
-package labyrinth;
+package labyrinth.agents;
 
 import jade.wrapper.StaleProxyException;
-import labyrinth.agents.*;
-import labyrinth.statistics.AgentDescription;
-import labyrinth.maze.Maze;
-import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
+import labyrinth.agents.maze.knowledge.MazeKnowledge;
+import labyrinth.maze.Maze;
+import labyrinth.statistics.AgentDescription;
 import labyrinth.statistics.AgentMetrics;
 import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
@@ -42,8 +41,8 @@ public class AgentBuilder {
         MazePosition mazePosition = new MazePosition(startPos, maze);
         MazeKnowledge knowledge = new MazeKnowledge(maze);
         AgentMetrics agentMetrics = new AgentMetrics();
-
         AwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
+        agent.setMetrics(agentMetrics);
 
         agentGraphics.add(new Pair<>(agentColor, mazePosition::getPosition));
         agentTickRunners.add(agent::tick);
