@@ -42,6 +42,8 @@ public class Files {
         assertPathHasExtension(filePath, "csv");
 
         File file = getFile(filePath);
+        file.getParentFile()
+                .mkdirs();
 
         CsvMapper mapper = new CsvMapper();
         CsvSchema schema = mapper.schemaFor(dataClazz)
