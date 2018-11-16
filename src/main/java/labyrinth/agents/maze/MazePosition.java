@@ -13,13 +13,15 @@ public class MazePosition {
 
     private Vector2D position;
     private Maze maze;
-    private final AgentMetrics agentMetrics;
+    private final AgentMetrics metrics;
+    private long tickCounter = 0;
+    private boolean exited = false;
 
-    public MazePosition(Vector2D starterPosition, Maze maze, AgentMetrics agentMetrics) {
+    public MazePosition(Vector2D starterPosition, Maze maze, AgentMetrics metrics) {
 
         this.position = starterPosition;
         this.maze = maze;
-        this.agentMetrics = agentMetrics;
+        this.metrics = metrics;
     }
 
     public Vector2D getPosition() {
@@ -32,6 +34,13 @@ public class MazePosition {
             return false;
         }
 
+        // "starts" at 1
+        if (! exited) {
+            metrics.incrementSteps();
+            if (atExit()) {
+                exited = true;
+            }
+        }
 
         position = newPos;
         checkForDeadEnd(position);
@@ -48,7 +57,7 @@ public class MazePosition {
 
         // hit a dead end
         if (numFreeCells == 1) {
-            agentMetrics.incrementDeadend();
+            metrics.incrementDeadend();
         }
     }
 

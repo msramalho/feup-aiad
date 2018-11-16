@@ -5,7 +5,7 @@ import labyrinth.maze.Maze;
 import labyrinth.utils.HeapValue;
 
 public class AgentMetrics {
-    private long stepsToExit;
+    private long stepsToExit = 0;
     private Maze maze;
     private String agentType;
     private long numDeadends = 0;
@@ -18,10 +18,6 @@ public class AgentMetrics {
         HeapValue<Long> numWalls = new HeapValue<>(0l);
         maze.foreachWall(v -> numWalls.value++);
         return numWalls.value;
-    }
-
-    public void setStepsToExit(long tickCounter) {
-        this.stepsToExit = tickCounter;
     }
 
     public AgentMetrics setMaze(Maze maze) {
@@ -70,5 +66,9 @@ public class AgentMetrics {
     @JsonProperty
     public long getNumDeadends() {
         return numDeadends;
+    }
+
+    public void incrementSteps() {
+        stepsToExit++;
     }
 }

@@ -30,7 +30,6 @@ public abstract class AwareAgent extends Agent {
     private MazeKnowledge knowledge;
     protected MessageBehaviour messageBehaviour;
     private AgentMetrics metrics;
-    private long tickCounter = 0;
     private boolean exited = false;
 
     public AwareAgent(MazePosition position, MazeKnowledge knowledge) {
@@ -146,10 +145,8 @@ public abstract class AwareAgent extends Agent {
         knowledge.update(position.getPosition().x, position.getPosition().y, CellState.PATH);
         handleTick();
 
-        // "starts" at 1
-        tickCounter++;
+
         if (position.atExit()) {
-            metrics.setStepsToExit(tickCounter);
             exited = true;
             takeDown();
             doDelete();
