@@ -2,6 +2,7 @@ package labyrinth.cli;
 
 import labyrinth.agents.AwareAgent;
 import labyrinth.agents.maze.MazePosition;
+import labyrinth.statistics.AgentMetrics;
 
 public class AgentDescription {
     private final MazePosition mazePosition;
@@ -25,5 +26,9 @@ public class AgentDescription {
 
     public String getAgentType() {
         return agent.getClass().getSimpleName();
+    }
+
+    public AgentMetrics getAgentMetrics() {
+        return new AgentMetrics();
     }
 }

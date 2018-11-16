@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 /**
  * To be used as a subscriber to WinChecker events
  */
-public class StepsAverages {
+public class StepAverages {
 
     private List<String> messages = new ArrayList<>();
     private Map<String, List<Long>> agentExitsByType = new HashMap<>();
     
-    public StepsAverages() {
+    public StepAverages() {
         
     }
 

@@ -11,6 +11,7 @@ import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,7 +87,7 @@ public class LabyrinthModel extends Repast3Launcher {
         }
     }
 
-    private static ConfigurationFactory buildConfiguration(String[] args) {
+    private static ConfigurationFactory buildConfiguration(String[] args) throws IOException {
         if (args.length == 0) {
             System.out.println("Running defaults");
             return new ConfigurationFactory();
@@ -100,7 +101,7 @@ public class LabyrinthModel extends Repast3Launcher {
         return Files.deserializeYamlOrJsonObject(configPath, ConfigurationFactory.class);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ConfigurationFactory config = buildConfiguration(args);
 
         SimInit init = new SimInit();

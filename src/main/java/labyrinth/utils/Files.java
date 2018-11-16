@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import labyrinth.cli.ConfigurationFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class Files {
@@ -29,10 +29,17 @@ public class Files {
         return file;
     }
 
-    public static<T> void serializeDataAsCsv(String filePath, List data, Class<T> dataClazz) {
-        if (!getFileExtension(filePath).equals("csv")) {
-            throw new IllegalArgumentException("not a csv file: " + filePath);
+    public static void assertPathHasExtension(String path, String... extensions) {
+        boolean hasExtension = Arrays.asList(extensions)
+                .contains(getFileExtension(path));
+        if (!hasExtension) {
+            throw new IllegalArgumentException("Path: " + path + " must have one of extensions: " +
+                    String.join(", ", extensions));
         }
+    }
+
+    public static <T> void serializeDataAsCsv(String filePath, List data, Class<T> dataClazz) throws IOException {
+        assertPathHasExtension(filePath, "csv");
 
         File file = getFile(filePath);
 
@@ -40,15 +47,11 @@ public class Files {
         CsvSchema schema = mapper.schemaFor(dataClazz)
                 .withHeader();
 
-        try {
-            mapper.writer(schema)
-                    .writeValue(file, data);
-        } catch (IOException e) {
-           throw new RuntimeException("Failed to save csv to path: " + filePath, e);
-        }
+        mapper.writer(schema)
+                .writeValue(file, data);
     }
 
-    public static<T> T deserializeYamlOrJsonObject(String path, Class<T> clazz) {
+    public static <T> T deserializeYamlOrJsonObject(String path, Class<T> clazz) throws IOException {
         File file = getFile(path);
         if (!file.exists()) {
             throw new IllegalArgumentException("file doesn't exist: " + path);
@@ -56,22 +59,13 @@ public class Files {
 
         String extension = getFileExtension(path);
         ObjectMapper yamlMapper;
-        switch (extension) {
-            case "json":
-                yamlMapper = new ObjectMapper();
-                break;
-            case "yaml":
-            case "yml":
-                yamlMapper = new ObjectMapper(new YAMLFactory());
-                break;
-            default:
-                throw new IllegalArgumentException("invalid path: " + path);
+        assertPathHasExtension(path, "json", "yaml", "yml");
+        if (extension.equals("json")) {
+            yamlMapper = new ObjectMapper();
+        } else {
+            yamlMapper = new ObjectMapper(new YAMLFactory());
         }
 
-        try {
-            return yamlMapper.readValue(file, clazz);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return yamlMapper.readValue(file, clazz);
     }
 }

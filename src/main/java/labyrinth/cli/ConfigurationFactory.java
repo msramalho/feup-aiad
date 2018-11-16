@@ -7,14 +7,18 @@ import labyrinth.agents.AwareAgent;
 import labyrinth.display.MazeSpace;
 import labyrinth.maze.Maze;
 import labyrinth.maze.MazeFactory;
-import labyrinth.statistics.StepsAverages;
+import labyrinth.statistics.AgentMetrics;
+import labyrinth.statistics.StepAverages;
 import labyrinth.utils.*;
 import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.Schedule;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ConfigurationFactory {
     private Vector2D mazeSize = new Vector2D(30, 30);
@@ -56,15 +60,22 @@ public class ConfigurationFactory {
         }
 
         // statistics, win checker
-        StepsAverages stepsAverages = new StepsAverages();
+        StepAverages stepAverages = new StepAverages();
         WinChecker checker = new WinChecker(builder.getAgentsDescriptions(), batchMode)
-                .addAgentExitedHandler(stepsAverages::oneAgentExited)
-                .addAllAgentsExitedHandler(stepsAverages::allAgentsExited);
+                .addAgentExitedHandler(stepAverages::oneAgentExited)
+                .addAllAgentsExitedHandler(stepAverages::allAgentsExited);
 
         if (statisticsPath != null && ! statisticsPath.equals("")) {
-            checker.addAllAgentsExitedHandler((data, tick) -> {
-
-                Files.serializeDataAsCsv(statisticsPath, data, AgentDescription.class);
+            checker.addAllAgentsExitedHandler((agentDescriptions, unused) -> {
+                List<AgentMetrics> metrics = agentDescriptions.stream()
+                        .map(AgentDescription::getAgentMetrics)
+                        .collect(Collectors.toList());
+                try {
+                    Files.serializeDataAsCsv(statisticsPath, metrics, AgentMetrics.class);
+                } catch (IOException e) {
+                    System.err.println(e);
+                    System.exit(1);
+                }
             });
         }
 
@@ -129,6 +140,7 @@ public class ConfigurationFactory {
 
     @JsonProperty
     public void setStatisticsPath(String statisticsPath) {
+        Files.assertPathHasExtension(statisticsPath, "csv");
         this.statisticsPath = statisticsPath;
     }
 
