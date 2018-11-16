@@ -28,7 +28,7 @@ public class AgentBuilder {
     private final List<Vector2D> startPositions;
     private int agentCounter = 0;
     private List<AgentDescription> agentDescriptions = new ArrayList<>();
-    private HashMap<String, AwareAgent> allAgents = new HashMap<>();
+    private HashMap<String, IAwareAgent> allAgents = new HashMap<>();
 
     public AgentBuilder(ContainerController mainContainer, Maze maze) {
         this.mainContainer = mainContainer;
@@ -99,7 +99,7 @@ public class AgentBuilder {
         return new ArrayList<>(agentDescriptions);
     }
 
-    public Map<String, AwareAgent> getAgents() {
+    public Map<String, IAwareAgent> getAgents() {
         return new HashMap<>(allAgents);
     }
 
