@@ -1,6 +1,7 @@
 package labyrinth.statistics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import labyrinth.maze.Directions;
 import labyrinth.maze.Maze;
 import labyrinth.utils.HeapValue;
 
@@ -9,6 +10,10 @@ public class AgentMetrics {
     private Maze maze;
     private String agentType;
     private long numDeadends = 0;
+    private long numUpSteps;
+    private long numLeftSteps;
+    private long numRightSteps;
+    private long numDownSteps;
 
     private long getMazeArea() {
         return maze.size.x * maze.size.y;
@@ -31,6 +36,27 @@ public class AgentMetrics {
 
     public void incrementDeadend() {
         numDeadends++;
+    }
+
+    public void incrementSteps() {
+        stepsToExit++;
+    }
+
+    public void incrementDirection(Directions direction) {
+        switch (direction) {
+            case UP:
+                numUpSteps++;
+                break;
+            case DOWN:
+                numDownSteps++;
+                break;
+            case LEFT:
+                numLeftSteps++;
+                break;
+            case RIGHT:
+                numRightSteps++;
+                break;
+        }
     }
 
     @JsonProperty
@@ -68,7 +94,22 @@ public class AgentMetrics {
         return numDeadends;
     }
 
-    public void incrementSteps() {
-        stepsToExit++;
+    public long getNumUpSteps() {
+        return numUpSteps;
+    }
+
+    @JsonProperty
+    public long getNumLeftSteps() {
+        return numLeftSteps;
+    }
+
+    @JsonProperty
+    public long getNumRightSteps() {
+        return numRightSteps;
+    }
+
+    @JsonProperty
+    public long getNumDownSteps() {
+        return numDownSteps;
     }
 }

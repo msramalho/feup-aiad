@@ -34,16 +34,18 @@ public class MazePosition {
             return false;
         }
 
+        position = newPos;
+
         // "starts" at 1
         if (! exited) {
+            checkForDeadEnd(position);
             metrics.incrementSteps();
+            metrics.incrementDirection(direction);
             if (atExit()) {
                 exited = true;
             }
         }
 
-        position = newPos;
-        checkForDeadEnd(position);
         return true;
     }
 
