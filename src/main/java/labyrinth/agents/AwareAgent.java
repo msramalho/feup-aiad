@@ -147,13 +147,24 @@ public abstract class AwareAgent extends Agent {
         knowledge.update(position.getPosition().x, position.getPosition().y, CellState.PATH);
         handleTick();
 
+        if (! exited) {
+            checkForNeighbours();
+        }
 
         if (position.atExit()) {
+
             exited = true;
             takeDown();
             doDelete();
             return;
         }
+    }
+
+    // met agents
+    private void checkForNeighbours() {
+        LabyrinthModel.getPlayingNeighbourAgents(this)
+                .stream()
+                .forEach(agent -> metrics.incrementNeighbourEncounter(this));
     }
 
     public abstract void handleTick();
@@ -191,13 +202,17 @@ public abstract class AwareAgent extends Agent {
     }
 
     public void print(String message) {
-        System.out.println("[" + getAID().getName() + "] - " + message);
+//        System.out.println("[" + getAID().getName() + "] - " + message);
+    }
+
+    public String getId() {
+        return getAID().getName();
     }
 
     void setMetrics(AgentMetrics agentMetrics) {
 
         this.metrics = agentMetrics;
-        agentMetrics.setAgentType(this.getAgentType());
+        agentMetrics.setAgentClazz(this.getClass());
     }
 
     public String getAgentType() {
@@ -206,5 +221,9 @@ public abstract class AwareAgent extends Agent {
 
     public AgentMetrics getMetrics() {
         return metrics;
+    }
+
+    public boolean exited() {
+        return exited;
     }
 }

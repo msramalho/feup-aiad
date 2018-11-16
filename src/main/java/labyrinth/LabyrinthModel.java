@@ -129,4 +129,16 @@ public class LabyrinthModel extends Repast3Launcher {
                 .map(HashMap.Entry::getKey)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Grabs agents that haven exited yet
+     * @param centerAgent
+     * @return
+     */
+    public static List<AwareAgent> getPlayingNeighbourAgents(AwareAgent centerAgent) {
+        return getNeighbours(centerAgent).stream()
+                .map(agents::get)
+                .filter(agent -> !agent.exited())
+                .collect(Collectors.toList());
+    }
 }

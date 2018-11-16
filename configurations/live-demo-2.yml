@@ -1,4 +1,4 @@
-batchMode: false
+batchMode: true
 mazeHeight: 30
 mazeLength: 30
 seed: 1
@@ -8,3 +8,4 @@ numRandomAgents: 0
 numNegotiatingAgents: 2
 numSwarmAgents: 0
 slownessRate: 5
+statisticsPath: "metrics/data2.csv"
