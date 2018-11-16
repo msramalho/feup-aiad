@@ -41,6 +41,7 @@ public class AgentBuilder {
 
         AgentMetrics agentMetrics = new AgentMetrics()
                 .setMaze(maze);
+
         MazePosition mazePosition = new MazePosition(startPos, maze, agentMetrics);
         MazeKnowledge knowledge = new MazeKnowledge(maze);
         AwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
@@ -51,6 +52,8 @@ public class AgentBuilder {
         String agentName = "agent " + agent.getClass().getSimpleName() + " #" + agentCounter;
         mainContainer.acceptNewAgent(agentName, agent).start();
         allAgents.put(agent.getAID().getName(), agent);
+
+        agentMetrics.setName(agentName);
 
         agentDescriptions.add(new AgentDescription(mazePosition, agent, agentName));
     }
