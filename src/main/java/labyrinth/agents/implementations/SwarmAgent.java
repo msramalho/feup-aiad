@@ -1,4 +1,4 @@
-package labyrinth.agents;
+package labyrinth.agents.implementations;
 
 import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;

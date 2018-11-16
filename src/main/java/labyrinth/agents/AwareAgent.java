@@ -106,7 +106,7 @@ public abstract class AwareAgent extends Agent {
      * @param dir the direction of the move
      * @return the new pos
      */
-    Vector2D getPosAfterMove(Directions dir) {
+    protected Vector2D getPosAfterMove(Directions dir) {
         return position.getPosition().translate(dir.direction);
     }
 
@@ -118,7 +118,7 @@ public abstract class AwareAgent extends Agent {
      * @param content     the content to include
      * @return ACLMessage with the content, if possible
      */
-    ACLMessage createACLMessage(int perf, AID receiverAID, Serializable content) {
+    protected ACLMessage createACLMessage(int perf, AID receiverAID, Serializable content) {
         ACLMessage msg = new ACLMessage(perf);
         msg.setSender(getAID());
         msg.addReceiver(receiverAID);
@@ -133,7 +133,7 @@ public abstract class AwareAgent extends Agent {
 
 
     /**
-     * Mandatory method to update agents
+     * Mandatory method to update implementations
      */
     public void tick() {
         if (exited) {

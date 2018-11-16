@@ -1,5 +1,6 @@
-package labyrinth.agents;
+package labyrinth.agents.implementations;
 
+import labyrinth.agents.AwareAgent;
 import labyrinth.maze.Directions;
 import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.agents.maze.MazePosition;
@@ -52,7 +53,7 @@ public class BacktrackAgent extends AwareAgent {
         }
 
         countContinuosBacktracks++;
-        if (backtrackStack.empty()) { // failed to find exit, so restart, might have been due to wrong info from other agents
+        if (backtrackStack.empty()) { // failed to find exit, so restart, might have been due to wrong info from other implementations
             knowledge.init();
             return getNextStep();
         }

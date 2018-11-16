@@ -39,7 +39,7 @@ public class ConfigurationFactory {
         // maze
         Maze maze = new MazeFactory(mazeSize).buildRecursiveMaze();
 
-        // agents
+        // implementations
         AgentBuilder builder = new AgentBuilder(mainContainer, maze);
         Utilities.rangeExecutors(numBacktrackAgents, builder::addBacktrackAgent);
         Utilities.rangeExecutors(numForwardAgents, builder::addForwardAgent);

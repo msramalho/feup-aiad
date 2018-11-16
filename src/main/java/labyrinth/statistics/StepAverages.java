@@ -31,7 +31,7 @@ public class StepAverages {
     }
 
     public void allAgentsExited(List<AgentDescription> unused, Long tickAtExit) {
-        System.out.println("================== At tick: " + tickAtExit + " All agents found the exit ==================");
+        System.out.println("================== At tick: " + tickAtExit + " All implementations found the exit ==================");
         this.messages.forEach(System.out::println);
 
         Map<String, Double> averages = this.agentExitsByType.entrySet()

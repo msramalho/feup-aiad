@@ -1,6 +1,7 @@
 package labyrinth.agents;
 
 import jade.wrapper.StaleProxyException;
+import labyrinth.agents.implementations.*;
 import labyrinth.agents.maze.MazePosition;
 import labyrinth.agents.maze.knowledge.MazeKnowledge;
 import labyrinth.maze.Maze;

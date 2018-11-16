@@ -1,4 +1,4 @@
-package labyrinth.agents;
+package labyrinth.agents.implementations;
 
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
