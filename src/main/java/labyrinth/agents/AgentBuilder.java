@@ -40,7 +40,8 @@ public class AgentBuilder {
 
         MazePosition mazePosition = new MazePosition(startPos, maze);
         MazeKnowledge knowledge = new MazeKnowledge(maze);
-        AgentMetrics agentMetrics = new AgentMetrics();
+        AgentMetrics agentMetrics = new AgentMetrics()
+                .setMaze(maze);
         AwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
         agent.setMetrics(agentMetrics);
 

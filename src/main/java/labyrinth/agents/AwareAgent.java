@@ -25,7 +25,7 @@ import java.io.Serializable;
 public abstract class AwareAgent extends Agent {
     public MazePosition position;
     private MazeKnowledge knowledge;
-    private MessageBehaviour messageBehaviour;
+    protected MessageBehaviour messageBehaviour;
 
     // private Schedule sch;
     public int visibility = 1;
