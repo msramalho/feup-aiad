@@ -126,6 +126,7 @@ public class LabyrinthModel extends Repast3Launcher {
                             .manhattanDistance(agent.position.getPosition());
                     return dist <= agent.visibility && dist <= entry.getValue().visibility;
                 })
-                .map(HashMap.Entry::getKey).collect(Collectors.toList());
+                .map(HashMap.Entry::getKey)
+                .collect(Collectors.toList());
     }
 }

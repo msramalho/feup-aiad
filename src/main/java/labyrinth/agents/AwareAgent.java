@@ -200,6 +200,11 @@ public abstract class AwareAgent extends Agent {
     void setMetrics(AgentMetrics agentMetrics) {
 
         this.agentMetrics = agentMetrics;
+        agentMetrics.setAgentType(this.getAgentType());
+    }
+
+    public String getAgentType() {
+        return getClass().getSimpleName();
     }
 
     public AgentMetrics getAgentMetrics() {

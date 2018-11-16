@@ -24,7 +24,7 @@ public class AgentDescription {
     }
 
     public String getAgentType() {
-        return agent.getClass().getSimpleName();
+        return agent.getAgentType();
     }
 
     public AgentMetrics getAgentMetrics() {
