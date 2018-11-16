@@ -1,9 +1,7 @@
 package labyrinth.statistics;
 
 import labyrinth.agents.AwareAgent;
-import labyrinth.agents.IAwareAgent;
 import labyrinth.agents.maze.MazePosition;
-import labyrinth.statistics.AgentMetrics;
 
 public class AgentDescription {
     private final MazePosition mazePosition;
