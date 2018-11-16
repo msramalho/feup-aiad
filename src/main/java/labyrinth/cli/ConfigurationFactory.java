@@ -7,6 +7,7 @@ import labyrinth.agents.AwareAgent;
 import labyrinth.display.MazeSpace;
 import labyrinth.maze.Maze;
 import labyrinth.maze.MazeFactory;
+import labyrinth.statistics.AgentDescription;
 import labyrinth.statistics.AgentMetrics;
 import labyrinth.statistics.StepAverages;
 import labyrinth.utils.*;

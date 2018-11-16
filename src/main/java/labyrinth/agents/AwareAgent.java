@@ -21,7 +21,7 @@ import java.io.Serializable;
  * Easy interface for storing and updating maze Knowledge confidences
  * Easily receive and use messages
  */
-public abstract class AwareAgent extends Agent {
+public abstract class AwareAgent extends Agent implements IAwareAgent {
     public MazePosition position;
     private MazeKnowledge knowledge;
     private MessageBehaviour messageBehaviour;

@@ -1,5 +1,7 @@
 package labyrinth.cli;
 
+import labyrinth.statistics.AgentDescription;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;

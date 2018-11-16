@@ -2,14 +2,10 @@ package labyrinth.statistics;
 
 import labyrinth.agents.IAwareAgent;
 
-public class IAwareAgentDecorator extends IAwareAgent {
-
-    public IAwareAgentDecorator() {
-        super(null, null);
-    }
+public class AwareAgentDecorator implements IAwareAgent {
 
     @Override
-    public void handleTick() {
-
+    public void tick() {
+        
     }
 }
