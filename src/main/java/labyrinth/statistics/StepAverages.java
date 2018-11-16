@@ -1,7 +1,5 @@
 package labyrinth.statistics;
 
-import labyrinth.cli.AgentDescription;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
