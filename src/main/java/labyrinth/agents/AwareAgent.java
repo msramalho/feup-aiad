@@ -52,6 +52,7 @@ public abstract class AwareAgent extends Agent {
     }
 
     /**
+     *
      * Generate own call for proposals
      *
      * @return the proposal message
