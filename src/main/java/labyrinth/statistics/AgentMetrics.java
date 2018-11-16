@@ -9,4 +9,8 @@ public class AgentMetrics {
     public long getStepsToExit() {
         return stepsToExit;
     }
+
+    public void setStepsToExit(long tickCounter) {
+        this.stepsToExit = tickCounter;
+    }
 }

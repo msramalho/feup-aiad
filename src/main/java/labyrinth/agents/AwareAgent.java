@@ -31,6 +31,8 @@ public abstract class AwareAgent extends Agent {
     public int visibility = 1;
     public boolean communicatingAgent = false;
     private AgentMetrics agentMetrics;
+    private long tickCounter = 0;
+    private boolean exited = false;
 
     public AwareAgent(MazePosition position, MazeKnowledge knowledge) {
         setAID(new AID("AwareAgent", true));
@@ -134,12 +136,25 @@ public abstract class AwareAgent extends Agent {
      * Mandatory method to update agents
      */
     public void tick() {
+        if (exited) {
+            return;
+        }
+        // "starts" at 1
+        tickCounter++;
+
         if (position.atExit()) {
+            agentMetrics.setStepsToExit(tickCounter);
+            exited = true;
             takeDown();
             doDelete();
             return;
         }
-        if (isNegotiating()) return;
+
+
+        if (isNegotiating()) {
+            return;
+        }
+
         knowledge.update(position.getPosition().x, position.getPosition().y, CellState.PATH);
         handleTick();
     }
