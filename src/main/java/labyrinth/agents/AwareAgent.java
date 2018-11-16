@@ -24,15 +24,14 @@ import java.io.Serializable;
  */
 public abstract class AwareAgent extends Agent {
     public MazePosition position;
-    private MazeKnowledge knowledge;
-    protected MessageBehaviour messageBehaviour;
-
-    // private Schedule sch;
     public int visibility = 1;
     public boolean communicatingAgent = false;
-    private AgentMetrics agentMetrics;
+
+    private MazeKnowledge knowledge;
+    protected MessageBehaviour messageBehaviour;
+    private AgentMetrics metrics;
     private long tickCounter = 0;
-    private boolean exited = false;
+    protected boolean exited = false;
 
     public AwareAgent(MazePosition position, MazeKnowledge knowledge) {
         setAID(new AID("AwareAgent", true));
@@ -143,7 +142,7 @@ public abstract class AwareAgent extends Agent {
         tickCounter++;
 
         if (position.atExit()) {
-            agentMetrics.setStepsToExit(tickCounter);
+            metrics.setStepsToExit(tickCounter);
             exited = true;
             takeDown();
             doDelete();
@@ -199,7 +198,7 @@ public abstract class AwareAgent extends Agent {
 
     void setMetrics(AgentMetrics agentMetrics) {
 
-        this.agentMetrics = agentMetrics;
+        this.metrics = agentMetrics;
         agentMetrics.setAgentType(this.getAgentType());
     }
 
@@ -207,7 +206,7 @@ public abstract class AwareAgent extends Agent {
         return getClass().getSimpleName();
     }
 
-    public AgentMetrics getAgentMetrics() {
-        return agentMetrics;
+    public AgentMetrics getMetrics() {
+        return metrics;
     }
 }

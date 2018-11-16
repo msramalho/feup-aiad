@@ -28,6 +28,6 @@ public class AgentDescription {
     }
 
     public AgentMetrics getAgentMetrics() {
-        return agent.getAgentMetrics();
+        return agent.getMetrics();
     }
 }

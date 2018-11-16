@@ -7,7 +7,6 @@ import labyrinth.utils.Pair;
 import labyrinth.utils.Vector2D;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

@@ -11,6 +11,7 @@ import labyrinth.statistics.AgentDescription;
 import labyrinth.statistics.AgentMetrics;
 import labyrinth.statistics.StepAverages;
 import labyrinth.utils.*;
+import labyrinth.utils.Vector2D;
 import sajas.wrapper.ContainerController;
 import uchicago.src.sim.engine.Schedule;
 import uchicago.src.sim.gui.DisplaySurface;

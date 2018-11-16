@@ -39,10 +39,10 @@ public class AgentBuilder {
     private void addAgent(Color agentColor, BiFunction<MazePosition, MazeKnowledge, AwareAgent> agentBuilder) throws StaleProxyException {
         Vector2D startPos = getStartIndex();
 
-        MazePosition mazePosition = new MazePosition(startPos, maze);
-        MazeKnowledge knowledge = new MazeKnowledge(maze);
         AgentMetrics agentMetrics = new AgentMetrics()
                 .setMaze(maze);
+        MazePosition mazePosition = new MazePosition(startPos, maze, agentMetrics);
+        MazeKnowledge knowledge = new MazeKnowledge(maze);
         AwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
         agent.setMetrics(agentMetrics);
 

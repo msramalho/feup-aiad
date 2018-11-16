@@ -1,9 +1,6 @@
 package labyrinth.utils;
 
-import labyrinth.agents.maze.MazePosition;
-
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 /**
  * 2D point or vector.

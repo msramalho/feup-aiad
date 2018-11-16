@@ -1,0 +1,12 @@
+
+batchMode: false
+mazeHeight: 15
+mazeLength: 15
+seed: 15
+numForwardAgents: 0
+numBacktrackAgents: 1
+numRandomAgents: 0
+numNegotiatingAgents: 0
+numSwarmAgents: 0
+statisticsPath: "metrics/data.csv"
+slownessRate: 5

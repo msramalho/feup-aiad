@@ -8,6 +8,34 @@ public class AgentMetrics {
     private long stepsToExit;
     private Maze maze;
     private String agentType;
+    private long numDeadends = 0;
+
+    private long getMazeArea() {
+        return maze.size.x * maze.size.y;
+    }
+
+    private long getNumMazeWalls() {
+        HeapValue<Long> numWalls = new HeapValue<>(0l);
+        maze.foreachWall(v -> numWalls.value++);
+        return numWalls.value;
+    }
+
+    public void setStepsToExit(long tickCounter) {
+        this.stepsToExit = tickCounter;
+    }
+
+    public AgentMetrics setMaze(Maze maze) {
+        this.maze = maze;
+        return this;
+    }
+
+    public void setAgentType(String agentType) {
+        this.agentType = agentType;
+    }
+
+    public void incrementDeadend() {
+        numDeadends++;
+    }
 
     @JsonProperty
     public long getStepsToExit() {
@@ -39,26 +67,8 @@ public class AgentMetrics {
         return agentType;
     }
 
-    private long getMazeArea() {
-        return maze.size.x * maze.size.y;
-    }
-
-    private long getNumMazeWalls() {
-        HeapValue<Long> numWalls = new HeapValue<>(0l);
-        maze.foreachWall(v -> numWalls.value++);
-        return numWalls.value;
-    }
-
-    public void setStepsToExit(long tickCounter) {
-        this.stepsToExit = tickCounter;
-    }
-
-    public AgentMetrics setMaze(Maze maze) {
-        this.maze = maze;
-        return this;
-    }
-
-    public void setAgentType(String agentType) {
-        this.agentType = agentType;
+    @JsonProperty
+    public long getNumDeadends() {
+        return numDeadends;
     }
 }

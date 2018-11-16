@@ -42,8 +42,7 @@ public class Files {
         assertPathHasExtension(filePath, "csv");
 
         File file = getFile(filePath);
-        file.getParentFile()
-                .mkdirs();
+        tryCreatePathDirs(file);
 
         CsvMapper mapper = new CsvMapper();
         CsvSchema schema = mapper.schemaFor(dataClazz)
@@ -51,6 +50,13 @@ public class Files {
 
         mapper.writer(schema)
                 .writeValue(file, data);
+    }
+
+    private static void tryCreatePathDirs(File file) {
+        if (file.getParentFile() != null) {
+            file.getParentFile()
+                    .mkdirs();
+        }
     }
 
     public static <T> T deserializeYamlOrJsonObject(String path, Class<T> clazz) throws IOException {
