@@ -15,7 +15,6 @@ public class BacktrackAgent extends AwareAgent {
     private Stack<Directions> backtrackStack = new Stack<>();
     private int countContinuosBacktracks = 0;
     private Directions lastMove;
-    private long totalBacktracks = 0;
 
     public BacktrackAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
         super(mazePosition, knowledge);
@@ -54,7 +53,6 @@ public class BacktrackAgent extends AwareAgent {
         }
 
         countContinuosBacktracks++;
-        totalBacktracks++;
         if (backtrackStack.empty()) { // failed to find exit, so restart, might have been due to wrong info from other implementations
             knowledge.init();
             return getNextStep();

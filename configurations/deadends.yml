@@ -1,5 +1,5 @@
 
-batchMode: false
+batchMode: true
 mazeHeight: 15
 mazeLength: 15
 seed: 15
