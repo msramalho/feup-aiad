@@ -85,7 +85,7 @@ public class MazeKnowledge {
      * @param cost
      */
     public void updateDeadEnds(Pair<Integer, Integer> coord, ArrayList<Directions> dir, Integer cost) {
-        // Pair<Integer, Integer> coord = new Pair<>(position.getPosition().x, position.getPosition().y);
+        // Pair<Integer, Integer> coord = new Pair<>(position.getMazePosition().x, position.getMazePosition().y);
         Pair<ArrayList<Directions>, Integer> de = deadEnds.get(coord);
         if (de == null) {
             deadEnds.put(coord, new Pair<>(dir, cost));

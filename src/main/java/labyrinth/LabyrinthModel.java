@@ -1,6 +1,6 @@
 package labyrinth;
 
-import labyrinth.agents.AwareAgent;
+import labyrinth.agents.IAwareAgent;
 import labyrinth.cli.ConfigurationFactory;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
-    private static Map<String, AwareAgent> agents;
+    private static Map<String, IAwareAgent> agents;
     private final ConfigurationFactory config;
 
     public LabyrinthModel(ConfigurationFactory config) {
@@ -117,14 +117,14 @@ public class LabyrinthModel extends Repast3Launcher {
      * @param agent the querying agent
      * @return a list of agent AID names
      */
-    public static List<String> getNeighbours(AwareAgent agent) {
+    public static List<String> getNeighbours(IAwareAgent agent) {
         return agents.entrySet().stream()
                 .filter(entry -> 0 < entry.getKey().compareTo(agent.getAID().getName()))
                 .filter(entry -> {
                     int dist = entry.getValue()
-                            .position.getPosition()
-                            .manhattanDistance(agent.position.getPosition());
-                    return dist <= agent.visibility && dist <= entry.getValue().visibility;
+                            .getMazePosition().getPosition()
+                            .manhattanDistance(agent.getMazePosition().getPosition());
+                    return dist <= agent.getVisibility() && dist <= entry.getValue().getVisibility();
                 })
                 .map(HashMap.Entry::getKey).collect(Collectors.toList());
     }

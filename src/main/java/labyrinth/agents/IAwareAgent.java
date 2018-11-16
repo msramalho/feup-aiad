@@ -1,7 +1,9 @@
 package labyrinth.agents;
 
 import jade.lang.acl.ACLMessage;
+import labyrinth.agents.maze.MazePosition;
 import labyrinth.agents.maze.knowledge.MazeKnowledge;
+import uchicago.src.sim.engine.SimModel;
 
 public interface IAwareAgent {
 
@@ -24,4 +26,10 @@ public interface IAwareAgent {
     long sendTimestamp(ACLMessage msg, boolean sendToNeigbours);
 
     void print(String message);
+
+    SimModel getAID();
+
+    MazePosition getMazePosition();
+
+    int getVisibility();
 }

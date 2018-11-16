@@ -2,7 +2,7 @@ package labyrinth.agents.behaviours;
 
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.UnreadableException;
-import labyrinth.agents.AwareAgent;
+import labyrinth.agents.IAwareAgent;
 import jade.core.AID;
 import sajas.core.behaviours.CyclicBehaviour;
 
@@ -11,10 +11,10 @@ public class MessageBehaviour extends CyclicBehaviour {
     private static final long serialVersionUID = 1L;
 
 
-    private AwareAgent myAgent;
+    private IAwareAgent myAgent;
     public AID negotiatingWith = null;
 
-    public MessageBehaviour(AwareAgent myAgent) {
+    public MessageBehaviour(IAwareAgent myAgent) {
         super(myAgent);
         this.myAgent = myAgent;
     }

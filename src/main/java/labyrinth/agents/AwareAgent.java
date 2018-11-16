@@ -22,7 +22,7 @@ import java.io.Serializable;
  * Easily receive and use messages
  */
 public abstract class AwareAgent extends Agent implements IAwareAgent {
-    public MazePosition position;
+    protected MazePosition position;
     private MazeKnowledge knowledge;
     private MessageBehaviour messageBehaviour;
 
@@ -128,6 +128,7 @@ public abstract class AwareAgent extends Agent implements IAwareAgent {
     }
 
 
+
     /**
      * Mandatory method to update agents
      */
@@ -178,6 +179,16 @@ public abstract class AwareAgent extends Agent implements IAwareAgent {
 
     public void print(String message) {
         System.out.println("[" + getAID().getName() + "] - " + message);
+    }
+
+    @Override
+    public MazePosition getMazePosition() {
+        return position;
+    }
+
+    @Override
+    public int getVisibility() {
+        return visibility;
     }
 
 }

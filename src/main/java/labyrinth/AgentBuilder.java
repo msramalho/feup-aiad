@@ -36,14 +36,14 @@ public class AgentBuilder {
         this.startPositions = maze.getStartPositions();
     }
 
-    private void addAgent(Color agentColor, BiFunction<MazePosition, MazeKnowledge, AwareAgent> agentBuilder) throws StaleProxyException {
+    private void addAgent(Color agentColor, BiFunction<MazePosition, MazeKnowledge, IAwareAgent> agentBuilder) throws StaleProxyException {
         Vector2D startPos = getStartIndex();
 
         MazePosition mazePosition = new MazePosition(startPos, maze);
         MazeKnowledge knowledge = new MazeKnowledge(maze);
         AgentMetrics agentMetrics = new AgentMetrics();
 
-        AwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
+        IAwareAgent agent = agentBuilder.apply(mazePosition, knowledge);
 
         agentGraphics.add(new Pair<>(agentColor, mazePosition::getPosition));
         agentTickRunners.add(agent::tick);

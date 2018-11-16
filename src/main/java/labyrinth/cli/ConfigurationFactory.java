@@ -3,7 +3,7 @@ package labyrinth.cli;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jade.wrapper.StaleProxyException;
 import labyrinth.AgentBuilder;
-import labyrinth.agents.AwareAgent;
+import labyrinth.agents.IAwareAgent;
 import labyrinth.display.MazeSpace;
 import labyrinth.maze.Maze;
 import labyrinth.maze.MazeFactory;
@@ -34,7 +34,7 @@ public class ConfigurationFactory {
     private int numSwarmAgents = 0;
     private String statisticsPath = null;
 
-    public Map<String, AwareAgent> build(ContainerController mainContainer, DisplaySurface displaySurf, Schedule schedule) throws StaleProxyException, IOException {
+    public Map<String, IAwareAgent> build(ContainerController mainContainer, DisplaySurface displaySurf, Schedule schedule) throws StaleProxyException, IOException {
         RandomSingleton.setSeed(seed);
 
         // maze
