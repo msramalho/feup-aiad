@@ -190,6 +190,7 @@ public abstract class AwareAgent extends Agent {
             send(msg);
             try {
                 print("sent message: " + msg.getContentObject().toString() + " at " + msg.getPostTimeStamp());
+                metrics.incrementMessagesSent();
             } catch (UnreadableException e) {
                 e.printStackTrace();
             }
