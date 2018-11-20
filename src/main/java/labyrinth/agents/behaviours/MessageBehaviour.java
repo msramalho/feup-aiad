@@ -22,6 +22,7 @@ public class MessageBehaviour extends CyclicBehaviour {
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive();
+        if (msg != null) myAgent.getMetrics().incrementMessagesReceived();
 
         if (msg != null && (negotiatingWith == null || msg.getSender().equals(negotiatingWith))) {
             try {
