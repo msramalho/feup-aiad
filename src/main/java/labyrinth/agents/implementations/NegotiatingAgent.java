@@ -29,7 +29,9 @@ public class NegotiatingAgent extends BacktrackAgent {
     @Override
     public ACLMessage handleProposal(ACLMessage msg) {
         try {
-            if (((NegotiationEnvelope) msg.getContentObject()).utility > 1) {
+            Integer u = ((NegotiationEnvelope) msg.getContentObject()).utility;
+            getMetrics().incrementCumulatedUtilityReceived(u);
+            if (u > 1) {
                 envelope = new NegotiationEnvelope("Hope you like it", getKnowledge(), 100);
                 envelope.revealMystery();
                 return createACLMessage(ACLMessage.ACCEPT_PROPOSAL, msg.getSender(), envelope);

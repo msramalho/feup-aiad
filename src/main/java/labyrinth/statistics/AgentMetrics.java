@@ -27,6 +27,7 @@ public class AgentMetrics {
     private long numCFPAnswered;
     private long numProposalsAccepted;
     private long numProposalsRejected;
+    private long cumulatedUtilityReceived; // deadends negotiated with other agents
     private Map<Class<?>, Integer> agentEncounters = new HashMap<>();
 
     private static final List<Class<? extends AwareAgent>> AGENT_TYPES = Arrays.asList(
@@ -94,6 +95,10 @@ public class AgentMetrics {
         numProposalsRejected++;
     }
 
+    public void incrementCumulatedUtilityReceived(Integer u) {
+        cumulatedUtilityReceived += u;
+    }
+
     public void incrementDirection(Directions direction) {
         switch (direction) {
             case UP:
@@ -147,35 +152,22 @@ public class AgentMetrics {
     }
 
     @JsonProperty
-    public String getAgentType() {
-        return agentClazz.getSimpleName();
-    }
+    public String getAgentType() { return agentClazz.getSimpleName(); }
 
     @JsonProperty
-    public long getNumDeadends() {
-        return numDeadends;
-    }
+    public long getNumDeadends() { return numDeadends; }
 
     @JsonProperty
-    public long getNumUpSteps() {
-        return numUpSteps;
-    }
+    public long getNumUpSteps() { return numUpSteps; }
 
     @JsonProperty
-    public long getNumLeftSteps() {
-        return numLeftSteps;
-    }
-
+    public long getNumLeftSteps() { return numLeftSteps; }
 
     @JsonProperty
-    public long getNumRightSteps() {
-        return numRightSteps;
-    }
+    public long getNumRightSteps() { return numRightSteps; }
 
     @JsonProperty
-    public long getNumDownSteps() {
-        return numDownSteps;
-    }
+    public long getNumDownSteps() {return numDownSteps; }
 
     @JsonProperty
     public long getNumMessagesSent() {return numMessagesSent;}
@@ -191,6 +183,9 @@ public class AgentMetrics {
 
     @JsonProperty
     public long getNumProposalsRejected() {return numProposalsRejected;}
+
+    @JsonProperty
+    public long getCumulatedUtilityReceived() {return cumulatedUtilityReceived;}
 
     @JsonProperty
     public long getNumTotalEncounters() {
