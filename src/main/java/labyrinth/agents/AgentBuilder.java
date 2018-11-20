@@ -99,11 +99,11 @@ public class AgentBuilder {
         return agentTickRunners;
     }
 
-    public List<AgentDescription> getAgentsDescriptions() {
+    public List<AgentDescription> buildAgentsDescriptions() {
         return new ArrayList<>(agentDescriptions);
     }
 
-    public Map<String, AwareAgent> getAgents() {
+    public Map<String, AwareAgent> buildAgents() {
         return new HashMap<>(allAgents);
     }
 

@@ -62,7 +62,7 @@ public class ConfigurationFactory {
 
         // statistics, win checker
         StepAverages stepAverages = new StepAverages();
-        WinChecker checker = new WinChecker(builder.getAgentsDescriptions(), batchMode)
+        WinChecker checker = new WinChecker(builder.buildAgentsDescriptions(), batchMode)
                 .addAgentExitedHandler(stepAverages::oneAgentExited)
                 .addAllAgentsExitedHandler(stepAverages::allAgentsExited);
 
@@ -84,7 +84,7 @@ public class ConfigurationFactory {
 
         schedule.scheduleActionAtInterval(actionSlownessRate, clockPublisher);
 
-        return builder.getAgents();
+        return builder.buildAgents();
 
     }
 
