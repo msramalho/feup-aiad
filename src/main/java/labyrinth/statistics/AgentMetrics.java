@@ -35,7 +35,7 @@ public class AgentMetrics {
     public AgentMetrics() {
         AGENT_TYPES.forEach(name -> agentEncounters.put(name, 0));
     }
-  
+
     private String agentName;
 
     private long getMazeArea() {
