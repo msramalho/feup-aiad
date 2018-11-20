@@ -14,14 +14,16 @@ import java.util.List;
 import java.util.Map;
 
 public class AgentMetrics {
-    private long stepsToExit = 0;
+    private long stepsToExit;
     private Maze maze;
     private Class<? extends AwareAgent> agentClazz;
-    private long numDeadends = 0;
+    private long numDeadends; // how many deadends found
     private long numUpSteps;
     private long numLeftSteps;
     private long numRightSteps;
     private long numDownSteps;
+    private long numMessagesSent;
+    private long numMessagesReceived;
     private Map<Class<?>, Integer> agentEncounters = new HashMap<>();
 
     private static final List<Class<? extends AwareAgent>> AGENT_TYPES = Arrays.asList(
@@ -57,12 +59,24 @@ public class AgentMetrics {
         this.agentClazz = agentClazz;
     }
 
+    public void setName(String agentName) {
+        this.agentName = agentName;
+    }
+
     public void incrementDeadend() {
         numDeadends++;
     }
 
     public void incrementSteps() {
         stepsToExit++;
+    }
+
+    public void incrementMessagesSent() {
+        numMessagesSent++;
+    }
+
+    public void incrementMessagesReceived() {
+        numMessagesReceived++;
     }
 
     public void incrementDirection(Directions direction) {
@@ -84,39 +98,39 @@ public class AgentMetrics {
 
     public void incrementNeighbourEncounter(AwareAgent agent) {
         Class<? extends AwareAgent> clazz = agent.getClass();
-        if (! AGENT_TYPES.contains(clazz)) {
-            throw new RuntimeException("Invalid agent type: " + clazz.getSimpleName() + " add it to the list" );
+        if (!AGENT_TYPES.contains(clazz)) {
+            throw new RuntimeException("Invalid agent type: " + clazz.getSimpleName() + " add it to the list");
         }
 
         int count = agentEncounters.get(clazz);
         agentEncounters.put(clazz, count + 1);
     }
 
-//    @JsonProperty
-//    public long getStepsToExit() {
-//        return stepsToExit;
-//    }
-//
-//    @JsonProperty
-//    public long getXSize() {
-//        return maze.size.x;
-//    }
-//
-//    @JsonProperty
-//    public long getYSize() {
-//        return maze.size.y;
-//    }
-//
-//    @JsonProperty
-//    public double getAverageSpeed() {
-//        return stepsToExit / (double) getMazeArea();
-//    }
-//
-//    @JsonProperty
-//    public double getFreeWallRatio() {
-//        return getNumMazeWalls() / (double) getMazeArea();
-//    }
-//
+    @JsonProperty
+    public long getStepsToExit() {
+        return stepsToExit;
+    }
+
+    @JsonProperty
+    public long getXSize() {
+        return maze.size.x;
+    }
+
+    @JsonProperty
+    public long getYSize() {
+        return maze.size.y;
+    }
+
+    @JsonProperty
+    public double getAverageSpeed() {
+        return stepsToExit / (double) getMazeArea();
+    }
+
+    @JsonProperty
+    public double getFreeWallRatio() {
+        return getNumMazeWalls() / (double) getMazeArea();
+    }
+
     @JsonProperty
     public String getAgentType() {
         return agentClazz.getSimpleName();
@@ -147,6 +161,13 @@ public class AgentMetrics {
     public long getNumDownSteps() {
         return numDownSteps;
     }
+
+    @JsonProperty
+    public long getNumMessagesSent() {return numMessagesSent;}
+
+    @JsonProperty
+    public long getNumMessagesReceived() {return numMessagesReceived;}
+
     @JsonProperty
     public long getNumTotalEncounters() {
         return agentEncounters.values()
@@ -169,8 +190,5 @@ public class AgentMetrics {
         return agentName;
     }
 
-    public void setName(String agentName) {
 
-        this.agentName = agentName;
-    }
 }
