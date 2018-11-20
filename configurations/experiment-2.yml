@@ -1,0 +1,12 @@
+
+batchMode: true
+mazeHeight: 50
+mazeLength: 50
+seed: 1
+numForwardAgents: 25
+numBacktrackAgents: 50
+numRandomAgents: 0
+numNegotiatingAgents: 50
+numSwarmAgents: 0
+#slownessRate: 5
+statisticsPath: "metrics/experiment-2.csv"

@@ -18,7 +18,6 @@ public class MazePosition {
     private boolean exited = false;
 
     public MazePosition(Vector2D starterPosition, Maze maze, AgentMetrics metrics) {
-
         this.position = starterPosition;
         this.maze = maze;
         this.metrics = metrics;

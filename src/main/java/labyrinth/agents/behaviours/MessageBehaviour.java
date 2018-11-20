@@ -22,6 +22,7 @@ public class MessageBehaviour extends CyclicBehaviour {
     @Override
     public void action() {
         ACLMessage msg = myAgent.receive();
+        if (msg != null) myAgent.getMetrics().incrementMessagesReceived();
 
         if (msg != null && (negotiatingWith == null || msg.getSender().equals(negotiatingWith))) {
             try {
@@ -36,14 +37,17 @@ public class MessageBehaviour extends CyclicBehaviour {
                     myAgent.sendTimestamp(myAgent.handleCFP(msg), false);
                     break;
                 case ACLMessage.PROPOSE:
+                    myAgent.getMetrics().incrementCFPAnswered();
                     negotiatingWith = msg.getSender();
                     myAgent.sendTimestamp(myAgent.handleProposal(msg), false);
                     break;
                 case ACLMessage.ACCEPT_PROPOSAL:
+                    myAgent.getMetrics().incrementProposalsAccepted();
                     negotiatingWith = msg.getSender();
                     myAgent.sendTimestamp(myAgent.acceptedProposal(msg), false);
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
+                    myAgent.getMetrics().incrementProposalsRejected();
                     myAgent.rejectedProposal(msg);
                     break;
                 case ACLMessage.AGREE: // does not break on purpose
