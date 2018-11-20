@@ -1,6 +1,7 @@
 package labyrinth.statistics;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import labyrinth.agents.AwareAgent;
 import labyrinth.agents.implementations.*;
 import labyrinth.maze.Directions;
@@ -34,6 +35,8 @@ public class AgentMetrics {
     public AgentMetrics() {
         AGENT_TYPES.forEach(name -> agentEncounters.put(name, 0));
     }
+  
+    private String agentName;
 
     private long getMazeArea() {
         return maze.size.x * maze.size.y;
@@ -118,31 +121,32 @@ public class AgentMetrics {
     public String getAgentType() {
         return agentClazz.getSimpleName();
     }
-//
-//    @JsonProperty
-//    public long getNumDeadends() {
-//        return numDeadends;
-//    }
-//
-//    public long getNumUpSteps() {
-//        return numUpSteps;
-//    }
-//
-//    @JsonProperty
-//    public long getNumLeftSteps() {
-//        return numLeftSteps;
-//    }
-//
-//    @JsonProperty
-//    public long getNumRightSteps() {
-//        return numRightSteps;
-//    }
-//
-//    @JsonProperty
-//    public long getNumDownSteps() {
-//        return numDownSteps;
-//    }
 
+    @JsonProperty
+    public long getNumDeadends() {
+        return numDeadends;
+    }
+
+    @JsonProperty
+    public long getNumUpSteps() {
+        return numUpSteps;
+    }
+
+    @JsonProperty
+    public long getNumLeftSteps() {
+        return numLeftSteps;
+    }
+
+
+    @JsonProperty
+    public long getNumRightSteps() {
+        return numRightSteps;
+    }
+
+    @JsonProperty
+    public long getNumDownSteps() {
+        return numDownSteps;
+    }
     @JsonProperty
     public long getNumTotalEncounters() {
         return agentEncounters.values()
@@ -158,5 +162,15 @@ public class AgentMetrics {
                 .filter(entry -> !entry.getKey().equals(agentClazz))
                 .mapToInt(entry -> entry.getValue())
                 .sum();
+    }
+
+    @JsonProperty
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setName(String agentName) {
+
+        this.agentName = agentName;
     }
 }
