@@ -82,6 +82,10 @@ public class AgentMetrics {
         numMessagesReceived++;
     }
 
+    public void incrementCFPAnswered() {
+        numCFPAnswered++;
+    }
+
     public void incrementDirection(Directions direction) {
         switch (direction) {
             case UP:
@@ -170,6 +174,9 @@ public class AgentMetrics {
 
     @JsonProperty
     public long getNumMessagesReceived() {return numMessagesReceived;}
+
+    @JsonProperty
+    public long getNumCFPAnswered() {return numCFPAnswered;}
 
     @JsonProperty
     public long getNumTotalEncounters() {

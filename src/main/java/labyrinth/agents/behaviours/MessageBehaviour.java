@@ -37,6 +37,7 @@ public class MessageBehaviour extends CyclicBehaviour {
                     myAgent.sendTimestamp(myAgent.handleCFP(msg), false);
                     break;
                 case ACLMessage.PROPOSE:
+                    myAgent.getMetrics().incrementCFPAnswered();
                     negotiatingWith = msg.getSender();
                     myAgent.sendTimestamp(myAgent.handleProposal(msg), false);
                     break;
