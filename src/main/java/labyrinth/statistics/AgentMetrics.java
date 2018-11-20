@@ -24,6 +24,9 @@ public class AgentMetrics {
     private long numDownSteps;
     private long numMessagesSent;
     private long numMessagesReceived;
+    private long numCFPAnswered;
+    private long numProposalsAccepted;
+    private long numProposalsRejected;
     private Map<Class<?>, Integer> agentEncounters = new HashMap<>();
 
     private static final List<Class<? extends AwareAgent>> AGENT_TYPES = Arrays.asList(
