@@ -42,10 +42,12 @@ public class MessageBehaviour extends CyclicBehaviour {
                     myAgent.sendTimestamp(myAgent.handleProposal(msg), false);
                     break;
                 case ACLMessage.ACCEPT_PROPOSAL:
+                    myAgent.getMetrics().incrementProposalsAccepted();
                     negotiatingWith = msg.getSender();
                     myAgent.sendTimestamp(myAgent.acceptedProposal(msg), false);
                     break;
                 case ACLMessage.REJECT_PROPOSAL:
+                    myAgent.getMetrics().incrementProposalsRejected();
                     myAgent.rejectedProposal(msg);
                     break;
                 case ACLMessage.AGREE: // does not break on purpose

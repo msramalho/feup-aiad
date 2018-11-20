@@ -86,6 +86,14 @@ public class AgentMetrics {
         numCFPAnswered++;
     }
 
+    public void incrementProposalsAccepted() {
+        numProposalsAccepted++;
+    }
+
+    public void incrementProposalsRejected() {
+        numProposalsRejected++;
+    }
+
     public void incrementDirection(Directions direction) {
         switch (direction) {
             case UP:
@@ -177,6 +185,12 @@ public class AgentMetrics {
 
     @JsonProperty
     public long getNumCFPAnswered() {return numCFPAnswered;}
+
+    @JsonProperty
+    public long getNumProposalsAccepted() {return numProposalsAccepted;}
+
+    @JsonProperty
+    public long getNumProposalsRejected() {return numProposalsRejected;}
 
     @JsonProperty
     public long getNumTotalEncounters() {
