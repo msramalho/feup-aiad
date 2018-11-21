@@ -27,10 +27,10 @@ public class ConfigurationFactory {
     private long seed = System.currentTimeMillis();
     private boolean batchMode = false;
 
-    private int numForwardAgents = 1;
-    private int numBacktrackAgents = 1;
-    private int numRandomAgents = 1;
-    private int numNegotiatingAgents = 1;
+    private int numForwardAgents = 0;
+    private int numBacktrackAgents = 0;
+    private int numRandomAgents = 0;
+    private int numNegotiatingAgents = 0;
     private int numSwarmAgents = 0;
     private String statisticsPath = null;
 
