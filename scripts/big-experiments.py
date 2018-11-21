@@ -104,6 +104,7 @@ def log(msg):
     print(msg)
     log_file.write(msg)
     log_file.write("\n")
+    log_file.flush()
 
 
 def set_execution(dimensions, agents, num_seeds):
