@@ -25,6 +25,10 @@ AGENTS = [
 # number of times to run each experiment with different random seeds
 NUM_SEEDS = 1
 
+EXECUTIONS_SETS = [
+    (DIMENSIONS, AGENTS, NUM_SEEDS)
+]
+
 SAVE_DIR = "metrics/big"
 ZIP_PATH=f"{SAVE_DIR}.zip"
 LOGFILE_PATH=f"{SAVE_DIR}_log_{time.time()}.txt"
@@ -101,7 +105,8 @@ if do_extra_tasks:
 start_total = time.time()
 
 # experiments execution
-set_execution(DIMENSIONS, AGENTS, NUM_SEEDS)
+for (dimensions, agents, num_seeds) in EXECUTIONS_SETS:
+    set_execution(dimensions, agents, num_seeds)
 
 end_total = time.time()
 log("All executed successfully, Total execution time {0:.1f} sec, check {1} path for results. ".format(end_total - start_total, SAVE_DIR))
