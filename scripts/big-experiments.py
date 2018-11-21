@@ -13,7 +13,7 @@ import shutil
 # Maze Dimensions
 # (x,y) or (width, height)
 DIMENSIONS = [
-    (100,100)
+    (10,10)
 ]
 
 # Number of agents of each type
@@ -98,13 +98,13 @@ if do_extra_tasks:
     except OSError:
         pass
 
-start = time.time()
+start_total = time.time()
 
 # experiments execution
 set_execution(DIMENSIONS, AGENTS, NUM_SEEDS)
 
-end = time.time()
-log(f"All executed successfully, Total execution time {0:.1f} sec, check {SAVE_DIR} path for results. ".format(end - start))
+end_total = time.time()
+log("All executed successfully, Total execution time {0:.1f} sec, check {1} path for results. ".format(end_total - start_total, SAVE_DIR))
 
 # zip results
 if do_extra_tasks:
