@@ -12,25 +12,68 @@ import shutil
 
 # Maze Dimensions
 # (x,y) or (width, height)
-DIMENSIONS = [
-    (10,10)
+DIMENSIONS_SMALL = [
+    (10,10),
+    (50, 20),
+    (20, 50),
+    (60, 40),
+    (40, 60),
+    (100,100)
 ]
+
+DIMENSIONS_BIG = [
+    (10,10),
+    (100, 100),
+    (100,500),
+    (500, 100),
+    (1000,1000),
+    (1200, 800),
+    (800, 1200),
+    (5000, 5000)
+]
+
+
 
 # Number of agents of each type
 # (Random, Forward, Backtrack, Negotiating, Swarm)
-AGENTS = [
-    (100, 100, 100, 100, 0)
+AGENTS_SMALL = [
+    (10, 10, 10, 10, 0),
+    (100, 0, 0, 0, 0),
+    (0, 100, 0, 0, 0),
+    (0, 0, 100, 0, 0),
+    (0, 0, 0, 100, 0),
+    (100, 100, 100, 100, 0),
+    (25, 50, 75, 100, 0),
+    (100, 75, 50, 25, 0),
 ]
+
+AGENTS_BIG = [
+    (0, 10, 10, 10, 0),
+    (0, 100, 100, 100, 0),
+    (0, 1000, 1000, 1000, 0),
+    (0, 1000, 2000, 3000, 0),
+    (0, 3000, 2000, 1000, 0),
+    (0, 5000, 5000, 5000, 0),
+]
+
 
 # number of times to run each experiment with different random seeds
-NUM_SEEDS = 1
+NUM_SEEDS = 10
 
 EXECUTIONS_SETS = [
-    (DIMENSIONS, AGENTS, NUM_SEEDS)
+    # 480
+    (DIMENSIONS_SMALL, AGENTS_SMALL, NUM_SEEDS),
+    # 480
+    (DIMENSIONS_BIG, AGENTS_BIG, NUM_SEEDS)
+
 ]
+
+# for testing uncomment
+# EXECUTIONS_SETS = [ (DIMENSIONS_SMALL[0:1], AGENTS_SMALL[0:1], 1) ]
 
 SAVE_DIR = "metrics/big"
 ZIP_PATH=f"{SAVE_DIR}.zip"
+LOGFILE_DIR = "metrics"
 LOGFILE_PATH=f"{SAVE_DIR}_log_{time.time()}.txt"
 
 STACK_SIZE_MB=100
@@ -54,6 +97,7 @@ FNULL = open(os.devnull, 'w')
 jar_path = sys.argv[1]
 do_extra_tasks = len(sys.argv) == 3 and sys.argv[2] == "y" # extra arg
 
+os.makedirs(LOGFILE_DIR, exist_ok=True)
 log_file = open(LOGFILE_PATH, "w")
 
 def log(msg):
