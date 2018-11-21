@@ -148,120 +148,121 @@ public class AgentMetrics {
         this.numNegotiatingAgents = numNegotiatingAgents;
         this.numSwarmAgents = numSwarmAgents;
     }
-//    @JsonProperty
-//    public long getStepsToExit() {
-//        return stepsToExit;
-//    }
-//
-//    @JsonProperty
-//    public long getXSize() {
-//        return maze.size.x;
-//    }
-//
-//    @JsonProperty
-//    public long getYSize() {
-//        return maze.size.y;
-//    }
-//
-//    @JsonProperty
-//    public double getAverageSpeed() {
-//        return stepsToExit / (double) getMazeArea();
-//    }
-//
-//    @JsonProperty
-//    public double getFreeWallRatio() {
-//        return getNumMazeWalls() / (double) getMazeArea();
-//    }
-//
-//    @JsonProperty
-//    public String getAgentType() { return agentClazz.getSimpleName(); }
-//
-//    @JsonProperty
-//    public long getNumDeadends() { return numDeadends; }
-//
-//    @JsonProperty
-//    public long getNumUpSteps() { return numUpSteps; }
-//
-//    @JsonProperty
-//    public long getNumLeftSteps() { return numLeftSteps; }
-//
-//    @JsonProperty
-//    public long getNumRightSteps() { return numRightSteps; }
-//
-//    @JsonProperty
-//    public long getNumDownSteps() {return numDownSteps; }
-//
-//    @JsonProperty
-//    public long getNumMessagesSent() {return numMessagesSent;}
-//
-//    @JsonProperty
-//    public long getNumMessagesReceived() {return numMessagesReceived;}
-//
-//    @JsonProperty
-//    public long getNumCFPAnswered() {return numCFPAnswered;}
-//
-//    @JsonProperty
-//    public long getNumProposalsAccepted() {return numProposalsAccepted;}
-//
-//    @JsonProperty
-//    public long getNumProposalsRejected() {return numProposalsRejected;}
-//
-//    @JsonProperty
-//    public long getCumulatedUtilityReceived() {return cumulatedUtilityReceived;}
-//
-//    @JsonProperty
-//    public long getNumTotalEncounters() {
-//        return agentEncounters.values()
-//                .stream()
-//                .mapToInt(i -> i)
-//                .sum();
-//    }
-//
-//    @JsonProperty
-//    public long getNumDifferentEncounters() {
-//        return agentEncounters.entrySet()
-//                .stream()
-//                .filter(entry -> !entry.getKey().equals(agentClazz))
-//                .mapToInt(entry -> entry.getValue())
-//                .sum();
 
-//    }
+    @JsonProperty
+    public long getStepsToExit() {
+        return stepsToExit;
+    }
+
+    @JsonProperty
+    public long getXSize() {
+        return maze.size.x;
+    }
+
+    @JsonProperty
+    public long getYSize() {
+        return maze.size.y;
+    }
+
+    @JsonProperty
+    public double getAverageSpeed() {
+        return stepsToExit / (double) getMazeArea();
+    }
+
+    @JsonProperty
+    public double getFreeWallRatio() {
+        return getNumMazeWalls() / (double) getMazeArea();
+    }
+
+    @JsonProperty
+    public String getAgentType() { return agentClazz.getSimpleName(); }
+
+    @JsonProperty
+    public long getNumDeadends() { return numDeadends; }
+
+    @JsonProperty
+    public long getNumUpSteps() { return numUpSteps; }
+
+    @JsonProperty
+    public long getNumLeftSteps() { return numLeftSteps; }
+
+    @JsonProperty
+    public long getNumRightSteps() { return numRightSteps; }
+
+    @JsonProperty
+    public long getNumDownSteps() {return numDownSteps; }
+
+    @JsonProperty
+    public long getNumMessagesSent() {return numMessagesSent;}
+
+    @JsonProperty
+    public long getNumMessagesReceived() {return numMessagesReceived;}
+
+    @JsonProperty
+    public long getNumCFPAnswered() {return numCFPAnswered;}
+
+    @JsonProperty
+    public long getNumProposalsAccepted() {return numProposalsAccepted;}
+
+    @JsonProperty
+    public long getNumProposalsRejected() {return numProposalsRejected;}
+
+    @JsonProperty
+    public long getCumulatedUtilityReceived() {return cumulatedUtilityReceived;}
+
+    @JsonProperty
+    public long getNumTotalEncounters() {
+        return agentEncounters.values()
+                .stream()
+                .mapToInt(i -> i)
+                .sum();
+    }
+
+    @JsonProperty
+    public long getNumDifferentEncounters() {
+        return agentEncounters.entrySet()
+                .stream()
+                .filter(entry -> !entry.getKey().equals(agentClazz))
+                .mapToInt(entry -> entry.getValue())
+                .sum();
+
+    }
 
     @JsonProperty
     public String getAgentName() {
         return agentName;
     }
 
-//    @JsonProperty
-//    public int getStartingPosition() {
-//        return startingPosition;
+    @JsonProperty
+    public int getStartingPosition() {
+        return startingPosition;
 
-//    }
+    }
 
-//    @JsonProperty
-//    public int getNumRandomAgents() {
-//        return numRandomAgents;
-//    }
-//
-//    @JsonProperty
-//    public int getNumForwardAgents() {
-//        return numForwardAgents;
-//    }
-//
-//    @JsonProperty
-//    public int getNumBacktrackAgents() {
-//        return numBacktrackAgents;
-//    }
-//
-//    @JsonProperty
-//    public int getNumNegotiatingAgents() {
-//        return numNegotiatingAgents;
-//    }
-//
-//    @JsonProperty
-//    public int getNumSwarmAgents() {
-//        return numSwarmAgents;
-//    }
+    @JsonProperty
+    public int getNumRandomAgents() {
+        return numRandomAgents;
+    }
+
+    @JsonProperty
+    public int getNumForwardAgents() {
+        return numForwardAgents;
+    }
+
+    @JsonProperty
+    public int getNumBacktrackAgents() {
+        return numBacktrackAgents;
+    }
+
+    @JsonProperty
+    public int getNumNegotiatingAgents() {
+        return numNegotiatingAgents;
+    }
+
+    @JsonProperty
+    public int getNumSwarmAgents() {
+        return numSwarmAgents;
+    }
 
     public void incrementDirectionChange() {
         this.numDirectionChanges++;

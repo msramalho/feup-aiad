@@ -15,6 +15,8 @@ $ ./gradlew build
 $ ./gradlew run
 ```
 
+This will run with a stack size of 512MiB.
+
 To run with a configuration file (YAML or JSON), specify the file path as the first argument:
 ```bash
 $ gradle run --args="configurations/agents.yaml"
@@ -28,8 +30,6 @@ Simply run:
 ```bash
 $ ./gradlew jar
 ```
-
-This will run with a stack size of 512MiB.
 
 This will create a `<name>.jar` file in the `./build/libs` directory.
 
