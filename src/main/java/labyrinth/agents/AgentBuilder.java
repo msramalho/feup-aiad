@@ -28,7 +28,9 @@ public class AgentBuilder {
     private final List<Vector2D> startPositions;
     private int agentCounter = 0;
     private List<AgentDescription> agentDescriptions = new ArrayList<>();
-    private HashMap<String, AwareAgent> allAgents = new HashMap<>();
+    private Map<String, AwareAgent> allAgents = new HashMap<>();
+    private List<AgentMetrics> agentMetricsList = new ArrayList<>();
+
 
     public AgentBuilder(ContainerController mainContainer, Maze maze) {
         this.mainContainer = mainContainer;
@@ -37,10 +39,13 @@ public class AgentBuilder {
     }
 
     private void addAgent(Color agentColor, BiFunction<MazePosition, MazeKnowledge, AwareAgent> agentBuilder) throws StaleProxyException {
-        Vector2D startPos = getStartIndex();
-
         AgentMetrics agentMetrics = new AgentMetrics()
                 .setMaze(maze);
+        agentMetricsList.add(agentMetrics);
+
+        agentMetrics.setStartingPosition(getStartIndex());
+        Vector2D startPos = buildStartPosition();
+
 
         MazePosition mazePosition = new MazePosition(startPos, maze, agentMetrics);
         MazeKnowledge knowledge = new MazeKnowledge(maze);
@@ -58,8 +63,13 @@ public class AgentBuilder {
         agentDescriptions.add(new AgentDescription(mazePosition, agent, agentName));
     }
 
-    private Vector2D getStartIndex() {
-        final int startIndex = agentCounter % startPositions.size();
+
+    private int getStartIndex() {
+        return agentCounter % startPositions.size();
+    }
+
+    private Vector2D buildStartPosition() {
+        final int startIndex = getStartIndex();
         Vector2D startPos = startPositions.get(startIndex);
         agentCounter++;
         return startPos;
@@ -105,6 +115,10 @@ public class AgentBuilder {
 
     public Map<String, AwareAgent> buildAgents() {
         return new HashMap<>(allAgents);
+    }
+
+    public List<AgentMetrics> buildAgentMetrics() {
+        return new ArrayList<>(agentMetricsList);
     }
 
 }

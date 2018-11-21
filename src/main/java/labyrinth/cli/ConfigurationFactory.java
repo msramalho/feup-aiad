@@ -48,6 +48,8 @@ public class ConfigurationFactory {
         Utilities.rangeExecutors(numNegotiatingAgents, builder::addNegotiatingAgent);
         Utilities.rangeExecutors(numSwarmAgents, builder::addSwarmAgent);
 
+        builder.buildAgentMetrics()
+            .forEach(metric -> metric.setTotalAgentTypes(numRandomAgents, numForwardAgents, numBacktrackAgents, numNegotiatingAgents, numSwarmAgents));
 
         // clock ticks
         ClockPublisher clockPublisher = new ClockPublisher()
