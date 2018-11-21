@@ -46,6 +46,7 @@ public class AgentMetrics {
     private int numNegotiatingAgents;
     private int numSwarmAgents;
     private int numDirectionChanges = 0;
+    private int numVisitedCells;
 
     public AgentMetrics() {
         AGENT_TYPES.forEach(name -> agentEncounters.put(name, 0));
@@ -269,5 +270,14 @@ public class AgentMetrics {
     @JsonProperty
     public int getNumDirectionChanges() {
         return numDirectionChanges;
+    }
+
+    public void setNumVisitedCells(int numVisitedCells) {
+        this.numVisitedCells = numVisitedCells;
+    }
+
+    @JsonProperty
+    public int getNumVisitedCells() {
+        return numVisitedCells;
     }
 }

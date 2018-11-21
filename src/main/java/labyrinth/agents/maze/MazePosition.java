@@ -5,8 +5,7 @@ import labyrinth.maze.Maze;
 import labyrinth.statistics.AgentMetrics;
 import labyrinth.utils.Vector2D;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MazePosition {
 
@@ -17,11 +16,13 @@ public class MazePosition {
     private long tickCounter = 0;
     private boolean exited = false;
     private Directions prevDirection = null;
+    private Set<Vector2D> visitedCells = new HashSet<>();
 
     public MazePosition(Vector2D starterPosition, Maze maze, AgentMetrics metrics) {
         this.position = starterPosition;
         this.maze = maze;
         this.metrics = metrics;
+        visitedCells.add(starterPosition);
     }
 
     public Vector2D getPosition() {
@@ -34,18 +35,21 @@ public class MazePosition {
             return false;
         }
 
+        position = newPos;
+
         // "starts" at 1
         if (! exited) {
+            visitedCells.add(newPos);
             checkDirectionInversion(prevDirection, direction);
             checkForDeadEnd(newPos);
             metrics.incrementSteps();
             metrics.incrementDirection(direction);
             if (atExit()) {
+                metrics.setNumVisitedCells(visitedCells.size());
                 exited = true;
             }
         }
 
-        position = newPos;
         prevDirection = direction;
         return true;
     }
