@@ -47,7 +47,10 @@ $ java -Xss<MiBAmount>m -jar <path to jar>/<name>.jar [configuration file]
 ```
 
 
-## Configuration File Example
+## Configuration Example
+
+### Configuration File
+
 YAML:
 ```yaml
 seed: 1
@@ -58,4 +61,15 @@ numForwardAgents: 1
 numBacktrackAgents: 0
 numRandomAgents: 0
 numNegotiatingAgents: 5
+```
+
+### CLI arguments
+
+You can add "any" (if synchronized) arguments to the CLI that you would to the configuration file. To add a seed you can add an argument `-seed=13` for a seed of 13. 
+If you supply only one argument without a flag `-` a config file is used. If you supply a flag the arguments are used.
+
+Full Example:
+
+```bash
+$ gradle run --args="-batchMode=true -mazeHeight=30 -mazeLength=30 -seed=1 -numForwardAgents=2 -numBacktrackAgents=2 -numRandomAgents=2 -numNegotiatingAgents=2 -numSwarmAgents=0 -slownessRate=10 -statisticsPath="metrics/new.csv""
 ```
