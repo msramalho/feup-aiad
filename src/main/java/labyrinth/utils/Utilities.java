@@ -1,6 +1,8 @@
 package labyrinth.utils;
 
-import java.io.File;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class Utilities {
     public static int max(int ... numbers) {
@@ -16,6 +18,14 @@ public class Utilities {
         return maxValue;
     }
 
+    public static void trySetBoolean(Map<String, String> map, String key,  Consumer<Boolean> setter) {
+        trySetValue(map, key, Boolean::parseBoolean, setter);
+    }
+
+    public static void trySetLong(Map<String, String> map, String key,  Consumer<Long> setter) {
+        trySetValue(map, key, Long::parseLong, setter);
+    }
+
     public interface ExceptionRunner<T extends Exception> {
         void run() throws T;
     }
@@ -26,6 +36,19 @@ public class Utilities {
         }
     }
 
+    private static <V> void trySetValue(Map<String, String> map, String key, Function<String, V> parser, Consumer<V> setter) {
+        if (map.containsKey(key)) {
+            V value = parser.apply(map.get(key));
+            setter.accept(value);
+        }
+    }
 
+    public static void trySetInt(Map<String, String> map, String key, Consumer<Integer> setter) {
+        trySetValue(map, key, Integer::parseInt, setter);
+    }
+
+    public static void trySetString(Map<String, String> map, String key, Consumer<String> setter) {
+        trySetValue(map, key, String::valueOf, setter);
+    }
 
 }

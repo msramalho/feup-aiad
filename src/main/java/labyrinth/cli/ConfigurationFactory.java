@@ -22,16 +22,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ConfigurationFactory {
-    private Vector2D mazeSize = new Vector2D(30, 30);
+    private int mazeHeight;
+    private int mazeLength;
     private int actionSlownessRate = 1; // lower is faster
-    private long seed = System.currentTimeMillis();
-    private boolean batchMode = false;
-
     private int numForwardAgents = 0;
     private int numBacktrackAgents = 0;
     private int numRandomAgents = 0;
     private int numNegotiatingAgents = 0;
     private int numSwarmAgents = 0;
+
+    private long seed = System.currentTimeMillis();
+    private boolean batchMode = false;
     private String statisticsPath = null;
 
     public ConfigurationFactory() {
@@ -39,13 +40,25 @@ public class ConfigurationFactory {
     }
 
     public ConfigurationFactory(Map<String, String> argMap) {
+        Utilities.trySetInt(argMap, "mazeHeight", this::setMazeHeight);
+        Utilities.trySetInt(argMap, "mazeLength", this::setMazeLength);
+        Utilities.trySetInt(argMap, "slownessRate", this::setSlownessRate);
+        Utilities.trySetInt(argMap, "numForwardAgents", this::setNumForwardAgents);
+        Utilities.trySetInt(argMap, "numBacktrackAgents", this::setNumBacktrackAgents);
+        Utilities.trySetInt(argMap, "numRandomAgents", this::setNumRandomAgents);
+        Utilities.trySetInt(argMap, "numNegotiatingAgents", this::setNumNegotiatingAgents);
+        Utilities.trySetInt(argMap, "numSwarmAgents", this::setNumSwarmAgents);
 
+        Utilities.trySetBoolean(argMap, "batchMode", this::setBatchMode);
+        Utilities.trySetLong(argMap, "seed", this::setSeed);
+        Utilities.trySetString(argMap, "statisticsPath", this::setStatisticsPath);
     }
 
     public Map<String, AwareAgent> build(ContainerController mainContainer, DisplaySurface displaySurf, Schedule schedule) throws StaleProxyException, IOException {
         RandomSingleton.setSeed(seed);
 
         // maze
+        Vector2D mazeSize = new Vector2D(mazeLength, mazeHeight);
         Maze maze = new MazeFactory(mazeSize).buildRecursiveMaze();
 
         // implementations
@@ -100,7 +113,7 @@ public class ConfigurationFactory {
 
     @JsonProperty
     public void setMazeLength(int length) {
-        this.mazeSize = new Vector2D(length, mazeSize.y);
+        this.mazeLength = length;
     }
 
     @JsonProperty
@@ -110,7 +123,7 @@ public class ConfigurationFactory {
 
     @JsonProperty
     public void setMazeHeight(int height) {
-        this.mazeSize = new Vector2D(mazeSize.x, height);
+        this.mazeHeight = height;
     }
 
     @JsonProperty
@@ -176,11 +189,11 @@ public class ConfigurationFactory {
     }
 
     public int getMazeHeight() {
-        return mazeSize.y;
+        return mazeHeight;
     }
 
     public int getMazeLength() {
-        return mazeSize.x;
+        return mazeLength;
     }
 
     public long getSeed() {
