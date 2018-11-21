@@ -26,8 +26,8 @@ AGENTS = [
 NUM_SEEDS = 1
 
 SAVE_DIR = "metrics/big"
-
-ZIP_PATH=f"metrics/big.zip"
+ZIP_PATH=f"{SAVE_DIR}.zip"
+LOGFILE_PATH=f"{SAVE_DIR}_log_{time.time()}.txt"
 
 STACK_SIZE_MB=100
 
@@ -35,7 +35,6 @@ STACK_SIZE_MB=100
 ########################
 #### Implementation
 ########################
-
 
 if __name__ != "__main__":
     sys.exit(1)
@@ -50,6 +49,14 @@ FNULL = open(os.devnull, 'w')
 
 jar_path = sys.argv[1]
 do_extra_tasks = len(sys.argv) == 3 and sys.argv[2] == "y" # extra arg
+
+log_file = open(LOGFILE_PATH, "w")
+
+def log(msg):
+    print(msg)
+    log_file.write(msg)
+    log_file.write("\n")
+
 
 def set_execution(dimensions, agents, num_seeds):
     for (x, y) in dimensions:
@@ -71,34 +78,39 @@ def set_execution(dimensions, agents, num_seeds):
                     f"-statisticsPath={savePathStr}"
                 ]
             
-                print(f">> Running experiment for file {savePathStr}")
+                log(f">> Running experiment for file {savePathStr}")
                 allArgs = ["java", f"-Xss{STACK_SIZE_MB}m", "-jar", jar_path] + arguments
                 start = time.time()
                 code = subprocess.call(allArgs, stdout=FNULL)
                 if code != 0:
                     commandStr = " ".join(allArgs)
-                    print("An ERROR occured, failed to execute command: {commandStr}")
+                    log("An ERROR occured, failed to execute command: {commandStr}")
                     sys.exit(1)
                 end = time.time()
-                print("== Took {0:.1f} sec".format(end - start))
+                log("== Took {0:.1f} sec".format(end - start))
 
 # clean folder
 if do_extra_tasks:
-    print("Removing old files")
+    log("Removing old files")
     shutil.rmtree(SAVE_DIR, True)
     try:
         os.remove(ZIP_PATH)
     except OSError:
         pass
 
+start = time.time()
+
+# experiments execution
 set_execution(DIMENSIONS, AGENTS, NUM_SEEDS)
 
+end = time.time()
+log(f"All executed successfully, Total execution time {0:.1f} sec, check {SAVE_DIR} path for results. ".format(end - start))
+
+# zip results
 if do_extra_tasks:
-    print("Zipping files")
-    
+    log("Zipping files")
     code = subprocess.call(["zip", "-r", ZIP_PATH, SAVE_DIR])
     if code != 0:
-        print("Failed to zip results. They still exist")
+        log("Failed to zip results. They still exist")
         sys.exit(1)
 
-print(f"All executed successfully, check {SAVE_DIR} path for results")
