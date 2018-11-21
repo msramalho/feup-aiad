@@ -34,6 +34,14 @@ public class ConfigurationFactory {
     private int numSwarmAgents = 0;
     private String statisticsPath = null;
 
+    public ConfigurationFactory() {
+
+    }
+
+    public ConfigurationFactory(Map<String, String> argMap) {
+
+    }
+
     public Map<String, AwareAgent> build(ContainerController mainContainer, DisplaySurface displaySurf, Schedule schedule) throws StaleProxyException, IOException {
         RandomSingleton.setSeed(seed);
 

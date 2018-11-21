@@ -5,6 +5,7 @@ import labyrinth.cli.ConfigurationFactory;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import labyrinth.utils.Files;
+import labyrinth.utils.Pair;
 import sajas.core.Runtime;
 import sajas.sim.repast3.Repast3Launcher;
 import sajas.wrapper.ContainerController;
@@ -12,9 +13,7 @@ import uchicago.src.sim.engine.SimInit;
 import uchicago.src.sim.gui.DisplaySurface;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class LabyrinthModel extends Repast3Launcher {
@@ -93,12 +92,40 @@ public class LabyrinthModel extends Repast3Launcher {
             return new ConfigurationFactory();
         }
 
-        if (args.length >= 2) {
-            throw new IllegalArgumentException("Invalid usage. Check Readme");
+        if (args.length == 1 ) {
+            String configPath = args[0];
+            if (! configPath.startsWith("-")) {
+                return Files.deserializeYamlOrJsonObject(configPath, ConfigurationFactory.class);
+            }
         }
 
-        String configPath = args[0];
-        return Files.deserializeYamlOrJsonObject(configPath, ConfigurationFactory.class);
+        Map<String, String> argMap = buildArgsMap(args);
+        if (argMap.size() == 0) {
+            throw new IllegalArgumentException("Invalid params. Check Readme");
+        }
+
+        return new ConfigurationFactory(argMap);
+    }
+
+    private static final String DELIMITER = "=";
+    private static final String STARTER = "-";
+
+    private static Map<String, String> buildArgsMap(String[] args) {
+
+        return Arrays.stream(args)
+                .filter(arg -> {
+                    boolean isAssignment = arg.contains(DELIMITER) && arg.startsWith(STARTER) && arg.length() >= 2;
+                    if(! isAssignment) {
+                        System.err.println("Invalid argument, ignoring: " + arg);
+                    }
+                    return isAssignment;
+                }).map(arg -> {
+                    String[] pair = arg.split(DELIMITER);
+                    // prefiltered
+                    String key = pair[0].substring(1);
+                    String value = pair[1];
+                    return new Pair<>(key, value);
+                }).collect(Collectors.toMap(p -> p.l, p -> p.r));
     }
 
     public static void main(String[] args) throws IOException {
