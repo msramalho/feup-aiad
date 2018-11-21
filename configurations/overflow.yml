@@ -1,0 +1,12 @@
+
+batchMode: true
+mazeHeight: 300
+mazeLength: 300
+seed: 3
+numForwardAgents: 0
+numBacktrackAgents: 0
+numRandomAgents: 0
+numNegotiatingAgents: 100
+numSwarmAgents: 0
+statisticsPath: "metrics/live-demo-3.csv"
+#slownessRate: 5

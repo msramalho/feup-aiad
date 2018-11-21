@@ -29,6 +29,8 @@ Simply run:
 $ ./gradlew jar
 ```
 
+This will run with a stack size of 512MiB.
+
 This will create a `<name>.jar` file in the `./build/libs` directory.
 
 This is a dependency free `.jar` which means you only need the `.jar` and a java runtime to execute it since all dependencies and resources are already included in the zip.
@@ -37,6 +39,13 @@ You can then run
 ```bash
 $ java -jar <path to jar>/<name>.jar [configuration file]
 ```
+
+Or with a custom Stack size
+
+```bash
+$ java -Xss<MiBAmount>m -jar <path to jar>/<name>.jar [configuration file]
+```
+
 
 ## Configuration File Example
 YAML:

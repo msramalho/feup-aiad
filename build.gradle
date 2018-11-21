@@ -35,3 +35,6 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+
+applicationDefaultJvmArgs = ["-Xss512m"]
+
