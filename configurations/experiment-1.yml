@@ -2,7 +2,7 @@
 batchMode: true
 mazeHeight: 30
 mazeLength: 30
-seed: 1
+seed: 3
 numForwardAgents: 1
 numBacktrackAgents: 2
 numRandomAgents: 3

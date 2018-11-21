@@ -16,6 +16,7 @@ public class MazePosition {
     private final AgentMetrics metrics;
     private long tickCounter = 0;
     private boolean exited = false;
+    private Directions prevDirection = null;
 
     public MazePosition(Vector2D starterPosition, Maze maze, AgentMetrics metrics) {
         this.position = starterPosition;
@@ -33,11 +34,10 @@ public class MazePosition {
             return false;
         }
 
-        position = newPos;
-
         // "starts" at 1
         if (! exited) {
-            checkForDeadEnd(position);
+            checkDirectionInversion(prevDirection, direction);
+            checkForDeadEnd(newPos);
             metrics.incrementSteps();
             metrics.incrementDirection(direction);
             if (atExit()) {
@@ -45,7 +45,20 @@ public class MazePosition {
             }
         }
 
+        position = newPos;
+        prevDirection = direction;
         return true;
+    }
+
+    private void checkDirectionInversion(Directions prevDirection, Directions newDirection) {
+        if (prevDirection == null || newDirection == null) {
+            return;
+        }
+
+        if (prevDirection.direction.translate(newDirection.direction).equals(Vector2D.ORIGIN)) {
+            metrics.incrementDirectionChange();
+        }
+
     }
 
     private void checkForDeadEnd(Vector2D position) {

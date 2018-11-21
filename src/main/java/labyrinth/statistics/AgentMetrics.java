@@ -37,7 +37,6 @@ public class AgentMetrics {
     private long numProposalsRejected;
     private long cumulatedUtilityReceived; // deadends negotiated with other agents
     private Map<Class<?>, Integer> agentEncounters = new HashMap<>();
-
     private int startIndex;
     private int startingPosition;
 
@@ -46,6 +45,7 @@ public class AgentMetrics {
     private int numBacktrackAgents;
     private int numNegotiatingAgents;
     private int numSwarmAgents;
+    private int numDirectionChanges = 0;
 
     public AgentMetrics() {
         AGENT_TYPES.forEach(name -> agentEncounters.put(name, 0));
@@ -139,6 +139,14 @@ public class AgentMetrics {
         agentEncounters.put(clazz, count + 1);
     }
 
+    public void setTotalAgentTypes(int numRandomAgents, int numForwardAgents, int numBacktrackAgents, int numNegotiatingAgents, int numSwarmAgents) {
+
+        this.numRandomAgents = numRandomAgents;
+        this.numForwardAgents = numForwardAgents;
+        this.numBacktrackAgents = numBacktrackAgents;
+        this.numNegotiatingAgents = numNegotiatingAgents;
+        this.numSwarmAgents = numSwarmAgents;
+    }
 //    @JsonProperty
 //    public long getStepsToExit() {
 //        return stepsToExit;
@@ -215,6 +223,7 @@ public class AgentMetrics {
 //                .filter(entry -> !entry.getKey().equals(agentClazz))
 //                .mapToInt(entry -> entry.getValue())
 //                .sum();
+
 //    }
 
     @JsonProperty
@@ -222,43 +231,43 @@ public class AgentMetrics {
         return agentName;
     }
 
+//    @JsonProperty
+//    public int getStartingPosition() {
+//        return startingPosition;
 
-    @JsonProperty
-    public int getStartingPosition() {
-        return startingPosition;
+//    }
+
+//    @JsonProperty
+//    public int getNumRandomAgents() {
+//        return numRandomAgents;
+//    }
+//
+//    @JsonProperty
+//    public int getNumForwardAgents() {
+//        return numForwardAgents;
+//    }
+//
+//    @JsonProperty
+//    public int getNumBacktrackAgents() {
+//        return numBacktrackAgents;
+//    }
+//
+//    @JsonProperty
+//    public int getNumNegotiatingAgents() {
+//        return numNegotiatingAgents;
+//    }
+//
+//    @JsonProperty
+//    public int getNumSwarmAgents() {
+//        return numSwarmAgents;
+//    }
+
+    public void incrementDirectionChange() {
+        this.numDirectionChanges++;
     }
 
-    public void setTotalAgentTypes(int numRandomAgents, int numForwardAgents, int numBacktrackAgents, int numNegotiatingAgents, int numSwarmAgents) {
-
-        this.numRandomAgents = numRandomAgents;
-        this.numForwardAgents = numForwardAgents;
-        this.numBacktrackAgents = numBacktrackAgents;
-        this.numNegotiatingAgents = numNegotiatingAgents;
-        this.numSwarmAgents = numSwarmAgents;
-    }
-
     @JsonProperty
-    public int getNumRandomAgents() {
-        return numRandomAgents;
-    }
-
-    @JsonProperty
-    public int getNumForwardAgents() {
-        return numForwardAgents;
-    }
-
-    @JsonProperty
-    public int getNumBacktrackAgents() {
-        return numBacktrackAgents;
-    }
-
-    @JsonProperty
-    public int getNumNegotiatingAgents() {
-        return numNegotiatingAgents;
-    }
-
-    @JsonProperty
-    public int getNumSwarmAgents() {
-        return numSwarmAgents;
+    public int getNumDirectionChanges() {
+        return numDirectionChanges;
     }
 }
