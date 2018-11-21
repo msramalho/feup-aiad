@@ -7,5 +7,4 @@ numBacktrackAgents: 2
 numRandomAgents: 2
 numNegotiatingAgents: 2
 numSwarmAgents: 0
-slownessRate: 10
 statisticsPath: "metrics/data.csv"

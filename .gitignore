@@ -5,7 +5,7 @@ build
 libs/*.log
 src/main/java/META-INF/
 metrics/
-
+.vscode
 
 gradle/wrapper/
 

@@ -73,3 +73,12 @@ Full Example:
 ```bash
 $ gradle run --args="-batchMode=true -mazeHeight=30 -mazeLength=30 -seed=1 -numForwardAgents=2 -numBacktrackAgents=2 -numRandomAgents=2 -numNegotiatingAgents=2 -numSwarmAgents=0 -slownessRate=10 -statisticsPath="metrics/new.csv""
 ```
+
+
+## Scripts 
+
+To run the script with the experiments run for example:
+
+```bash
+$ python scripts/big-experiments.py build/libs/aiad-labyrinth-0.1-SNAPSHOT.jar y
+```
