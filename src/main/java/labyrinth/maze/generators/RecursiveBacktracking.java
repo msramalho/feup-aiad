@@ -4,8 +4,7 @@ import labyrinth.maze.Directions;
 import labyrinth.utils.Segment;
 import labyrinth.utils.Vector2D;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class RecursiveBacktracking implements IGenerator {
 
@@ -23,27 +22,35 @@ public class RecursiveBacktracking implements IGenerator {
         edges = new ArrayList<>();
     }
 
-    private boolean recursive(Vector2D pos) {
-        if (! pos.isInsideBounds(pathSize) || visitedCells[pos.x][pos.y]) {
-            return false;
-        }
+    private void iterative(Vector2D init_pos) {
+        Stack<Vector2D> stack = new Stack<>();
+        stack.add(init_pos);
 
-        visitedCells[pos.x][pos.y] = true;
+        while (!stack.isEmpty()) {
+            Vector2D pos = stack.peek();
 
-        List<Directions> directions = Directions.getRandomDirections();
-        for (Directions dir : directions) {
-            Vector2D nextPos = pos.translate(dir.direction);
-            if (recursive(nextPos)) {
-                edges.add(new Segment(pos, nextPos));
+            List<Directions> directions = Directions.getRandomDirections();
+            boolean added = false;
+            for (Directions dir : directions) {
+                Vector2D nextPos = pos.translate(dir.direction);
+                if (nextPos.isInsideBounds(pathSize) && !stack.contains(nextPos) && !visitedCells[nextPos.x][nextPos.y]) {
+                    stack.push(nextPos);
+                    added = true;
+                    break;
+                }
+            }
+            if(added)
+                edges.add(new Segment(pos, stack.peek()));
+            else {
+                visitedCells[pos.x][pos.y] = true;
+                stack.pop();
             }
         }
-
-        return true;
     }
 
     @Override
     public boolean[][] generate() {
-        recursive(Vector2D.ORIGIN);
+        iterative(Vector2D.ORIGIN);
 
         return createWalls(edges, gridSize);
     }
