@@ -69,7 +69,11 @@ public class MazeKnowledge {
     }
 
 
-    public boolean isDeadEnd(Vector2D position, Directions d) {
+    public boolean isDeadEndStatic(Vector2D position, Directions d) {
+        return isDeadEndStatic(position, d, deadEnds);
+    }
+
+    public static boolean isDeadEndStatic(Vector2D position, Directions d, ConcurrentHashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds) {
         Pair<ArrayList<Directions>, Integer> potentialDeadEnd = deadEnds.get(new Pair<>(position.x, position.y));
         if (potentialDeadEnd == null) return false;
         return potentialDeadEnd.l.contains(d);
@@ -85,6 +89,10 @@ public class MazeKnowledge {
      */
     public void updateDeadEnds(Pair<Integer, Integer> coord, ArrayList<Directions> dir, Integer cost) {
         // Pair<Integer, Integer> coord = new Pair<>(position.getPosition().x, position.getPosition().y);
+        updateDeadEndsStatic(coord, dir, cost, deadEnds);
+    }
+
+    public static void updateDeadEndsStatic(Pair<Integer, Integer> coord, ArrayList<Directions> dir, Integer cost, ConcurrentHashMap<Pair<Integer, Integer>, Pair<ArrayList<Directions>, Integer>> deadEnds) {
         Pair<ArrayList<Directions>, Integer> de = deadEnds.get(coord);
         if (de == null) {
             deadEnds.put(coord, new Pair<>(dir, cost));

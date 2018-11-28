@@ -25,10 +25,10 @@ import java.io.Serializable;
 public abstract class AwareAgent extends Agent {
     public MazePosition position;
     public int visibility = 1;
-    public boolean communicatingAgent = false;
+    protected boolean communicatingAgent = false;
 
     private MazeKnowledge knowledge;
-    protected MessageBehaviour messageBehaviour;
+    private MessageBehaviour messageBehaviour;
     private AgentMetrics metrics;
     private boolean exited = false;
 
