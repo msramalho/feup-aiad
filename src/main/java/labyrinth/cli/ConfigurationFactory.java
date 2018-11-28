@@ -22,14 +22,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ConfigurationFactory {
-    private int mazeHeight;
-    private int mazeLength;
+    private int mazeHeight = 100;
+    private int mazeLength = 100;
     private int actionSlownessRate = 1; // lower is faster
     private int numForwardAgents = 0;
     private int numBacktrackAgents = 0;
     private int numRandomAgents = 0;
     private int numNegotiatingAgents = 0;
-    private int numSwarmAgents = 0;
+    private int numSwarmAgents = 100;
 
     private long seed = System.currentTimeMillis();
     private boolean batchMode = false;

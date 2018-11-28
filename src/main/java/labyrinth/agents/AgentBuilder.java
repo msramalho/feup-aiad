@@ -76,28 +76,28 @@ public class AgentBuilder {
     }
 
     public AgentBuilder addForwardAgent() throws StaleProxyException {
-        addAgent(Color.pink, (mazePos, knowledge) -> new ForwardAgent(mazePos, knowledge));
+        addAgent(Color.pink, ForwardAgent::new);
         return this;
     }
 
     public AgentBuilder addBacktrackAgent() throws StaleProxyException {
         //orange
-        addAgent(Color.decode("#FF8C00"), (mazePos, knowledge) -> new BacktrackAgent(mazePos, knowledge));
+        addAgent(Color.decode("#FF8C00"), BacktrackAgent::new);
         return this;
     }
 
     public AgentBuilder addRandomAgent() throws StaleProxyException {
-        addAgent(Color.cyan, (mazePos, knowledge) -> new RandomAgent(mazePos, knowledge));
+        addAgent(Color.cyan, RandomAgent::new);
         return this;
     }
 
     public AgentBuilder addNegotiatingAgent() throws StaleProxyException {
-        addAgent(Color.red, (mazePos, knowledge) -> new NegotiatingAgent(mazePos, knowledge));
+        addAgent(Color.red, NegotiatingAgent::new);
         return this;
     }
 
     public AgentBuilder addSwarmAgent() throws StaleProxyException {
-        addAgent(Color.yellow, (mazePos, knowledge) -> new SwarmAgent(mazePos, knowledge));
+        addAgent(Color.yellow, SwarmAgent::new);
         return this;
     }
 

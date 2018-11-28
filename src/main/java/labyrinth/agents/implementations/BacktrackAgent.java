@@ -12,9 +12,9 @@ import java.util.Stack;
 
 public class BacktrackAgent extends AwareAgent {
 
-    private Stack<Directions> backtrackStack = new Stack<>();
-    private int countContinuosBacktracks = 0;
-    private Directions lastMove;
+    protected Stack<Directions> backtrackStack = new Stack<>();
+    protected int countContinuosBacktracks = 0;
+    protected Directions lastMove;
 
     public BacktrackAgent(MazePosition mazePosition, MazeKnowledge knowledge) {
         super(mazePosition, knowledge);
@@ -32,20 +32,17 @@ public class BacktrackAgent extends AwareAgent {
      */
     private Directions getNextStep() {
 
-        MazeKnowledge knowledge = getKnowledge();
-
         for (Directions d : position.getAvailableDirections(true)) {
             Vector2D pos = getPosAfterMove(d);
 
             // if this is not yet explored
-            if (!knowledge.confidences[pos.x][pos.y] &&
-                    !knowledge.isDeadEnd(position.getPosition(), d)) {
+            if (!this.getKnowledge().confidences[pos.x][pos.y] &&
+                    !isDeadEnd(position.getPosition(), d)) {
                 if (countContinuosBacktracks > 0) { //if there was backtrack onto this position
                     ArrayList<Directions> dirs = new ArrayList<>();
                     dirs.add(Directions.getOpposite(lastMove));
-                    knowledge.updateDeadEnds(new Pair<>(position.getPosition().x, position.getPosition().y), dirs, countContinuosBacktracks);
+                    updateDeadEnds(new Pair<>(position.getPosition().x, position.getPosition().y), dirs, countContinuosBacktracks);
                     countContinuosBacktracks = 0;
-
                 }
                 backtrackStack.push(Directions.getOpposite(d)); // add this to backtrackable steps
                 return d;
@@ -53,13 +50,14 @@ public class BacktrackAgent extends AwareAgent {
         }
 
         countContinuosBacktracks++;
-        if (backtrackStack.empty()) { // failed to find exit, so restart, might have been due to wrong info from other implementations
-            knowledge.init();
-            return getNextStep();
-        }
         return backtrackStack.pop();// no new option -> go back
     }
 
+    protected boolean isDeadEnd(Vector2D position, Directions d) {
+        return this.getKnowledge().isDeadEndStatic(position, d);
+    }
 
-
+    protected void updateDeadEnds(Pair<Integer, Integer> coord, ArrayList<Directions> dirs, int countContinuousBacktracks) {
+        this.getKnowledge().updateDeadEnds(coord, dirs, countContinuousBacktracks);
+    }
 }
