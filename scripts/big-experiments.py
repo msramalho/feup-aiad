@@ -10,6 +10,45 @@ import shutil
 ########################
 
 
+########## with random and swarm
+
+DIMENSIONS_SMALL_SWARM = [
+    (10,10),
+    (50, 20),
+    (20, 50),
+    (60, 40),
+    (40, 60),
+    (100,100)
+]
+
+AGENTS_SMALL_SWARM = [
+    (10, 10, 10, 10, 10),
+    (25, 25, 25, 50, 25),
+    (25, 25, 25, 25, 50), 
+    (50, 50, 50, 50, 50),
+]
+
+########## with swarm and no random
+
+DIMENSIONS_BIG_SWARM = [
+    (10, 10),
+    (100, 100),
+    (100, 200),
+    (200, 100),
+    (500, 500),
+]
+
+AGENTS_BIG_SWARM = [
+    (0, 10, 10, 10, 10),
+    (0, 100, 100, 100, 100),
+    (0, 100, 200, 300, 400),
+    (0, 400, 300, 200, 100),
+    (0, 1000, 1000, 1000, 1000),
+]
+
+
+########## with random and no swarm
+
 # Maze Dimensions
 # (x,y) or (width, height)
 DIMENSIONS_SMALL = [
@@ -21,19 +60,6 @@ DIMENSIONS_SMALL = [
     (100,100)
 ]
 
-DIMENSIONS_BIG = [
-    (10,10),
-    (100, 100),
-    (100,500),
-    (500, 100),
-    (1000,1000),
-    (1200, 800),
-    (800, 1200),
-    (5000, 5000)
-]
-
-
-
 # Number of agents of each type
 # (Random, Forward, Backtrack, Negotiating, Swarm)
 AGENTS_SMALL = [
@@ -43,8 +69,21 @@ AGENTS_SMALL = [
     (0, 0, 100, 0, 0),
     (0, 0, 0, 100, 0),
     (100, 100, 100, 100, 0),
-    (25, 50, 75, 100, 0),
+    (25, 50, 75, 100, 0), 
     (100, 75, 50, 25, 0),
+]
+
+########## With no Random nor Swarm
+
+DIMENSIONS_BIG = [
+    (10,10),
+    (100, 100),
+    (100,500),
+    (500, 100),
+    (1000,1000),
+    (1200, 800),
+    (800, 1200),
+    (5000, 5000)
 ]
 
 AGENTS_BIG = [
@@ -62,10 +101,13 @@ NUM_SEEDS = 10
 
 EXECUTIONS_SETS = [
     # 480
-    (DIMENSIONS_SMALL, AGENTS_SMALL, NUM_SEEDS),
+    # (DIMENSIONS_SMALL, AGENTS_SMALL, NUM_SEEDS),
     # 480
-    (DIMENSIONS_BIG, AGENTS_BIG, NUM_SEEDS)
-
+    # (DIMENSIONS_BIG, AGENTS_BIG, NUM_SEEDS),
+    # with random and swarm
+    (DIMENSIONS_SMALL_SWARM, AGENTS_SMALL_SWARM, NUM_SEEDS),
+    # with swarm and no random
+    (DIMENSIONS_BIG_SWARM, AGENTS_BIG_SWARM, NUM_SEEDS),
 ]
 
 # for testing uncomment
