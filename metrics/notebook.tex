@@ -1,0 +1,750 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{data\_analysis}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{\PYZsh{} Import all libraries needed for the tutorial}
+        
+        \PY{c+c1}{\PYZsh{} General syntax to import specific functions in a library: }
+        \PY{c+c1}{\PYZsh{}\PYZsh{}from (library) import (specific library function)}
+        \PY{k+kn}{from} \PY{n+nn}{pandas} \PY{k}{import} \PY{n}{DataFrame}\PY{p}{,} \PY{n}{read\PYZus{}csv}
+        
+        \PY{c+c1}{\PYZsh{} General syntax to import a library but no functions: }
+        \PY{c+c1}{\PYZsh{}\PYZsh{}import (library) as (give the library a nickname/alias)}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd} \PY{c+c1}{\PYZsh{}this is how I usually import pandas}
+        \PY{k+kn}{import} \PY{n+nn}{sys} \PY{c+c1}{\PYZsh{}only needed to determine Python version number}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib} \PY{c+c1}{\PYZsh{}only needed to determine Matplotlib version number}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Python version }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{sys}\PY{o}{.}\PY{n}{version}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pandas version }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{pd}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Matplotlib version }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n}{matplotlib}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Python version 3.6.4 |Anaconda, Inc.| (default, Jan 16 2018, 10:22:32) [MSC v.1900 64 bit (AMD64)]
+Pandas version 0.23.4
+Matplotlib version 2.1.2
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{\PYZsh{} Reading Data}
+        \PY{n}{Location} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{.}\PY{l+s+s1}{\PYZbs{}}\PY{l+s+s1}{merged\PYZus{}all.csv}\PY{l+s+s1}{\PYZsq{}}
+        \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{Location}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{df}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}4}]:}         level\_0                   agentName         agentType  averageSpeed  \textbackslash{}
+        0             0     agent BacktrackAgent \#1    BacktrackAgent         0.573   
+        1             1     agent BacktrackAgent \#2    BacktrackAgent         0.268   
+        2             2     agent BacktrackAgent \#3    BacktrackAgent         0.226   
+        3             3     agent BacktrackAgent \#4    BacktrackAgent         0.503   
+        4             4     agent BacktrackAgent \#5    BacktrackAgent         0.301   
+        5             5     agent BacktrackAgent \#6    BacktrackAgent         0.148   
+        6             6     agent BacktrackAgent \#7    BacktrackAgent         0.286   
+        7             7     agent BacktrackAgent \#8    BacktrackAgent         0.511   
+        8             8     agent BacktrackAgent \#9    BacktrackAgent         0.657   
+        9             9    agent BacktrackAgent \#10    BacktrackAgent         0.540   
+        10           10    agent BacktrackAgent \#11    BacktrackAgent         0.236   
+        11           11    agent BacktrackAgent \#12    BacktrackAgent         0.783   
+        12           12    agent BacktrackAgent \#13    BacktrackAgent         0.705   
+        13           13    agent BacktrackAgent \#14    BacktrackAgent         0.272   
+        14           14    agent BacktrackAgent \#15    BacktrackAgent         0.234   
+        15           15    agent BacktrackAgent \#16    BacktrackAgent         0.351   
+        16           16    agent BacktrackAgent \#17    BacktrackAgent         0.537   
+        17           17    agent BacktrackAgent \#18    BacktrackAgent         0.232   
+        18           18    agent BacktrackAgent \#19    BacktrackAgent         0.350   
+        19           19    agent BacktrackAgent \#20    BacktrackAgent         0.191   
+        20           20    agent BacktrackAgent \#21    BacktrackAgent         0.269   
+        21           21    agent BacktrackAgent \#22    BacktrackAgent         0.496   
+        22           22    agent BacktrackAgent \#23    BacktrackAgent         0.188   
+        23           23    agent BacktrackAgent \#24    BacktrackAgent         0.507   
+        24           24    agent BacktrackAgent \#25    BacktrackAgent         0.325   
+        25           25    agent BacktrackAgent \#26    BacktrackAgent         0.140   
+        26           26    agent BacktrackAgent \#27    BacktrackAgent         0.606   
+        27           27    agent BacktrackAgent \#28    BacktrackAgent         0.671   
+        28           28    agent BacktrackAgent \#29    BacktrackAgent         0.153   
+        29           29    agent BacktrackAgent \#30    BacktrackAgent         0.622   
+        {\ldots}         {\ldots}                         {\ldots}               {\ldots}           {\ldots}   
+        397570       20       agent RandomAgent \#21       RandomAgent        26.095   
+        397571       21       agent RandomAgent \#22       RandomAgent         9.680   
+        397572       22       agent RandomAgent \#23       RandomAgent       105.608   
+        397573       23       agent RandomAgent \#24       RandomAgent       226.053   
+        397574       24       agent RandomAgent \#25       RandomAgent        35.881   
+        397575       25       agent RandomAgent \#26       RandomAgent         4.918   
+        397576       26       agent RandomAgent \#27       RandomAgent        91.644   
+        397577       27       agent RandomAgent \#28       RandomAgent        61.209   
+        397578       28       agent RandomAgent \#29       RandomAgent        20.493   
+        397579       29       agent RandomAgent \#30       RandomAgent         5.958   
+        397580       30  agent NegotiatingAgent \#31  NegotiatingAgent         0.404   
+        397581       31  agent NegotiatingAgent \#32  NegotiatingAgent         0.157   
+        397582       32  agent NegotiatingAgent \#33  NegotiatingAgent         0.607   
+        397583       33  agent NegotiatingAgent \#34  NegotiatingAgent         0.406   
+        397584       34  agent NegotiatingAgent \#35  NegotiatingAgent         0.544   
+        397585       35  agent NegotiatingAgent \#36  NegotiatingAgent         0.389   
+        397586       36  agent NegotiatingAgent \#37  NegotiatingAgent         0.259   
+        397587       37  agent NegotiatingAgent \#38  NegotiatingAgent         0.106   
+        397588       38  agent NegotiatingAgent \#39  NegotiatingAgent         0.528   
+        397589       39  agent NegotiatingAgent \#40  NegotiatingAgent         0.385   
+        397590       40        agent SwarmAgent \#41        SwarmAgent         0.423   
+        397591       41        agent SwarmAgent \#42        SwarmAgent         0.382   
+        397592       42        agent SwarmAgent \#43        SwarmAgent         0.218   
+        397593       43        agent SwarmAgent \#44        SwarmAgent         0.415   
+        397594       44        agent SwarmAgent \#45        SwarmAgent         0.255   
+        397595       45        agent SwarmAgent \#46        SwarmAgent         0.422   
+        397596       46        agent SwarmAgent \#47        SwarmAgent         0.442   
+        397597       47        agent SwarmAgent \#48        SwarmAgent         0.401   
+        397598       48        agent SwarmAgent \#49        SwarmAgent         0.403   
+        397599       49        agent SwarmAgent \#50        SwarmAgent         0.422   
+        
+                cumulatedUtilityReceived  freeWallRatio  index  numBacktrackAgents  \textbackslash{}
+        0                              0          0.569    NaN                  50   
+        1                              0          0.569    NaN                  50   
+        2                              0          0.569    NaN                  50   
+        3                              0          0.569    NaN                  50   
+        4                              0          0.569    NaN                  50   
+        5                              0          0.569    NaN                  50   
+        6                              0          0.569    NaN                  50   
+        7                              0          0.569    NaN                  50   
+        8                              0          0.569    NaN                  50   
+        9                              0          0.569    NaN                  50   
+        10                             0          0.569    NaN                  50   
+        11                             0          0.569    NaN                  50   
+        12                             0          0.569    NaN                  50   
+        13                             0          0.569    NaN                  50   
+        14                             0          0.569    NaN                  50   
+        15                             0          0.569    NaN                  50   
+        16                             0          0.569    NaN                  50   
+        17                             0          0.569    NaN                  50   
+        18                             0          0.569    NaN                  50   
+        19                             0          0.569    NaN                  50   
+        20                             0          0.569    NaN                  50   
+        21                             0          0.569    NaN                  50   
+        22                             0          0.569    NaN                  50   
+        23                             0          0.569    NaN                  50   
+        24                             0          0.569    NaN                  50   
+        25                             0          0.569    NaN                  50   
+        26                             0          0.569    NaN                  50   
+        27                             0          0.569    NaN                  50   
+        28                             0          0.569    NaN                  50   
+        29                             0          0.569    NaN                  50   
+        {\ldots}                          {\ldots}            {\ldots}    {\ldots}                 {\ldots}   
+        397570                         0          0.569    NaN                  10   
+        397571                         0          0.569    NaN                  10   
+        397572                         0          0.569    NaN                  10   
+        397573                         0          0.569    NaN                  10   
+        397574                         0          0.569    NaN                  10   
+        397575                         0          0.569    NaN                  10   
+        397576                         0          0.569    NaN                  10   
+        397577                         0          0.569    NaN                  10   
+        397578                         0          0.569    NaN                  10   
+        397579                         0          0.569    NaN                  10   
+        397580                      1121          0.569    NaN                  10   
+        397581                       674          0.569    NaN                  10   
+        397582                       764          0.569    NaN                  10   
+        397583                       345          0.569    NaN                  10   
+        397584                       371          0.569    NaN                  10   
+        397585                       605          0.569    NaN                  10   
+        397586                        80          0.569    NaN                  10   
+        397587                         0          0.569    NaN                  10   
+        397588                        98          0.569    NaN                  10   
+        397589                         0          0.569    NaN                  10   
+        397590                         0          0.569    NaN                  10   
+        397591                         0          0.569    NaN                  10   
+        397592                         0          0.569    NaN                  10   
+        397593                         0          0.569    NaN                  10   
+        397594                         0          0.569    NaN                  10   
+        397595                         0          0.569    NaN                  10   
+        397596                         0          0.569    NaN                  10   
+        397597                         0          0.569    NaN                  10   
+        397598                         0          0.569    NaN                  10   
+        397599                         0          0.569    NaN                  10   
+        
+                numCFPAnswered  numDeadends  {\ldots}    numRandomAgents  numRightSteps  \textbackslash{}
+        0                    0           18  {\ldots}                 50            142   
+        1                    0            8  {\ldots}                 50             56   
+        2                    0            8  {\ldots}                 50             57   
+        3                    0           12  {\ldots}                 50            112   
+        4                    0            8  {\ldots}                 50             72   
+        5                    0            3  {\ldots}                 50             30   
+        6                    0           10  {\ldots}                 50             71   
+        7                    0           13  {\ldots}                 50            114   
+        8                    0           21  {\ldots}                 50            160   
+        9                    0           19  {\ldots}                 50            124   
+        10                   0            9  {\ldots}                 50             60   
+        11                   0           23  {\ldots}                 50            180   
+        12                   0           24  {\ldots}                 50            170   
+        13                   0            9  {\ldots}                 50             56   
+        14                   0            9  {\ldots}                 50             67   
+        15                   0           13  {\ldots}                 50             80   
+        16                   0           16  {\ldots}                 50            134   
+        17                   0            6  {\ldots}                 50             48   
+        18                   0           14  {\ldots}                 50             87   
+        19                   0            6  {\ldots}                 50             38   
+        20                   0            6  {\ldots}                 50             66   
+        21                   0           16  {\ldots}                 50            114   
+        22                   0            6  {\ldots}                 50             52   
+        23                   0           12  {\ldots}                 50            112   
+        24                   0           10  {\ldots}                 50             78   
+        25                   0            2  {\ldots}                 50             28   
+        26                   0           17  {\ldots}                 50            145   
+        27                   0           20  {\ldots}                 50            156   
+        28                   0            2  {\ldots}                 50             40   
+        29                   0           20  {\ldots}                 50            146   
+        {\ldots}                {\ldots}          {\ldots}  {\ldots}                {\ldots}            {\ldots}   
+        397570               0          428  {\ldots}                 10           6501   
+        397571               0           83  {\ldots}                 10           2164   
+        397572               0         2315  {\ldots}                 10          29130   
+        397573               0         5376  {\ldots}                 10          57503   
+        397574               0          543  {\ldots}                 10           9108   
+        397575               0           86  {\ldots}                 10           1083   
+        397576               0         1783  {\ldots}                 10          24206   
+        397577               0          992  {\ldots}                 10          15900   
+        397578               0          286  {\ldots}                 10           5618   
+        397579               0          234  {\ldots}                 10           1295   
+        397580              29           10  {\ldots}                 10            118   
+        397581              23            4  {\ldots}                 10             28   
+        397582              12           15  {\ldots}                 10            168   
+        397583               8            8  {\ldots}                 10             95   
+        397584              10           10  {\ldots}                 10            148   
+        397585              10            8  {\ldots}                 10             88   
+        397586               2            2  {\ldots}                 10             80   
+        397587               0            1  {\ldots}                 10             16   
+        397588               1           13  {\ldots}                 10            154   
+        397589               0            7  {\ldots}                 10             88   
+        397590               0            6  {\ldots}                 10            124   
+        397591               0            3  {\ldots}                 10             82   
+        397592               0            0  {\ldots}                 10             67   
+        397593               0            2  {\ldots}                 10             92   
+        397594               0            1  {\ldots}                 10             78   
+        397595               0            4  {\ldots}                 10             90   
+        397596               0            6  {\ldots}                 10            135   
+        397597               0            3  {\ldots}                 10             92   
+        397598               0            5  {\ldots}                 10            114   
+        397599               0            3  {\ldots}                 10             90   
+        
+                numSwarmAgents  numTotalEncounters  numUpSteps  numVisitedCells  \textbackslash{}
+        0                   50                2511         136              358   
+        1                   50                 872          62              187   
+        2                   50                 546          70              185   
+        3                   50                1074         146              284   
+        4                   50                1530          70              222   
+        5                   50                 646          28              127   
+        6                   50                 386          86              215   
+        7                   50                1099         148              288   
+        8                   50                2137         160              400   
+        9                   50                1391         130              323   
+        10                  50                 943          72              190   
+        11                  50                2231         218              424   
+        12                  50                2821         174              424   
+        13                  50                 733          64              189   
+        14                  50                 660          64              189   
+        15                  50                1457         102              208   
+        16                  50                3185         126              340   
+        17                  50                 771          52              169   
+        18                  50                1035         102              247   
+        19                  50                 872          64              128   
+        20                  50                2617          60              206   
+        21                  50                1427         118              301   
+        22                  50                 985          56              166   
+        23                  50                1257         148              286   
+        24                  50                2184          76              234   
+        25                  50                 858          26              123   
+        26                  50                 845         172              375   
+        27                  50                1471         186              368   
+        28                  50                1780          28              148   
+        29                  50                1774         149              364   
+        {\ldots}                {\ldots}                 {\ldots}         {\ldots}              {\ldots}   
+        397570              10                2053        6553              250   
+        397571              10                 831        2660              169   
+        397572              10                3915       23688              301   
+        397573              10                2509       55515              294   
+        397574              10                 568        8839              369   
+        397575              10                 180        1360              137   
+        397576              10                 988       21630              335   
+        397577              10                 356       14696              291   
+        397578              10                  41        4635              307   
+        397579              10                  23        1668              139   
+        397580              10                 140          98              288   
+        397581              10                  70          42              128   
+        397582              10                 134         142              404   
+        397583              10                 155          92              252   
+        397584              10                  80         138              358   
+        397585              10                 177          98              244   
+        397586              10                 325          56              230   
+        397587              10                  91          21              102   
+        397588              10                  60         124              350   
+        397589              10                  28          96              242   
+        397590              10                 152          94              312   
+        397591              10                  51          93              240   
+        397592              10                  21          56              195   
+        397593              10                  10         107              257   
+        397594              10                 280          56              228   
+        397595              10                 420         105              260   
+        397596              10                   4         100              307   
+        397597              10                   3         100              250   
+        397598              10                   1          94              302   
+        397599              10                   0         105              260   
+        
+                startingPosition  stepsToExit  xsize  ysize  
+        0                      0          573     20     50  
+        1                      1          268     20     50  
+        2                      2          226     20     50  
+        3                      3          503     20     50  
+        4                      0          301     20     50  
+        5                      1          148     20     50  
+        6                      2          286     20     50  
+        7                      3          511     20     50  
+        8                      0          657     20     50  
+        9                      1          540     20     50  
+        10                     2          236     20     50  
+        11                     3          783     20     50  
+        12                     0          705     20     50  
+        13                     1          272     20     50  
+        14                     2          234     20     50  
+        15                     3          351     20     50  
+        16                     0          537     20     50  
+        17                     1          232     20     50  
+        18                     2          350     20     50  
+        19                     3          191     20     50  
+        20                     0          269     20     50  
+        21                     1          496     20     50  
+        22                     2          188     20     50  
+        23                     3          507     20     50  
+        24                     0          325     20     50  
+        25                     1          140     20     50  
+        26                     2          606     20     50  
+        27                     3          671     20     50  
+        28                     0          153     20     50  
+        29                     1          622     20     50  
+        {\ldots}                  {\ldots}          {\ldots}    {\ldots}    {\ldots}  
+        397570                 0        26095     50     20  
+        397571                 1         9680     50     20  
+        397572                 2       105608     50     20  
+        397573                 3       226053     50     20  
+        397574                 0        35881     50     20  
+        397575                 1         4918     50     20  
+        397576                 2        91644     50     20  
+        397577                 3        61209     50     20  
+        397578                 0        20493     50     20  
+        397579                 1         5958     50     20  
+        397580                 2          404     50     20  
+        397581                 3          157     50     20  
+        397582                 0          607     50     20  
+        397583                 1          406     50     20  
+        397584                 2          544     50     20  
+        397585                 3          389     50     20  
+        397586                 0          259     50     20  
+        397587                 1          106     50     20  
+        397588                 2          528     50     20  
+        397589                 3          385     50     20  
+        397590                 0          423     50     20  
+        397591                 1          382     50     20  
+        397592                 2          218     50     20  
+        397593                 3          415     50     20  
+        397594                 0          255     50     20  
+        397595                 1          422     50     20  
+        397596                 2          442     50     20  
+        397597                 3          401     50     20  
+        397598                 0          403     50     20  
+        397599                 1          422     50     20  
+        
+        [397600 rows x 30 columns]
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{} Check data type of the columns}
+        \PY{n}{df}\PY{o}{.}\PY{n}{dtypes}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}5}]:} level\_0                       int64
+        agentName                    object
+        agentType                    object
+        averageSpeed                float64
+        cumulatedUtilityReceived      int64
+        freeWallRatio               float64
+        index                       float64
+        numBacktrackAgents            int64
+        numCFPAnswered                int64
+        numDeadends                   int64
+        numDifferentEncounters        int64
+        numDirectionChanges           int64
+        numDownSteps                  int64
+        numForwardAgents              int64
+        numLeftSteps                  int64
+        numMessagesReceived           int64
+        numMessagesSent               int64
+        numNegotiatingAgents          int64
+        numProposalsAccepted          int64
+        numProposalsRejected          int64
+        numRandomAgents               int64
+        numRightSteps                 int64
+        numSwarmAgents                int64
+        numTotalEncounters            int64
+        numUpSteps                    int64
+        numVisitedCells               int64
+        startingPosition              int64
+        stepsToExit                   int64
+        xsize                         int64
+        ysize                         int64
+        dtype: object
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{\PYZsh{} Reparting data from different experiences with different sizes}
+        \PY{n}{lab\PYZus{}10\PYZus{}10} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{10}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ysize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{10}\PY{p}{]}
+        \PY{n}{lab\PYZus{}50\PYZus{}20} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{50}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ysize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{20}\PY{p}{]}
+        \PY{n}{lab\PYZus{}20\PYZus{}50} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{20}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ysize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{50}\PY{p}{]}
+        \PY{n}{lab\PYZus{}60\PYZus{}40} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{60}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ysize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{40}\PY{p}{]}
+        \PY{n}{lab\PYZus{}40\PYZus{}60} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{40}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ysize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{60}\PY{p}{]}
+        \PY{n}{lab\PYZus{}100\PYZus{}100} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{xsize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{100}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ysize}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{100}\PY{p}{]}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{c+c1}{\PYZsh{} Getting average of averageSpeed lab\PYZus{}10\PYZus{}10}
+         \PY{n}{average\PYZus{}10\PYZus{}10} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{averageSpeed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Average in global of 10x10: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{average\PYZus{}10\PYZus{}10}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ in a total of }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{lab\PYZus{}10\PYZus{}10}\PY{o}{.}\PY{n}{size}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         
+         \PY{c+c1}{\PYZsh{} Average of different types agents}
+         \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}BacktrackAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{lab\PYZus{}10\PYZus{}10}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{agentType}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{BacktrackAgent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}BacktrackAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}BacktrackAgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{averageSpeed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         \PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}BacktrackAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}BacktrackAgent}\PY{o}{.}\PY{n}{size}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Average of BacktrackAgent on 10x10: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}BacktrackAgent}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ in a total of }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}BacktrackAgent}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}ForwardAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{lab\PYZus{}10\PYZus{}10}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{agentType}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ForwardAgent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}ForwardAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}ForwardAgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{averageSpeed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         \PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}ForwardAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}ForwardAgent}\PY{o}{.}\PY{n}{size}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Average of ForwardAgent on 10x10: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}ForwardAgent}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ in a total of }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}ForwardAgent}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}NegotiatingAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{lab\PYZus{}10\PYZus{}10}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{agentType}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NegotiatingAgent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}NegotiatingAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}NegotiatingAgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{averageSpeed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         \PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}NegotiatingAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}NegotiatingAgent}\PY{o}{.}\PY{n}{size}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Average of NegotiatingAgent on 10x10: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}NegotiatingAgent}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ in a total of }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}NegotiatingAgent}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}RandomAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{lab\PYZus{}10\PYZus{}10}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{agentType}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RandomAgent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}RandomAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}RandomAgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{averageSpeed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         \PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}RandomAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}RandomAgent}\PY{o}{.}\PY{n}{size}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Average of RandomAgent on 10x10: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}RandomAgent}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ in a total of }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}RandomAgent}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}SwarmAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{lab\PYZus{}10\PYZus{}10}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{agentType}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{SwarmAgent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+         \PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}SwarmAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}SwarmAgent}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{averageSpeed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+         \PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}SwarmAgent} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10\PYZus{}SwarmAgent}\PY{o}{.}\PY{n}{size}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Average of SwarmAgent on 10x10: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{average\PYZus{}10\PYZus{}10\PYZus{}SwarmAgent}\PY{p}{)} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ in a total of }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{size\PYZus{}10\PYZus{}10\PYZus{}SwarmAgent}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Average in global of 10x10: 0.24557553229903956 in a total of 8313000
+
+Average of BacktrackAgent on 10x10: 0.19126426623024292 in a total of 2749500
+Average of ForwardAgent on 10x10: 0.2547586037967052 in a total of 2449500
+Average of NegotiatingAgent on 10x10: 0.1869634920635008 in a total of 2457000
+Average of RandomAgent on 10x10: 2.5130741573033792 in a total of 133500
+Average of SwarmAgent on 10x10: 0.1847037249283609 in a total of 523500
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} \PY{n}{average\PYZus{}10\PYZus{}10} \PY{o}{=} \PY{n}{lab\PYZus{}10\PYZus{}10}\PY{o}{.}\PY{n}{groupby}
+\end{Verbatim}
+
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
