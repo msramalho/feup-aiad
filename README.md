@@ -1,6 +1,8 @@
-# FEUP AIAD: Labyrinth
+<h1 align="center">Labyrinth Intelligence & Analysis</h1>
+<h3 align="center">Multi Agent System + Data mining on Simulations</h3>
 
-Labyrinth Project
+
+<p align="center"><img src="https://i.imgur.com/QddRdca.png" width="400px"></p>
 
 ## Instructions
 
