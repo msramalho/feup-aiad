@@ -10,3 +10,5 @@ metrics/data/
 gradle/wrapper/
 
 src/main/java/serviceConsumerProviderVis/
+
+.ipynb_checkpoints/
