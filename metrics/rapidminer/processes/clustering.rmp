@@ -12,7 +12,10 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="productivity:execute_process" compatibility="9.0.003" expanded="true" height="68" name="Execute get_data_and_feature_engineering" width="90" x="112" y="34">
+      <operator activated="true" class="retrieve" compatibility="9.0.003" expanded="true" height="68" name="Retrieve agent_experiments_with_swarm" width="90" x="45" y="34">
+        <parameter key="repository_entry" value="../data/agent_experiments_with_swarm"/>
+      </operator>
+      <operator activated="true" class="productivity:execute_process" compatibility="9.0.003" expanded="true" height="68" name="Execute get_data_and_feature_engineering" width="90" x="179" y="34">
         <parameter key="process_location" value="get_data_and_feature_engineering"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -80,6 +83,7 @@
         <parameter key="use_local_random_seed" value="false"/>
         <parameter key="local_random_seed" value="1992"/>
       </operator>
+      <connect from_op="Retrieve agent_experiments_with_swarm" from_port="output" to_op="Execute get_data_and_feature_engineering" to_port="input 1"/>
       <connect from_op="Execute get_data_and_feature_engineering" from_port="result 1" to_op="Normalize" to_port="example set input"/>
       <connect from_op="Normalize" from_port="example set output" to_op="Select Attributes" to_port="example set input"/>
       <connect from_op="Select Attributes" from_port="example set output" to_op="Clustering" to_port="example set"/>
