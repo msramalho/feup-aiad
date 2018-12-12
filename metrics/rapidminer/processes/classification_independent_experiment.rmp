@@ -12,10 +12,10 @@
     <parameter key="process_duration_for_mail" value="30"/>
     <parameter key="encoding" value="SYSTEM"/>
     <process expanded="true">
-      <operator activated="true" class="retrieve" compatibility="9.0.003" expanded="true" height="68" name="Retrieve split_train" width="90" x="45" y="85">
+      <operator activated="true" class="retrieve" compatibility="9.0.003" expanded="true" height="68" name="Retrieve split_train" width="90" x="246" y="34">
         <parameter key="repository_entry" value="../data/split_train"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.0.003" expanded="true" height="68" name="Execute get_data_and_feature_engineering" width="90" x="179" y="85">
+      <operator activated="true" class="productivity:execute_process" compatibility="9.0.003" expanded="true" height="68" name="Execute get_data_and_feature_engineering" width="90" x="380" y="34">
         <parameter key="process_location" value="get_data_and_feature_engineering"/>
         <parameter key="use_input" value="true"/>
         <parameter key="store_output" value="false"/>
@@ -24,21 +24,7 @@
         <list key="macros"/>
         <parameter key="fail_for_unknown_macros" value="true"/>
       </operator>
-      <operator activated="true" class="select_attributes" compatibility="9.0.003" expanded="true" height="82" name="Select Attributes (2)" width="90" x="313" y="85">
-        <parameter key="attribute_filter_type" value="subset"/>
-        <parameter key="attribute" value=""/>
-        <parameter key="attributes" value="agentType|averageSpeed|freeWallRatio|startingPosition|avgStepsToExit|avgNumVisitedCells|avgNumUpSteps|avgNumTotalEncounters|avgNumRightSteps|avgNumLeftSteps|avgNumDownSteps|avgNumDirectionChanges|avgNumDifferentEncounters|avgNumDeadends|size|ysize|xsize|stepsToExit|numVisitedCells|numUpSteps|numTotalEncounters|numSwarmAgents|numRightSteps|numRandomAgents|numProposalsRejected|numProposalsAccepted|numNegotiatingAgents|numMessagesSent|numMessagesReceived|numLeftSteps|numForwardAgents|numDownSteps|numDirectionChanges|numDifferentEncounters|numDeadends|numCFPAnswered|numBacktrackAgents|cumulatedUtilityReceived"/>
-        <parameter key="use_except_expression" value="false"/>
-        <parameter key="value_type" value="attribute_value"/>
-        <parameter key="use_value_type_exception" value="false"/>
-        <parameter key="except_value_type" value="time"/>
-        <parameter key="block_type" value="attribute_block"/>
-        <parameter key="use_block_type_exception" value="false"/>
-        <parameter key="except_block_type" value="value_matrix_row_start"/>
-        <parameter key="invert_selection" value="false"/>
-        <parameter key="include_special_attributes" value="false"/>
-      </operator>
-      <operator activated="true" class="concurrency:parallel_decision_tree" compatibility="9.0.003" expanded="true" height="103" name="Decision Tree (3)" width="90" x="447" y="85">
+      <operator activated="true" class="concurrency:parallel_decision_tree" compatibility="9.0.003" expanded="true" height="103" name="Decision Tree (3)" width="90" x="514" y="34">
         <parameter key="criterion" value="information_gain"/>
         <parameter key="maximal_depth" value="15"/>
         <parameter key="apply_pruning" value="true"/>
@@ -49,19 +35,56 @@
         <parameter key="minimal_size_for_split" value="4"/>
         <parameter key="number_of_prepruning_alternatives" value="3"/>
       </operator>
-      <operator activated="true" class="retrieve" compatibility="9.0.003" expanded="true" height="68" name="Retrieve split_test" width="90" x="45" y="238">
+      <operator activated="true" class="retrieve" compatibility="9.0.003" expanded="true" height="68" name="Retrieve split_test" width="90" x="246" y="136">
         <parameter key="repository_entry" value="../data/split_test"/>
       </operator>
-      <operator activated="true" class="productivity:execute_process" compatibility="9.0.003" expanded="true" height="68" name="Execute get_data_and_feature_engineering (2)" width="90" x="179" y="238">
-        <parameter key="process_location" value="get_data_and_feature_engineering"/>
-        <parameter key="use_input" value="true"/>
-        <parameter key="store_output" value="false"/>
-        <parameter key="propagate_metadata_recursively" value="true"/>
-        <parameter key="cache_process" value="true"/>
-        <list key="macros"/>
-        <parameter key="fail_for_unknown_macros" value="true"/>
+      <operator activated="true" class="subprocess" compatibility="9.0.003" expanded="true" height="82" name="Feature Engineering" width="90" x="380" y="136">
+        <process expanded="true">
+          <operator activated="true" class="generate_attributes" compatibility="9.0.003" expanded="true" height="82" name="Calculate Size" width="90" x="112" y="34">
+            <list key="function_descriptions">
+              <parameter key="size" value="xsize * ysize"/>
+            </list>
+            <parameter key="keep_all" value="true"/>
+          </operator>
+          <operator activated="true" class="select_attributes" compatibility="9.0.003" expanded="true" height="82" name="Select Attributes" width="90" x="313" y="34">
+            <parameter key="attribute_filter_type" value="subset"/>
+            <parameter key="attribute" value=""/>
+            <parameter key="attributes" value="agentType|averageSpeed|freeWallRatio|numDeadends|numDifferentEncounters|numDirectionChanges|numDownSteps|numLeftSteps|numRightSteps|numTotalEncounters|numUpSteps|numVisitedCells|size|startingPosition|stepsToExit|ysize|xsize|numSwarmAgents|numRandomAgents|numProposalsRejected|numProposalsAccepted|numNegotiatingAgents|numMessagesSent|numMessagesReceived|numForwardAgents|numCFPAnswered|numBacktrackAgents|cumulatedUtilityReceived|agentName"/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="attribute_value"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="time"/>
+            <parameter key="block_type" value="attribute_block"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="value_matrix_row_start"/>
+            <parameter key="invert_selection" value="false"/>
+            <parameter key="include_special_attributes" value="false"/>
+          </operator>
+          <operator activated="false" class="generate_attributes" compatibility="9.0.003" expanded="true" height="82" name="Generate normalized features" width="90" x="447" y="136">
+            <list key="function_descriptions">
+              <parameter key="avgNumDeadends" value="numDeadends/size"/>
+              <parameter key="avgNumDifferentEncounters" value="numDifferentEncounters/size"/>
+              <parameter key="avgNumDirectionChanges" value="numDirectionChanges/size"/>
+              <parameter key="avgNumDownSteps" value="numDownSteps/size"/>
+              <parameter key="avgNumLeftSteps" value="numLeftSteps/size"/>
+              <parameter key="avgNumRightSteps" value="numRightSteps/size"/>
+              <parameter key="avgNumUpSteps" value="numUpSteps/size"/>
+              <parameter key="avgNumTotalEncounters" value="numTotalEncounters/size"/>
+              <parameter key="avgNumVisitedCells" value="numVisitedCells/size"/>
+              <parameter key="avgStepsToExit" value="stepsToExit/size"/>
+            </list>
+            <parameter key="keep_all" value="true"/>
+          </operator>
+          <connect from_port="in 1" to_op="Calculate Size" to_port="example set input"/>
+          <connect from_op="Calculate Size" from_port="example set output" to_op="Select Attributes" to_port="example set input"/>
+          <connect from_op="Select Attributes" from_port="example set output" to_port="out 1"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="source_in 2" spacing="0"/>
+          <portSpacing port="sink_out 1" spacing="0"/>
+          <portSpacing port="sink_out 2" spacing="0"/>
+        </process>
       </operator>
-      <operator activated="true" class="apply_model" compatibility="9.0.003" expanded="true" height="82" name="Apply Model (2)" width="90" x="581" y="187">
+      <operator activated="true" class="apply_model" compatibility="9.0.003" expanded="true" height="82" name="Apply Model (2)" width="90" x="648" y="136">
         <list key="application_parameters"/>
         <parameter key="create_view" value="false"/>
       </operator>
@@ -93,11 +116,10 @@
         <list key="class_weights"/>
       </operator>
       <connect from_op="Retrieve split_train" from_port="output" to_op="Execute get_data_and_feature_engineering" to_port="input 1"/>
-      <connect from_op="Execute get_data_and_feature_engineering" from_port="result 1" to_op="Select Attributes (2)" to_port="example set input"/>
-      <connect from_op="Select Attributes (2)" from_port="example set output" to_op="Decision Tree (3)" to_port="training set"/>
+      <connect from_op="Execute get_data_and_feature_engineering" from_port="result 1" to_op="Decision Tree (3)" to_port="training set"/>
       <connect from_op="Decision Tree (3)" from_port="model" to_op="Apply Model (2)" to_port="model"/>
-      <connect from_op="Retrieve split_test" from_port="output" to_op="Execute get_data_and_feature_engineering (2)" to_port="input 1"/>
-      <connect from_op="Execute get_data_and_feature_engineering (2)" from_port="result 1" to_op="Apply Model (2)" to_port="unlabelled data"/>
+      <connect from_op="Retrieve split_test" from_port="output" to_op="Feature Engineering" to_port="in 1"/>
+      <connect from_op="Feature Engineering" from_port="out 1" to_op="Apply Model (2)" to_port="unlabelled data"/>
       <connect from_op="Apply Model (2)" from_port="labelled data" to_op="Performance (3)" to_port="labelled data"/>
       <connect from_op="Apply Model (2)" from_port="model" to_port="result 2"/>
       <connect from_op="Performance (3)" from_port="performance" to_port="result 1"/>
