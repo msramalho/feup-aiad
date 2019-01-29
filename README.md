@@ -5,6 +5,7 @@
 
 Project developed for Agents and Distributed Artificial Intelligence @FEUP, by [@Ross65536](https://github.com/Ross65536), [@msramalho](https://github.com/msramalho) and [@jflcarvalho](https://github.com/jflcarvalho)
 
+Multitude of agents (and agent types) looking for a way out...
 
 ## Instructions
 
