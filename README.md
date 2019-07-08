@@ -1,7 +1,7 @@
 <h1 align="center">Labyrinth Intelligence & Analysis</h1>
 <h3 align="center">Multi Agent System + Data Mining on Simulations</h3>
 
-<p align="center"><img src="https://i.imgur.com/QddRdca.png" width="400px"></p>
+<p align="center"><img src="https://i.imgur.com/8vvNNI0.gif" width="400px"></p>
 
 Project developed for Agents and Distributed Artificial Intelligence @FEUP, by [@Ross65536](https://github.com/Ross65536), [@msramalho](https://github.com/msramalho) and [@jflcarvalho](https://github.com/jflcarvalho)
 
